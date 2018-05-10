@@ -1,0 +1,12 @@
+/mnt/shared/kevos/build/CMakeFiles/rebuild_cache.dir
+/mnt/shared/kevos/build/CMakeFiles/edit_cache.dir
+/mnt/shared/kevos/build/src/CMakeFiles/rebuild_cache.dir
+/mnt/shared/kevos/build/src/CMakeFiles/edit_cache.dir
+/mnt/shared/kevos/build/src/arch/CMakeFiles/rebuild_cache.dir
+/mnt/shared/kevos/build/src/arch/CMakeFiles/edit_cache.dir
+/mnt/shared/kevos/build/src/arch/common/CMakeFiles/rebuild_cache.dir
+/mnt/shared/kevos/build/src/arch/common/CMakeFiles/edit_cache.dir
+/mnt/shared/kevos/build/src/kernel/CMakeFiles/rebuild_cache.dir
+/mnt/shared/kevos/build/src/kernel/CMakeFiles/edit_cache.dir
+/mnt/shared/kevos/build/src/arch/x64/CMakeFiles/rebuild_cache.dir
+/mnt/shared/kevos/build/src/arch/x64/CMakeFiles/edit_cache.dir

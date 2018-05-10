@@ -1,0 +1,11 @@
+
+include(CMakeForceCompiler)
+
+set(CMAKE_FORCE_C_COMPILER gcc-7)
+
+set(CMAKE_FORCE_CXX_COMPILER g++-7)
+
+set(CMAKE_ASM_COMPILER gcc-7)
+
+find_program(LD_EXECUTABLE g++-7)
+find_program(OBJCOPY_EXECUTABLE objcopy)
