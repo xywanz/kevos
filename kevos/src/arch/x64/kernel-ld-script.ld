@@ -5,6 +5,7 @@
  
 OUTPUT_FORMAT(elf64-x86-64)
 ENTRY(entry32)
+
 physic_start_address = 0x100000;
 virtual_start_address = 0xFFFFFFFF80000000;
 address_difference = 0xFFFFFFFF00000000;
