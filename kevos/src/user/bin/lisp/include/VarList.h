@@ -13,21 +13,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_TOOL_LISP_RUNTIME_ENVIRONMENT_H_
-#define _KEVOS_TOOL_LISP_RUNTIME_ENVIRONMENT_H_
-
-#include "VarList.h"
+#ifndef _KEVOS_TOOL_LISP_VAR_LIST_H_
+#define _KEVOS_TOOL_LISP_VAR_LIST_H_
 
 
-class RuntimeEnvironment
+class VarList
 {
-public:
-	RuntimeEnvironment(VarList *_varlist,RuntimeEnvironment* _parent);
-	void* lookup(const char* _symbol);
-	void* set(const char* _symbol,void* _val);
-public:
-	VarList* varlist;
-	RuntimeEnvironment* parent;
+	struct Var
+	{
+		const char* symbol;
+		void* val;
+		Var* next;
+	
+		Node(const char* _symbol,void* _val,Var* _next=nullptr)
+			:symbol(_symbol),val(_val),next(_next)
+		{
+		}
+	};
+
+
 };
 
 
