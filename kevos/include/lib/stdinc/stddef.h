@@ -13,5 +13,29 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x64/vm.h>
+#ifndef _STDDEF_H
+#define _STDDEF_H
 
+
+#ifndef _SIZE_T
+#define _SIZE_T
+using size_t=unsigned long;
+#endif
+
+#ifndef _PTRDIFF_T
+#define _PTRDIFF_T
+using ptrdiff_t=long;
+#endif
+
+#ifndef __cplusplus
+#ifndef _WCHAR_T
+#define _WCHAR_T
+using wchar_t=short;
+#endif
+#endif
+
+#define NULL 0
+
+#define offsetof(type,member) ((size_t)&(((type*)0)->member))
+
+#endif

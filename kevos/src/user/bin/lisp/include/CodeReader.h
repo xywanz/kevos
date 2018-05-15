@@ -13,5 +13,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x64/vm.h>
+#ifndef _KEVOS_TOOL_LISP_CODE_READER_CPP_
+#define _KEVOS_TOOL_LISP_CODE_READER_CPP_
 
+
+class CodeReader
+{
+
+};
+
+
+#endif

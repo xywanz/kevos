@@ -13,5 +13,32 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x64/vm.h>
+#ifdef __cplusplus
+extern "C"{
+#endif
 
+#ifndef _STRING_H
+#define _STRING_H
+
+#include <stddef.h>
+
+
+void *memcpy(void *dst,const void *src,size_t count);
+void *memset(void *s,int ch,size_t n);
+
+size_t strlen(const char * str);
+int strcmp(const char *s1,const char *s2);
+char *strcat(char *dst,const char *src);
+char *strcpy(char *dst,const char *src);
+char *strchr(char *str,char c);
+
+char *strncpy(char *dst,const char *src,size_t n);
+int strncmp(const char *s1,const char *s2,int maxlen);
+char *strnset(char *str,char c,size_t n);
+
+
+#endif
+
+#ifdef __cplusplus
+}
+#endif

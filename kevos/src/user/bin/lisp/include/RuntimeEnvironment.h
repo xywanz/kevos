@@ -13,5 +13,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x64/vm.h>
+#ifndef _KEVOS_TOOL_LISP_RUNTIME_ENVIRONMENT_H_
+#define _KEVOS_TOOL_LISP_RUNTIME_ENVIRONMENT_H_
 
+
+class RuntimeEnvironment
+{
+public:
+	RuntimeEnvironment(void* _vars,void* _vals,RuntimeEnvironment* _parent);
+public:
+	void* vars;
+	void* vals;
+	RuntimeEnvironment* parent;
+};
+
+
+#endif

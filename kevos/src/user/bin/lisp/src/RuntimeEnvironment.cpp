@@ -13,5 +13,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x64/vm.h>
+#include "../include/RuntimeEnvironment.h"
 
+
+RuntimeEnvironment::RuntimeEnvironment(void* _vars,void* _vals,RuntimeEnvironment* _parent)
+	:vars(_vars),vals(_vals),parent(_parent)
+{
+
+}
