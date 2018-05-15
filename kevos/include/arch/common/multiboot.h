@@ -1,3 +1,4 @@
+
 #ifndef _KEVOS_ARCH_COMMON_MULTIBOOT_H_
 #define _KEVOS_ARCH_COMMON_MULTIBOOT_H_
 
@@ -5,14 +6,11 @@
 #include <arch/common/types.h>
 
 
-#define MULTIBOOT_PAGE_ALIGNED    (1<<0)
-#define MULTIBOOT_MEMORY_INFO     (1<<1)
-#define MULTIBOOT_VESA_INFO       (1<<2)
+#define MULTIBOOT_PAGE_ALIGNED    (1U<<0)
+#define MULTIBOOT_MEMORY_INFO     (1U<<1)
+#define MULTIBOOT_VESA_INFO       (1U<<2)
+#define MULTIBOOT_MAGIC           (0x1BADB002U)
 
-#define MULTIBOOT_MAGIC           (0x1BADB002)
-
-namespace arch{
-namespace common{
 
 struct __packed__ ElfSymbolTable
 {
@@ -139,11 +137,16 @@ struct __packed__ MultibootInfo
 	uint32_t vbeInterfaceLen;
 };
 
-struct __packed__ MultibootHeader
+struct __packed__ MultibootHeaderBase
 {
     uint32_t magic;
     uint32_t flags;
     uint32_t checksum;
+};
+
+struct __packed__ MultibootHeader
+{
+    MultibootHeaderBase headerBase;
 //   if flags[16]
     uint32_t headerAddr;
     uint32_t loadAddr;
@@ -156,9 +159,6 @@ struct __packed__ MultibootHeader
     uint32_t height;
     uint32_t depth;
 };
-
-}
-}
 
 
 #endif

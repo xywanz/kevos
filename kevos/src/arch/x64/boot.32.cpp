@@ -1,58 +1,64 @@
-
 /*32位保护模式的启动代码，设置好环境后跳转到64位长模式
+
+  这段代码只能使用32位及以下的整形
 */
 
 /*此段代码编译成32位代码，4字节对齐
 */
-asm(".code32");
-asm(".align 4");
+__asm__(".code32");
+__asm__(".align 4");
 
-/*系统暂时只支持x64架构
-*/
-#define KEVOS_X64
 
-#include <sys/portable.h>
+#include <arch/common/arch-conf.h> 
 #include <arch/common/multiboot.h>
+#include <arch/x64/descriptor.h>
+#include <sys/portable.h>
 
+
+#define V2P(x) (uint8_t*)(((uint32_t)(((uint8_t*)x)+0x7FFFFFFF))+1)
 #define __MAGIC ((uint32_t)MULTIBOOT_MAGIC)
 #define __FLAGS ((uint32_t)MULTIBOOT_PAGE_ALIGNED|MULTIBOOT_MEMORY_INFO)
 #define __CHECKSUM ((uint32_t)(-(__MAGIC+__FLAGS)))
 
-__section__(".boot")
-static const struct MultibootHeader0
-{
-    uint32_t magic;
-    uint32_t flags;
-    uint32_t checksum;
-} multibootHeader =
-    {
-        __MAGIC,
-        __FLAGS,
-        __CHECKSUM
-    };
 
-struct __packed__ SegDescriptor
+__section__(".boot")
+static constexpr MultibootHeaderBase multibootHeader =
 {
-	uint16_t   limitLow;
-    uint16_t   baseLowLow;
-	uint8_t    baseLowMid;
-    uint8_t    attrLow;
-    uint8_t    limitHigh    :   4;
-    uint8_t    attrHigh     :   4;
-    uint8_t    baseLowHigh;
-    uint32_t   baseHigh;
-    uint32_t   reserve;
+    __MAGIC,
+    __FLAGS,
+    __CHECKSUM
 };
 
-static void setSegDescriptor(SegDescriptor *desc)
+struct __packed__ GDTR32
 {
+    uint16_t limit;
+    uint32_t address;
+};
 
-}
+void setSegDescriptor(SegDescriptor* _pDesc,uint32_t _baseHigh,uint32_t _baseLow,
+                        uint32_t _limit,uint8_t _dpl,uint8_t _code,uint8_t _tss);
+
 
 extern "C" void entry32()
 {
-    asm("movl $0xB8000,%eax");
-    asm("movb $75,0(%eax)");
-    asm("movb $75,1(%eax)");
-	while(1){}
+    // asm("movl $0xB8000,%eax");
+    // asm("movb $75,0(%eax)");
+    // asm("movb $75,1(%eax)");
+	while(1){};
 }
+
+
+void setSegDescriptor(SegDescriptor* _pDesc,uint32_t _baseHigh,uint32_t _baseLow,
+                    uint32_t _limit,uint8_t _dpl,bool _code,bool _tss)
+{
+    _pDesc->baseLowLow=(uint16_t)(_baseLow&0xFFFF);
+    _pDesc->baseLowMid=(uint8_t)((_baseLow>>16)&0xFF);
+    _pDesc->baseLowHigh=(uint8_t)((_baseLow>>24)&0xFF);
+    _pDesc->baseHigh=_baseHigh;
+    _pDesc->limitLow=(uint16_t)(_limit&0xFFFF);
+    _pDesc->limitHigh=(uint8_t)((_limit>>16)&0xF);
+    _pDesc->attrLow=(_tss?0x89:0x92)|((_dpl&0x3)<<5)|(_code?0x8:0);
+    _pDesc->attrHigh=_code?0xA:0xC;
+}
+
+__asm__(".code64");

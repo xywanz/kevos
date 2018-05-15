@@ -1,4 +1,3 @@
-
 /*统一不同架构下数值类型的表达
 
   对所有类型进行了规范，每种架构下的编译器都必须提供以下类型以及它们在kevos中的名称：
@@ -21,8 +20,8 @@
 #define _KEVOS_ARCH_COMMON_TYPES_H_
 
 
-#ifdef KEVOS_X64
-#include <arch/x64/types.h>
+#ifdef __KEVOS_X64__
+	#include <arch/x64/types.h>
 #endif
 
 
