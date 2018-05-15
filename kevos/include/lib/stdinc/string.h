@@ -17,8 +17,8 @@ limitations under the License.
 extern "C"{
 #endif
 
-#ifndef _STRING_H
-#define _STRING_H
+#ifndef _STRING_H_
+#define _STRING_H_
 
 #include <stddef.h>
 

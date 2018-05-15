@@ -13,8 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STDDEF_H
-#define _STDDEF_H
+#ifndef _STDDEF_H_
+#define _STDDEF_H_
 
 
 #ifndef _SIZE_T
