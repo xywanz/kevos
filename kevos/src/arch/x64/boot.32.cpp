@@ -71,19 +71,19 @@ extern "C" void entry32()
     bzero((char*)0xB8000,80*25);
     bzero(V2P(&bss_start_address),V2P(&bss_end_address)-V2P(&bss_start_address));
     //initializeBootTimePage();
-    __asm__("mov %cr4,%eax\n"
-            "or $0x20, %eax\n"
-            "mov %eax,%cr4\n");
-    __asm__("mov %[pd],%%cr3" : : [pd]"r"(V2P(__knPML4)));
-    __asm__("mov $0xC0000080,%ecx\n"
-            "rdmsr\n"
-            "or $0x900,%eax\n"
-            "wrmsr\n");
-    __asm__("push $2\n"
-            "popf\n");
-    __asm__("mov %cr0,%eax\n"
-            "or $0x80000001,%eax\n"
-            "mov %eax,%cr0\n");
+    // __asm__("mov %cr4,%eax\n"
+    //         "or $0x20, %eax\n"
+    //         "mov %eax,%cr4\n");
+    // __asm__("mov %[pd],%%cr3" : : [pd]"r"(V2P(__knPML4)));
+    // __asm__("mov $0xC0000080,%ecx\n"
+    //         "rdmsr\n"
+    //         "or $0x900,%eax\n"
+    //         "wrmsr\n");
+    // __asm__("push $2\n"
+    //         "popf\n");
+    // __asm__("mov %cr0,%eax\n"
+    //         "or $0x80000001,%eax\n"
+    //         "mov %eax,%cr0\n");
     // SegmentDescriptor* pGDT=(SegmentDescriptor*)V2P(__knGDT);
     // setSegmentDescriptor(pGDT+1, 0, 0, 0, 0, 1, 0);
     // setSegmentDescriptor(pGDT+2, 0, 0, 0, 0, 0, 0);

@@ -1,4 +1,40 @@
 
+if [ ! -f "../vd.img" ]; then
+cp -r ../../../kevos ~/
+cd ~/kevos/kevos
+dd if=/dev/zero of=vd.img bs=1M count=32
+fdisk vd.img<<EOF
+x
+c
+16
+h
+64
+s
+63
+r
+n
+p
+1
+
+
+a
+1
+w
+EOF
+sudo losetup /dev/loop0 vd.img
+sudo kpartx -av /dev/loop0
+sudo mkfs.ext2 /dev/mapper/loop0p1
+sudo mount /dev/mapper/loop0p1 /mnt/kevos
+sudo cp -r /mnt/shared/kevos/img/boot /mnt/kevos
+sudo grub-install --no-floppy --root-directory=/mnt/kevos /dev/loop0
+sudo umount /mnt/kevos
+sudo kpartx -dv /dev/loop0
+sudo losetup -d /dev/loop0
+sudo cp ../vd.img /mnt/shared/kevos/build/
+sudo rm -rf ~/kevos
+cd /mnt/shared/kevos/build/scripts
+fi
+
 wd=..
 mnt=/mnt/kevos
 
@@ -31,3 +67,5 @@ sudo cp vd.vdi /mnt/shared/kevos/build/
 sudo rm -rf ~/vd.vdi ~/vd.vmdk
 
 cd /mnt/shared/kevos/build/scripts
+
+rm -rf ../vd.vdi ../*.o ../*.bin ../*.S
