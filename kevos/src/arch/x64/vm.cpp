@@ -15,3 +15,8 @@ limitations under the License.
 
 #include <arch/x64/vm.h>
 
+
+PML4E 	__knPML4[PML4_SIZE] 	__aligned__(0x1000);
+PDPTE 	__knPDPT[PDPT_SIZE]		__aligned__(0x1000);
+PDTE  	__knPDT[PDT_SIZE] 		__aligned__(0x1000);
+PTE   	__knPT[PT_SIZE] 		__aligned__(0x1000);

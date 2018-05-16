@@ -6,7 +6,7 @@
 #include <arch/x64/types.h>
 
 
-struct __packed__ SegDescriptor
+struct __packed__ SegmentDescriptor
 {
 	uint16_t   limitLow;
     uint16_t   baseLowLow;

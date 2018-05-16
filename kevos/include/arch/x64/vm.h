@@ -6,7 +6,4 @@
 #include <arch/x64/paging.h>
 
 
-
-
-
 #endif
