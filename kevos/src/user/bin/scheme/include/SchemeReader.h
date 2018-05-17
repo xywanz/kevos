@@ -13,11 +13,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include "RuntimeEnvironment.h"
+#ifndef _KEVOS_TOOL_SCHEME_SCHEME_READER_H_
+#define _KEVOS_TOOL_SCHEME_SCHEME_READER_H_
 
 
-RuntimeEnvironment::RuntimeEnvironment(void* _vars,void* _vals,RuntimeEnvironment* _parent)
-	:vars(_vars),vals(_vals),parent(_parent)
+class SchemeReader
 {
 
-}
+};
+
+
+#endif

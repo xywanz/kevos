@@ -21,11 +21,14 @@ limitations under the License.
 OUTPUT_FORMAT(elf64-x86-64)
 ENTRY(entry32)
 
+physic_start_address = 0x100000;
+virtual_start_address = 0xFFFFFFFF80000000;
+address_difference = 0xFFFFFFFF00000000;
 SECTIONS
 {
-  . = 0x100000;
+  . = virtual_start_address + physic_start_address;
 
-  .text :
+  .text : AT(ADDR(.text) - virtual_start_address)
   {
     PROVIDE(kernel_start_address = ABSOLUTE(.));
 
@@ -40,7 +43,7 @@ SECTIONS
     ro_data_end_address = .;
   }
 
-  .data ALIGN(4096) :
+  .data ALIGN(4096) : AT(physic_start_address + (data_start_address - text_start_address))
   {
     data_start_address = .;
     *(.data)
@@ -49,7 +52,7 @@ SECTIONS
     data_end_address = .;
   }
 
-  .bss ALIGN(4096) :
+  .bss ALIGN(4096) : AT(physic_start_address + (bss_start_address - text_start_address))
   {
     bss_start_address = .;
     *(.bss)

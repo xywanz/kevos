@@ -13,4 +13,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <stdarg.h>
+#include "SchemeRTEnv.h"
+
+
+SchemeRTEnv::SchemeRTEnv(void* _vars,void* _vals,SchemeRTEnv* _parent)
+	:vars(_vars),vals(_vals),parent(_parent)
+{
+
+}
+
+void* SchemeRTEnv::lookup(const String& _symbol)
+{
+	
+}
+
+void* SchemeRTEnv::set(const String& _symbol,void* _val)
+{
+	
+}

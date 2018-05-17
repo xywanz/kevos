@@ -13,4 +13,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <stdarg.h>
+#include <string.h>
+
+char *strchr(char *str,char c)
+{
+    while(*str!=c)
+        ++str;
+    return str;
+}

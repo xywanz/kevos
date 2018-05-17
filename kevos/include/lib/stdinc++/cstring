@@ -13,26 +13,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_TOOL_LISP_VAR_LIST_H_
-#define _KEVOS_TOOL_LISP_VAR_LIST_H_
+extern "C"{
 
-
-class VarList
+namespace std
 {
-	struct Var
-	{
-		const char* symbol;
-		void* val;
-		Var* next;
-	
-		Node(const char* _symbol,void* _val,Var* _next=nullptr)
-			:symbol(_symbol),val(_val),next(_next)
-		{
-		}
-	};
 
+#include <string.h>
 
-};
+}
 
-
-#endif
+}

@@ -21,6 +21,9 @@ limitations under the License.
 
 	#define __packed__			__attribute__((packed))
 	#define __aligned__(x)		__attribute__((aligned(x)))
+
+	//强制进行整数类型扩展，其他编译器也需要支持此特性
+	#define __mode__(x)			__attribute__((__mode__(x)))
 	
 	#define __section__(x)		__attribute__((section(x)))
 
@@ -29,6 +32,9 @@ limitations under the License.
 
 	#define __likely__(x)		__builtin_expect((x),1)
 	#define __unlikely__(x)		__builtin_expect((x),0)
+
+#else
+	#define __mode__(x)
 
 #endif
 

@@ -13,4 +13,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <stdarg.h>
+#include <string.h>
+
+void *memset(void *s,int ch,size_t n)
+{
+    char *p=(char *)s;
+    while(--n)
+        *p++=ch;
+    return s;
+}

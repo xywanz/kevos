@@ -13,11 +13,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_TOOL_LISP_CODE_READER_CPP_
-#define _KEVOS_TOOL_LISP_CODE_READER_CPP_
+#ifndef _KEVOS_TOOL_SCHEME_SCHEME_H_
+#define _KEVOS_TOOL_SCHEME_SCHEME_H_
 
 
-class CodeReader
+class Scheme
 {
 
 };

@@ -13,4 +13,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <stdarg.h>
+#include <string.h>
+
+char *strncpy(char *dst,const char *src,size_t n)
+{
+    char *ret=dst;
+    while(n--&&(*dst++=*src++));
+    if(*dst)
+        *dst=0;
+    return ret;
+}

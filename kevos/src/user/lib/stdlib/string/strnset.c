@@ -13,4 +13,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <stdarg.h>
+#include <string.h>
+
+char *strnset(char *str,char c,size_t n)
+{
+    char *ret=str;
+    while(n--)
+        *str++=c;
+    return ret;
+}

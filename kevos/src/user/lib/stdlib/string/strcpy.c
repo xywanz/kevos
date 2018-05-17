@@ -13,22 +13,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_TOOL_LISP_RUNTIME_ENVIRONMENT_H_
-#define _KEVOS_TOOL_LISP_RUNTIME_ENVIRONMENT_H_
+#include <string.h>
 
-#include "VarList.h"
-
-
-class RuntimeEnvironment
+char *strcpy(char *dst,const char *src)
 {
-public:
-	RuntimeEnvironment(VarList *_varlist,RuntimeEnvironment* _parent);
-	void* lookup(const char* _symbol);
-	void* set(const char* _symbol,void* _val);
-public:
-	VarList* varlist;
-	RuntimeEnvironment* parent;
-};
-
-
-#endif
+    char *ret=dst;
+    while((*dst++=*src++));
+    return ret;
+}

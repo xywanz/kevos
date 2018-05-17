@@ -13,4 +13,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <stdarg.h>
+#ifndef _KEVOS_TOOL_SCHEME_SCHEME_RT_ENV_H_
+#define _KEVOS_TOOL_SCHEME_SCHEME_RT_ENV_H_
+
+#include "VarList.h"
+
+
+class SchemeRTEnv
+{
+public:
+	SchemeRTEnv(VarList *_varlist,SchemeRTEnv* _parent);
+	void* lookup(const String& _symbol);
+	void* set(const String& _symbol,void* _val);
+public:
+	VarList* varlist;
+	SchemeRTEnv* parent;
+};
+
+
+#endif

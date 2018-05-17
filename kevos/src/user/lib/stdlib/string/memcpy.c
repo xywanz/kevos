@@ -13,4 +13,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <stdarg.h>
+#include <string.h>
+
+
+void* memcpy(void* dst,const void* src,size_t count)
+{
+    char* d=(char*)dst;
+    ptrdiff_t diff=(int)dst-(int)src;
+    do
+    {
+        d[0]=d[-diff];
+        ++d;
+    }while(--count);
+    return dst;
+}

@@ -13,4 +13,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <stdarg.h>
+#include <string.h>
+
+char *strcat(char *dst,const char *src)
+{
+    char *ret=dst;
+    while(*dst++);
+    while((*dst++=*src++));
+    return ret;
+}

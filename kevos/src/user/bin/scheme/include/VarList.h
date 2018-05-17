@@ -13,4 +13,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <stdarg.h>
+#ifndef _KEVOS_TOOL_SCHEME_VAR_LIST_H_
+#define _KEVOS_TOOL_SCHEME_VAR_LIST_H_
+
+#include "String.h"
+
+
+class VarList
+{
+public:
+	struct Var
+	{
+		String symbol;
+		void* val;
+		Var* next;
+		Node(const String& _symbol,void* _val,Var* _next=nullptr)
+			:symbol(_symbol),val(_val),next(_next)
+		{
+		}
+	};
+
+
+};
+
+
+#endif
