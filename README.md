@@ -3,21 +3,6 @@
 It's a x86-64 kernel for learning. Someday it may be an industrial-level kernel. Who knows? Welcome to communicate and finish it together!
 
 <br>
-kevos<br>
-<br>
-——include<br>
-————arch<br>
-——————x64<br>
-————lib<br>
-——————stdinc<br>
-————sys<br>
-<br>
-——src<br>
-————arch<br>
-——————x64<br>
-————kernel<br>
-————user<br>
-——————bin<br>
-————————lisp<br>
-——————lib<br>
-————————stdlib<br>
+TODO list:
+1. Load GDT in 32 bit code.         //Done!
+2. Setup and enable 4-level paging in 32 bit mode, and then jump to 64 bit code.
