@@ -68,4 +68,4 @@ sudo rm -rf ~/vd.vdi ~/vd.vmdk
 
 cd /mnt/shared/kevos/build/scripts
 
-rm -rf ../vd.vdi ../*.bin ../*.S
+rm -rf ../vd.vdi ../*.S
