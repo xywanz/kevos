@@ -6,6 +6,8 @@
 #include <arch/x64/types.h>
 
 /*
+    段描述符
+
     段寻址分为两种模式，一种是在32为兼容（compatibility）模式下，另一种是在64位长模式下。
 
     兼容模式：
@@ -25,8 +27,10 @@
 
 /*
     64位模式下屏蔽了段寻址，但仍然用段来控制一些属性
+    
+    段描述符用于对寻址进行限制
 */
-struct __packed__ UserSegmentDescriptor
+struct __packed__ SegmentDescriptor
 {
 	uint64_t	limitLow 	:	16;
     uint64_t   	baseLow 	:	24;
@@ -46,8 +50,12 @@ struct __packed__ UserSegmentDescriptor
     uint64_t	baseHigh	:	8;
 };
 
-/*同上，S位置0即可*/
-struct __packed__ SystemSegmentDescriptor
+/*
+    系统描述符
+
+    包括系统段描述符及门描述符，为了区分系统描述符和段描述符，系统描述符的S位置0且高64位的type所有位置0
+*/
+struct __packed__ SystemDescriptor
 {
     uint64_t    limitLow    :   16;
     uint64_t    baseLow     :   24;
@@ -80,8 +88,8 @@ struct __packed__ SystemSegmentDescriptor
 #define __SEGMENT_CODE_XC         0xC
 #define __SEGMENT_CODE_XRC        0xE
 
-#define __KERNEL_DS               0x10
-#define __KERNEL_CS               0x20
+#define __KERNEL_DS               0x08
+#define __KERNEL_CS               0x10
 
 
 #endif

@@ -62,7 +62,7 @@ static constexpr MultibootHeaderBase multibootHeader =
 
 #endif
 
-SystemSegmentDescriptor __knGDT[5];
+SegmentDescriptor __knGDT[5];
 
 struct __packed__ GDTR32
 {
@@ -79,7 +79,8 @@ extern PDT   __knPDT[];
 extern PT    __knPT[];
 
 static void bzero(char* p,uint32_t size);
-static void setSystemSegmentDescriptor(SystemSegmentDescriptor* _pDesc,uint8_t _isCode);
+static void setSegmentDescriptor(SegmentDescriptor* _pDesc,uint8_t _isCode);
+static void setSystemDescriptor(SystemDescriptor* _pDesc,uint8_t _isCode);
 static inline void clearFrameBuffer();
 static inline void clearBSS();
 static inline void setPAE();
@@ -117,7 +118,25 @@ void bzero(char* p,uint32_t size)
         *np++=0;
 }
 
-void setSystemSegmentDescriptor(SystemSegmentDescriptor* _pDesc,uint8_t _isCode)
+void setSegmentDescriptor(SegmentDescriptor* _pDesc,uint8_t _isCode)
+{
+    _pDesc->limitLow=0xFFFF;
+    _pDesc->limitHigh=0xF;
+    _pDesc->baseLow=0;
+    _pDesc->baseHigh=0;
+    _pDesc->p=1;
+    _pDesc->l=1;
+    _pDesc->g=1;
+    _pDesc->s=1;
+    _pDesc->avl=0;
+    _pDesc->dpl=0;
+    if(_isCode)
+        _pDesc->type=0x8;
+    else
+        _pDesc->type=0x0;
+}
+
+void setSystemDescriptor(SystemDescriptor* _pDesc,uint8_t _isCode)
 {
     _pDesc->limitLow=0xFFFF;
     _pDesc->limitHigh=0xF;
@@ -128,7 +147,7 @@ void setSystemSegmentDescriptor(SystemSegmentDescriptor* _pDesc,uint8_t _isCode)
     _pDesc->p=1;
     _pDesc->l=1;
     _pDesc->g=1;
-    _pDesc->s=1;
+    _pDesc->s=0;
     _pDesc->avl=0;
     _pDesc->dpl=0;
     if(_isCode)
@@ -150,8 +169,8 @@ void clearBSS()
 void setup64BitModeGDT()
 {
     bzero((char*)__knGDT,sizeof(__knGDT[0]));    //GDT[0] 空GDT
-    setSystemSegmentDescriptor(__knGDT+1,0);  //GDT[1] 内核数据段 
-    setSystemSegmentDescriptor(__knGDT+2,1);  //GDT[2] 内核代码段
+    setSegmentDescriptor(__knGDT+1,0);  //GDT[1] 内核数据段 
+    setSegmentDescriptor(__knGDT+2,1);  //GDT[2] 内核代码段
     GDTR32 gdtr32;
     gdtr32.limit=sizeof(__knGDT)-1;
     gdtr32.address=(uint32_t)__knGDT;
@@ -181,7 +200,7 @@ void setPAE()
     );
 }
 
-static inline void setupKernelPage()
+void setupKernelPage()
 {
     bzero(reinterpret_cast<char*>(__knPML4),sizeof(PML4E)*KERNEL_PML4_SIZE);    //清空内核PML4表
     bzero(reinterpret_cast<char*>(__knPDPT),sizeof(PDPTE)*KERNEL_PDPT_SIZE);    //清空内核PML4表
