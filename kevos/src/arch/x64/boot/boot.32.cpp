@@ -62,7 +62,7 @@ static constexpr MultibootHeaderBase multibootHeader =
 
 #endif
 
-SegmentDescriptor __knGDT[5];
+SystemSegmentDescriptor __knGDT[5];
 
 struct __packed__ GDTR32
 {
@@ -79,12 +79,11 @@ extern PDT   __knPDT[];
 extern PT    __knPT[];
 
 static void bzero(char* p,uint32_t size);
-static void setSegmentDescriptor(SegmentDescriptor* _pDesc,uint32_t _base,uint32_t _limit,
-        uint8_t _dpl,uint8_t _code,uint8_t _longMode);
+static void setSystemSegmentDescriptor(SystemSegmentDescriptor* _pDesc,uint8_t _isCode);
 static inline void clearFrameBuffer();
 static inline void clearBSS();
 static inline void setPAE();
-static inline void setupGDT();
+static inline void setup64BitModeGDT();
 static inline void setupKernelPage();
 static inline void enableLongMode();
 static inline void setupCR3();
@@ -94,14 +93,14 @@ static inline void ljmpToEntry64();
 
 extern "C" void entry32()
 {
-    clearFrameBuffer();
-    clearBSS();
-    setupKernelPage();
-    setPAE();
-    setupCR3();
-    enableLongMode();
-    // enablePaging();
-    setupGDT();          //Done!
+    clearFrameBuffer();     // Done!
+    clearBSS();             // Done!
+    setupKernelPage();      // Done!
+    setPAE();               // Done!
+    setupCR3();             // Done!
+    enableLongMode();       // Done!
+    enablePaging();         // Done!
+    setup64BitModeGDT();
     ljmpToEntry64();
 }
 
@@ -118,21 +117,24 @@ void bzero(char* p,uint32_t size)
         *np++=0;
 }
 
-void setSegmentDescriptor(SegmentDescriptor* _pDesc,uint32_t _base,uint32_t _limit,
-        uint8_t _type,uint8_t _dpl,uint8_t _longMode)
+void setSystemSegmentDescriptor(SystemSegmentDescriptor* _pDesc,uint8_t _isCode)
 {
-    _pDesc->type=_type;
-    _pDesc->baseLow=_base&0xFFFFFF;
-    _pDesc->baseHigh=_base>>24;
-    _pDesc->limitLow=_limit&0xFFFF;
-    _pDesc->limitHigh=(_limit>>16)&0xF;
-    _pDesc->present=1;
-    _pDesc->s=1;
-    _pDesc->dpl=_dpl;
-    _pDesc->avl=0;
-    _pDesc->db=1;
+    _pDesc->limitLow=0xFFFF;
+    _pDesc->limitHigh=0xF;
+    _pDesc->baseLow=0;
+    _pDesc->baseHigh=0;
+    _pDesc->baseHigh32=0;
+    _pDesc->reserved=0;
+    _pDesc->p=1;
+    _pDesc->l=1;
     _pDesc->g=1;
-    _pDesc->longMode=_longMode;
+    _pDesc->s=1;
+    _pDesc->avl=0;
+    _pDesc->dpl=0;
+    if(_isCode)
+        _pDesc->type=0x8;
+    else
+        _pDesc->type=0x0;
 }
 
 void clearFrameBuffer()
@@ -145,19 +147,19 @@ void clearBSS()
     bzero((char*)&bss_start_address,&bss_end_address-&bss_start_address);
 }
 
-void setupGDT()
+void setup64BitModeGDT()
 {
-    bzero((char*)__knGDT,8);    //GDT[0] 空GDT
-    setSegmentDescriptor(__knGDT+1,0,0xFFFFF,SEGMENT_DATA_RW,0,1);  //GDT[1] 内核数据段 
-    setSegmentDescriptor(__knGDT+2,0,0xFFFFF,SEGMENT_CODE_XR,0,1);  //GDT[2] 内核代码段
+    bzero((char*)__knGDT,sizeof(__knGDT[0]));    //GDT[0] 空GDT
+    setSystemSegmentDescriptor(__knGDT+1,0);  //GDT[1] 内核数据段 
+    setSystemSegmentDescriptor(__knGDT+2,1);  //GDT[2] 内核代码段
     GDTR32 gdtr32;
-    gdtr32.limit = sizeof(__knGDT)-1;
-    gdtr32.address = (uint32_t)__knGDT;
+    gdtr32.limit=sizeof(__knGDT)-1;
+    gdtr32.address=(uint32_t)__knGDT;
     __asm__("lgdt %[gdtr]" : : [gdtr]"m"(gdtr32));
     __asm__(
         "ljmp %[cs],$__next\n"
         "__next:\n"
-        : : [cs]"i"(KERNEL_CS)
+        : : [cs]"i"(__KERNEL_CS)
     );
     __asmv__(
         "mov %%ax,%%ds\n"
@@ -165,7 +167,7 @@ void setupGDT()
         "mov %%ax,%%fs\n"
         "mov %%ax,%%gs\n"
         "mov %%ax,%%ss\n"
-        : : "a"(KERNEL_DS)
+        : : "a"(__KERNEL_DS)
     );
 }
 
@@ -185,14 +187,14 @@ static inline void setupKernelPage()
     bzero(reinterpret_cast<char*>(__knPDPT),sizeof(PDPTE)*KERNEL_PDPT_SIZE);    //清空内核PML4表
     bzero(reinterpret_cast<char*>(__knPDT),sizeof(PDT)*KERNEL_PDT_SIZE);    //清空内核PML4表
     bzero(reinterpret_cast<char*>(__knPT),sizeof(PT)*KERNEL_PT_SIZE);    //清空内核PML4表
-    *reinterpret_cast<uint32_t*>(__knPML4)=reinterpret_cast<uint32_t>(__knPDPT)+0x7;
-    *reinterpret_cast<uint32_t*>(__knPDPT)=reinterpret_cast<uint32_t>(__knPDT)+0x7;
-    *reinterpret_cast<uint32_t*>(__knPDT)=reinterpret_cast<uint32_t>(__knPT)+0x7;
-    *reinterpret_cast<uint32_t*>(__knPDT+2)=reinterpret_cast<uint32_t>(__knPT)+0x1000+0x7;
-    *reinterpret_cast<uint32_t*>(__knPDT+4)=reinterpret_cast<uint32_t>(__knPT)+0x2000+0x7;
-    *reinterpret_cast<uint32_t*>(__knPDT+6)=reinterpret_cast<uint32_t>(__knPT)+0x3000+0x7;
-    *reinterpret_cast<uint32_t*>(__knPDT+8)=reinterpret_cast<uint32_t>(__knPT)+0x4000+0x7;
-    *reinterpret_cast<uint32_t*>(__knPDT+10)=reinterpret_cast<uint32_t>(__knPT)+0x5000+0x7;
+    *reinterpret_cast<uint32_t*>(__knPML4)=reinterpret_cast<uint32_t>(__knPDPT)+0x3;
+    *reinterpret_cast<uint32_t*>(__knPDPT)=reinterpret_cast<uint32_t>(__knPDT)+0x3;
+    *reinterpret_cast<uint32_t*>(__knPDT)=reinterpret_cast<uint32_t>(__knPT)+0x3;
+    *reinterpret_cast<uint32_t*>(__knPDT+2)=reinterpret_cast<uint32_t>(__knPT)+0x1000+0x3;
+    *reinterpret_cast<uint32_t*>(__knPDT+4)=reinterpret_cast<uint32_t>(__knPT)+0x2000+0x3;
+    *reinterpret_cast<uint32_t*>(__knPDT+6)=reinterpret_cast<uint32_t>(__knPT)+0x3000+0x3;
+    *reinterpret_cast<uint32_t*>(__knPDT+8)=reinterpret_cast<uint32_t>(__knPT)+0x4000+0x3;
+    *reinterpret_cast<uint32_t*>(__knPDT+10)=reinterpret_cast<uint32_t>(__knPT)+0x5000+0x3;
     uint32_t addr=0x3;
     uint32_t* pt=reinterpret_cast<uint32_t*>(__knPT);
     for(uint32_t i=0;i<KERNEL_PT_SIZE;++i)
@@ -210,8 +212,6 @@ void enableLongMode()
         "rdmsr\n"
         "or $0x900,%eax\n"
         "wrmsr\n"
-        "push $2\n"
-        "popf\n"
     );
 }
 
@@ -231,7 +231,7 @@ void enablePaging()
 
 void ljmpToEntry64()
 {
-    __asmv__("ljmp %[cs],$entry64\n": : [cs]"i"(KERNEL_CS));
+    __asmv__("ljmp %[cs],$entry64\n": : [cs]"i"(__KERNEL_CS));
 }
 
 
