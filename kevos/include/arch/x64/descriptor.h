@@ -2,8 +2,21 @@
 #ifndef _KEVOS_ARCH_X64_DESCRIPTOR_H_
 #define _KEVOS_ARCH_X64_DESCRIPTOR_H_
 
-
 #include <arch/x64/types.h>
+
+#define __SEGMENT_DATA_R          0x0
+#define __SEGMENT_DATA_RW         0x2
+#define __SEGMENT_DATA_RED        0x4
+#define __SEGMENT_DATA_RWED       0x6
+#define __SEGMENT_CODE_X          0x8
+#define __SEGMENT_CODE_XR         0xA
+#define __SEGMENT_CODE_XC         0xC
+#define __SEGMENT_CODE_XRC        0xE
+
+#define __KERNEL_DS               0x08
+#define __KERNEL_CS               0x10
+
+KEVOS_NSS_3(kevos,arch,x64);
 
 /*
     段描述符
@@ -79,17 +92,6 @@ struct __packed__ SystemDescriptor
 };
 
 
-#define __SEGMENT_DATA_R          0x0
-#define __SEGMENT_DATA_RW         0x2
-#define __SEGMENT_DATA_RED        0x4
-#define __SEGMENT_DATA_RWED       0x6
-#define __SEGMENT_CODE_X          0x8
-#define __SEGMENT_CODE_XR         0xA
-#define __SEGMENT_CODE_XC         0xC
-#define __SEGMENT_CODE_XRC        0xE
-
-#define __KERNEL_DS               0x08
-#define __KERNEL_CS               0x10
-
+KEVOS_NSE_3(x64,arch,kevos);
 
 #endif

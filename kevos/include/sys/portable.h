@@ -39,4 +39,23 @@ limitations under the License.
 #endif
 
 
+#define KEVOS_NSS(x);	namespace x {
+#define KEVOS_NSE(x);	}
+
+#define KEVOS_NSS_2(x1,x2); namespace x1 { namespace x2{
+#define KEVOS_NSE_2(x2,x1); }}
+
+#define KEVOS_NSS_3(x1,x2,x3); namespace x1 { namespace x2 { namespace x3 {
+#define KEVOS_NSE_3(x3,x2,x1); }}}
+
+#define KEVOS_NSS_4(x1,x2,x3,x4); namespace x1 { namespace x2 { namespace x3 { namespace x4 {
+#define KEVOS_NSE_4(x4,x3,x2,x1); }}}}
+
+#define KEVOS_NSS_5(x1,x2,x3,x4,x5); namespace x1 { namespace x2 { namespace x3 { namespace x4 { namespace x5 {
+#define KEVOS_NSE_5(x5,x4,x3,x2,x1); }}}}}
+
+#define KEVOS_NSS_6(x1,x2,x3,x4,x5,x6); namespace x1 { namespace x2 { namespace x3 { \
+				namespace x4 { namespace x5 { namespace x6 {
+#define KEVOS_NSE_6(x6,x5,x4,x3,x2,x1); }}}}}}
+
 #endif

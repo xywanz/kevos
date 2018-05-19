@@ -31,9 +31,17 @@ __asm__(".align 4");
 
 
 #include <arch/common/arch-conf.h>
-#include <arch/x64/descriptor.h>
+#include <arch/x64/mem_layout.h>
 #include <arch/x64/paging.h>
+#include <arch/x64/gdt.h>
 #include <arch/x64/vm.h>
+
+#ifdef __KEVOS_MULTIBOOT__
+#include <arch/common/multiboot.h>
+#endif
+
+KEVOS_NSS_4(kevos,arch,x64,boot);
+
 
 static_assert(sizeof(uint8_t)==1,"In x86-64 achitecture, uint8_t must be 1 byte!");
 static_assert(sizeof(int8_t)==1,"In x86-64 achitecture, int8_t must be 1 bytes!");
@@ -44,52 +52,19 @@ static_assert(sizeof(int32_t)==4,"In x86-64 achitecture, int32_t must be 4 bytes
 static_assert(sizeof(uint64_t)==8,"In x86-64 achitecture, uint64_t must be 8 bytes!");
 static_assert(sizeof(int64_t)==8,"In x86-64 achitecture, int64_t must be 8 bytes!");
 
-#ifdef __KEVOS_MULTIBOOT__
-
-#include <arch/common/multiboot.h>
-
-#define __MAGIC ((uint32_t)MULTIBOOT_MAGIC)
-#define __FLAGS ((uint32_t)MULTIBOOT_PAGE_ALIGNED|MULTIBOOT_MEMORY_INFO)
-#define __CHECKSUM ((uint32_t)(-(__MAGIC+__FLAGS)))
-
-__section__(".boot")
-static constexpr MultibootHeaderBase multibootHeader =
-{
-    __MAGIC,
-    __FLAGS,
-    __CHECKSUM
-};
-
-#endif
-
-SegmentDescriptor __knGDT[5];
-
-struct __packed__ GDTR32
-{
-    uint16_t limit;
-    uint32_t address;
-};
-
-extern uint32_t kernel_start_address;
-extern uint32_t bss_start_address;
-extern uint32_t bss_end_address;
-extern PML4E __knPML4[];
-extern PDPT  __knPDPT[];
-extern PDT   __knPDT[];
-extern PT    __knPT[];
 
 static void bzero(char* p,uint32_t size);
 static void setSegmentDescriptor(SegmentDescriptor* _pDesc,uint8_t _isCode);
 static void setSystemDescriptor(SystemDescriptor* _pDesc,uint8_t _isCode);
-static inline void clearFrameBuffer();
-static inline void clearBSS();
-static inline void setPAE();
-static inline void setup64BitModeGDT();
-static inline void setupKernelPage();
-static inline void enableLongMode();
-static inline void setupCR3();
-static inline void enablePaging();
-static inline void ljmpToEntry64();
+static void clearFrameBuffer();
+static void clearBSS();
+static void setPAE();
+static void setup64BitModeGDT();
+static void setupKernelPage();
+static void enableLongMode();
+static void setupCR3();
+static void enablePaging();
+static void ljmpToEntry64();
 
 
 extern "C" void entry32()
@@ -101,12 +76,12 @@ extern "C" void entry32()
     setupCR3();             // Done!
     enableLongMode();       // Done!
     enablePaging();         // Done!
-    setup64BitModeGDT();
+    //setup64BitModeGDT();
     ljmpToEntry64();
 }
 
 
-void bzero(char* p,uint32_t size)
+static void bzero(char* p,uint32_t size)
 {
     uint32_t lwords=size/4;
     uint32_t rest=size%4;
@@ -118,7 +93,7 @@ void bzero(char* p,uint32_t size)
         *np++=0;
 }
 
-void setSegmentDescriptor(SegmentDescriptor* _pDesc,uint8_t _isCode)
+static void setSegmentDescriptor(SegmentDescriptor* _pDesc,uint8_t _isCode)
 {
     _pDesc->limitLow=0xFFFF;
     _pDesc->limitHigh=0xF;
@@ -136,7 +111,7 @@ void setSegmentDescriptor(SegmentDescriptor* _pDesc,uint8_t _isCode)
         _pDesc->type=0x0;
 }
 
-void setSystemDescriptor(SystemDescriptor* _pDesc,uint8_t _isCode)
+static void setSystemDescriptor(SystemDescriptor* _pDesc,uint8_t _isCode)
 {
     _pDesc->limitLow=0xFFFF;
     _pDesc->limitHigh=0xF;
@@ -156,22 +131,26 @@ void setSystemDescriptor(SystemDescriptor* _pDesc,uint8_t _isCode)
         _pDesc->type=0x0;
 }
 
-void clearFrameBuffer()
+inline static void clearFrameBuffer()
 {
     bzero((char*)0xB8000,80*25);
 }
 
-void clearBSS()
+inline static void clearBSS()
 {
     bzero((char*)&bss_start_address,&bss_end_address-&bss_start_address);
 }
 
-void setup64BitModeGDT()
+inline static void setup64BitModeGDT()
 {
     bzero((char*)__knGDT,sizeof(__knGDT[0]));    //GDT[0] 空GDT
     setSegmentDescriptor(__knGDT+1,0);  //GDT[1] 内核数据段 
     setSegmentDescriptor(__knGDT+2,1);  //GDT[2] 内核代码段
-    GDTR32 gdtr32;
+    struct __packed__
+    {
+        uint16_t limit;
+        uint32_t address;
+    } gdtr32;
     gdtr32.limit=sizeof(__knGDT)-1;
     gdtr32.address=(uint32_t)__knGDT;
     __asm__("lgdt %[gdtr]" : : [gdtr]"m"(gdtr32));
@@ -191,7 +170,7 @@ void setup64BitModeGDT()
 }
 
 /*PAE是CR4第5位*/
-void setPAE()
+inline static void setPAE()
 {
     __asmv__(
         "mov %cr4,%eax\n"
@@ -200,7 +179,7 @@ void setPAE()
     );
 }
 
-void setupKernelPage()
+inline static void setupKernelPage()
 {
     bzero(reinterpret_cast<char*>(__knPML4),sizeof(PML4E)*KERNEL_PML4_SIZE);    //清空内核PML4表
     bzero(reinterpret_cast<char*>(__knPDPT),sizeof(PDPTE)*KERNEL_PDPT_SIZE);    //清空内核PML4表
@@ -224,7 +203,7 @@ void setupKernelPage()
     }
 }
 
-void enableLongMode()
+inline static void enableLongMode()
 {
     __asmv__(
         "mov $0xC0000080,%ecx\n"
@@ -234,12 +213,12 @@ void enableLongMode()
     );
 }
 
-void setupCR3()
+inline static void setupCR3()
 {
     asm("mov %[pd],%%cr3" : : [pd]"r"(__knPML4));
 }
 
-void enablePaging()
+inline static void enablePaging()
 {
     __asmv__(
         "mov %cr0,%eax\n"
@@ -248,10 +227,12 @@ void enablePaging()
     );
 }
 
-void ljmpToEntry64()
+inline static void ljmpToEntry64()
 {
     __asmv__("ljmp %[cs],$entry64\n": : [cs]"i"(__KERNEL_CS));
 }
 
+
+KEVOS_NSE_4(x64,arch,kevos,boot);
 
 __asm__(".code64");

@@ -15,8 +15,13 @@ limitations under the License.
 
 #include <arch/x64/vm.h>
 
+KEVOS_NSS_3(kevos,arch,x64);
+
 
 PML4E 	__knPML4[KERNEL_PML4_SIZE] 	__aligned__(0x1000);
 PDPTE 	__knPDPT[KERNEL_PDPT_SIZE]	__aligned__(0x1000);
 PDTE  	__knPDT[KERNEL_PDT_SIZE] 	__aligned__(0x1000);
 PTE   	__knPT[KERNEL_PT_SIZE] 		__aligned__(0x1000);
+
+
+KEVOS_NSE_3(x64,arch,kevos);

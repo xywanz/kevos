@@ -5,11 +5,12 @@
 #include <sys/portable.h>
 #include <arch/common/types.h>
 
-
 #define MULTIBOOT_PAGE_ALIGNED    (1U<<0)
 #define MULTIBOOT_MEMORY_INFO     (1U<<1)
 #define MULTIBOOT_VESA_INFO       (1U<<2)
 #define MULTIBOOT_MAGIC           (0x1BADB002U)
+
+KEVOS_NSS_3(kevos,arch,x64);
 
 
 struct __packed__ ElfSymbolTable
@@ -159,6 +160,30 @@ struct __packed__ MultibootHeader
     uint32_t height;
     uint32_t depth;
 };
+
+
+#ifdef __KEVOS_MULTIBOOT__
+
+#define __MAGIC ((uint32_t)MULTIBOOT_MAGIC)
+#define __FLAGS ((uint32_t)MULTIBOOT_PAGE_ALIGNED|MULTIBOOT_MEMORY_INFO)
+#define __CHECKSUM ((uint32_t)(-(__MAGIC+__FLAGS)))
+
+__section__(".boot")
+static constexpr MultibootHeaderBase multibootHeader =
+{
+    __MAGIC,
+    __FLAGS,
+    __CHECKSUM
+};
+
+#undef __MAGIC
+#undef __FLAGS
+#undef __CHECKSUM
+
+#endif
+
+
+KEVOS_NSE_3(x64,arch,kevos);
 
 
 #endif
