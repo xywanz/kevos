@@ -62,6 +62,7 @@ static void setupKernelPage();
 static void enableLongMode();
 static void setupCR3();
 static void enablePaging();
+static void ljmpToEntry64();
 
 
 extern "C" void entry32()
@@ -74,7 +75,7 @@ extern "C" void entry32()
     enableLongMode();       // Done!
     enablePaging();         // Done!
     // setup64BitModeGDT();
-    __asmv__("ljmp %[cs],$entry64\n": : [cs]"i"(__KERNEL_CS));
+    ljmpToEntry64();
 }
 
 
@@ -203,6 +204,11 @@ static void enablePaging()
         "or $0x80000001,%eax\n"
         "mov %eax,%cr0\n"
     );
+}
+
+static void ljmpToEntry64()
+{
+    __asmv__("ljmp %[cs],$entry64\n": : [cs]"i"(__KERNEL_CS));
 }
 
 

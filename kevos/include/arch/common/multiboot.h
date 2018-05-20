@@ -13,6 +13,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
+/*****************************************************************************
+*  @file     multiboot.h                            
+*  @brief    多重引导规范                 
+*                                   
+*                                            
+*  @author   Kevin Lau                       
+*  @email    skl510006@gmail.com              
+*  @version  0.1.1              
+*  @date     2018/5/20
+*****************************************************************************/
+
 #ifndef _KEVOS_ARCH_COMMON_MULTIBOOT_H_
 #define _KEVOS_ARCH_COMMON_MULTIBOOT_H_
 

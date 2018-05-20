@@ -23,15 +23,8 @@ PDPTE 	__knPDPT[__KERNEL_PDPT_SIZE]	__aligned__(0x1000);
 PDTE  	__knPDT [__KERNEL_PDT_SIZE] 	__aligned__(0x1000);
 PTE   	__knPT  [__KERNEL_PT_SIZE] 		__aligned__(0x1000);
 
-uint64_t __pml4PPN;
 
-
-/*
-	该函数用于解析虚拟页面号在pml4下的映射信息
-
-	暂时只支持4KB页面
-*/
-VMemMap VMemManager::resolveMap(uint64_t pml4PPN,uint64_t vPagePPN)
+VMemMap VirtualMemory::resolveMap(uint64_t pml4PPN,uint64_t vPagePPN)
 {
 	VMemMap vmm;
 
@@ -44,18 +37,17 @@ VMemMap VMemManager::resolveMap(uint64_t pml4PPN,uint64_t vPagePPN)
 	vmm.pdptIndex%=__PDPT_SIZE;
 	vmm.pml4Index%=__PML4_SIZE;
 
-	vmm.pml4=reinterpret_cast<PML4E*>(getPhysicalAddrFromPPN(pml4PPN));
+	vmm.pml4=reinterpret_cast<PML4E*>(getAddressFromPPN(pml4PPN));
 	vmm.pml4PPN=pml4PPN;
 
-
 	vmm.pdptPPN=vmm.pml4[vmm.pml4Index].physicalPageNum;
-	vmm.pdpt=reinterpret_cast<PDPTE*>(getPhysicalAddrFromPPN(vmm.pdptPPN));
+	vmm.pdpt=reinterpret_cast<PDPTE*>(getAddressFromPPN(vmm.pdptPPN));
 
 	vmm.pdtPPN=vmm.pdpt[vmm.pdptIndex].physicalPageNum;
-	vmm.pdt=reinterpret_cast<PDTE*>(getPhysicalAddrFromPPN(vmm.pdtPPN));
+	vmm.pdt=reinterpret_cast<PDTE*>(getAddressFromPPN(vmm.pdtPPN));
 
 	vmm.ptPPN=vmm.pdt[vmm.pdtIndex].physicalPageNum;
-	vmm.pt=reinterpret_cast<PTE*>(getPhysicalAddrFromPPN(vmm.ptPPN));
+	vmm.pt=reinterpret_cast<PTE*>(getAddressFromPPN(vmm.ptPPN));
 	vmm.pageSize=__PAGE_SIZE;
 
 	// if(vmm.pml4[vmm.pml4Index].present)

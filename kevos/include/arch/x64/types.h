@@ -13,8 +13,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-/*x64架构下的数值类型
-*/
+/*****************************************************************************
+*  @file     types.h                            
+*  @brief    x64架构下的数值类型                 
+*                                   
+*                                            
+*  @author   Kevin Lau                       
+*  @email    skl510006@gmail.com              
+*  @version  0.1.1              
+*  @date     2018/5/20
+*****************************************************************************/
 
 #ifndef _KEVOS_ARCH_X64_TYPES_H_
 #define _KEVOS_ARCH_X64_TYPES_H_

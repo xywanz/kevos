@@ -13,9 +13,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-/*
-	该文件暂时用来配置系统的一些宏定义，例如选择机器架构、使用multiboot规范引导系统等
-*/
+/*****************************************************************************
+*  @file     arch-conf.h                            
+*  @brief    暂时用来配置系统的一些宏定义              
+*                                   
+*                                            
+*  @author   Kevin Lau                       
+*  @email    skl510006@gmail.com              
+*  @version  0.1.1              
+*  @date     2018/5/20
+*****************************************************************************/
 
 #ifndef _KEVOS_ARCH_COMMON_ARCHCONF_H_
 #define _KEVOS_ARCH_COMMON_ARCHCONF_H_

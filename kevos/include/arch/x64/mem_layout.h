@@ -13,6 +13,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
+/*****************************************************************************
+*  @file     mem_layout.h                            
+*  @brief    段内存分布                 
+*                                   
+*                                            
+*  @author   Kevin Lau                       
+*  @email    skl510006@gmail.com              
+*  @version  0.1.1              
+*  @date     2018/5/20
+*****************************************************************************/
+
 #ifndef _KEVOS_ARCH_X64_MEMLAYOUT_H_
 #define _KEVOS_ARCH_X64_MEM_LAYOUT_H_
 

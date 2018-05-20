@@ -13,6 +13,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
+/*****************************************************************************
+*  @file     portable.h                            
+*  @brief    统一不同编译器的功能，便于移植                 
+*                                   
+*                                            
+*  @author   Kevin Lau                       
+*  @email    skl510006@gmail.com              
+*  @version  0.1.1              
+*  @date     2018/5/20
+*****************************************************************************/
+
 #ifndef _KEVOS_SYS_PORTABLE_H_
 #define _KEVOS_SYS_PORTABLE_H_
 
@@ -37,6 +48,8 @@ limitations under the License.
 	/*用于编译器优化分支选择*/
 	#define __likely__(x)		__builtin_expect((x),1)
 	#define __unlikely__(x)		__builtin_expect((x),0)
+
+	#define __noreturn__		__attribute__((noreturn))
 
 #else
 

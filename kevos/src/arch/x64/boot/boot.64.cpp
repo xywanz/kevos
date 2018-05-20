@@ -18,7 +18,7 @@ limitations under the License.
 KEVOS_NSS_4(kevos,arch,x64,boot);
 
 
-extern "C" void entry64()
+extern "C" void __noreturn__ entry64()
 {
 	char* framebuffer=(char*)0xB8000;
 	framebuffer[0]=78;

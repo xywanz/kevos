@@ -13,6 +13,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
+/*****************************************************************************
+*  @file     paging.h                            
+*  @brief    分页项结构                 
+*                                   
+*                                            
+*  @author   Kevin Lau                       
+*  @email    skl510006@gmail.com              
+*  @version  0.1.1              
+*  @date     2018/5/20
+*****************************************************************************/
+
 #ifndef _KEVOS_ARCH_X64_PAGING_H_
 #define _KEVOS_ARCH_X64_PAGING_H_
 
