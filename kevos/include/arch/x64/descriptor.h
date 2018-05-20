@@ -27,8 +27,6 @@ limitations under the License.
 #define __SEGMENT_CODE_XC         0xC
 #define __SEGMENT_CODE_XRC        0xE
 
-#define __KERNEL_DS               0x08
-#define __KERNEL_CS               0x10
 
 KEVOS_NSS_3(kevos,arch,x64);
 

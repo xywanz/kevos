@@ -54,8 +54,6 @@ static_assert(sizeof(int64_t)==8,"In x86-64 achitecture, int64_t must be 8 bytes
 
 
 static void bzero(char* p,uint32_t size);
-static void setSegmentDescriptor(SegmentDescriptor* _pDesc,uint8_t _isCode);
-static void setSystemDescriptor(SystemDescriptor* _pDesc,uint8_t _isCode);
 static void clearFrameBuffer();
 static void clearBSS();
 static void setPAE();
@@ -85,80 +83,39 @@ static void bzero(char* p,uint32_t size)
 {
     uint32_t lwords=size/4;
     uint32_t rest=size%4;
-    uint32_t *np=(uint32_t*)p;
+    uint32_t *np=reinterpret_cast<uint32_t*>(p);
     while(lwords--)
         *np++=0;
-    p=(char*)np;
+    p=reinterpret_cast<char*>(np);
     while(rest--)
         *np++=0;
 }
 
-static void setSegmentDescriptor(SegmentDescriptor* _pDesc,uint8_t _isCode)
-{
-    _pDesc->limitLow=0xFFFF;
-    _pDesc->limitHigh=0xF;
-    _pDesc->baseLow=0;
-    _pDesc->baseHigh=0;
-    _pDesc->p=1;
-    _pDesc->l=1;
-    _pDesc->g=1;
-    _pDesc->s=1;
-    _pDesc->avl=0;
-    _pDesc->dpl=0;
-    if(_isCode)
-        _pDesc->type=0x8;
-    else
-        _pDesc->type=0x0;
-}
-
-static void setSystemDescriptor(SystemDescriptor* _pDesc,uint8_t _isCode)
-{
-    _pDesc->limitLow=0xFFFF;
-    _pDesc->limitHigh=0xF;
-    _pDesc->baseLow=0;
-    _pDesc->baseHigh=0;
-    _pDesc->baseHigh32=0;
-    _pDesc->reserved=0;
-    _pDesc->p=1;
-    _pDesc->l=1;
-    _pDesc->g=1;
-    _pDesc->s=0;
-    _pDesc->avl=0;
-    _pDesc->dpl=0;
-    if(_isCode)
-        _pDesc->type=0x8;
-    else
-        _pDesc->type=0x0;
-}
-
 inline static void clearFrameBuffer()
 {
-    bzero((char*)0xB8000,80*25);
+    bzero(reinterpret_cast<char*>(0xB8000),80*25);
 }
 
 inline static void clearBSS()
 {
-    bzero((char*)&bss_start_address,&bss_end_address-&bss_start_address);
+    bzero(reinterpret_cast<char*>(&bss_start_address),&bss_end_address-&bss_start_address);
 }
 
 inline static void setup64BitModeGDT()
 {
-    bzero((char*)__knGDT,sizeof(__knGDT[0]));    //GDT[0] 空GDT
-    setSegmentDescriptor(__knGDT+1,0);  //GDT[1] 内核数据段 
-    setSegmentDescriptor(__knGDT+2,1);  //GDT[2] 内核代码段
+    setGDTEntry(0, 0, 0, 0, 0);                // Null segment
+    setGDTEntry(1, 0, 0xFFFFFFFF, 0x92, 0xCF); // Data segment
+    setGDTEntry(2, 0, 0xFFFFFFFF, 0x9A, 0xCF); // Code segment 
+    setGDTEntry(3, 0, 0xFFFFFFFF, 0xF2, 0xCF); // User mode data segment
+    setGDTEntry(4, 0, 0xFFFFFFFF, 0xFA, 0xCF); // User mode code segment
     struct __packed__
     {
         uint16_t limit;
         uint32_t address;
     } gdtr32;
     gdtr32.limit=sizeof(__knGDT)-1;
-    gdtr32.address=(uint32_t)__knGDT;
+    gdtr32.address=reinterpret_cast<uint32_t>(__knGDT);
     __asm__("lgdt %[gdtr]" : : [gdtr]"m"(gdtr32));
-    __asm__(
-        "ljmp %[cs],$__next\n"
-        "__next:\n"
-        : : [cs]"i"(__KERNEL_CS)
-    );
     __asmv__(
         "mov %%ax,%%ds\n"
         "mov %%ax,%%es\n"
@@ -166,6 +123,11 @@ inline static void setup64BitModeGDT()
         "mov %%ax,%%gs\n"
         "mov %%ax,%%ss\n"
         : : "a"(__KERNEL_DS)
+    );
+    __asm__(
+        "jmp %[cs],$__next\n"
+        "__next:\n"
+        : : [cs]"i"(__KERNEL_CS)
     );
 }
 
