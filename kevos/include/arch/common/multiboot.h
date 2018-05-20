@@ -24,7 +24,7 @@ limitations under the License.
 #define MULTIBOOT_VESA_INFO       (1U<<2)
 #define MULTIBOOT_MAGIC           (0x1BADB002U)
 
-KEVOS_NSS_3(kevos,arch,x64);
+KEVOS_NSS_3(kevos,arch,common);
 
 
 struct __packed__ ElfSymbolTable
@@ -200,7 +200,7 @@ static constexpr struct __packed__ {
 #endif
 
 
-KEVOS_NSE_3(x64,arch,kevos);
+KEVOS_NSE_3(common,arch,kevos);
 
 
 #endif

@@ -181,25 +181,41 @@ inline static void setPAE()
 
 inline static void setupKernelPage()
 {
-    bzero(reinterpret_cast<char*>(__knPML4),sizeof(PML4E)*KERNEL_PML4_SIZE);    //清空内核PML4表
-    bzero(reinterpret_cast<char*>(__knPDPT),sizeof(PDPTE)*KERNEL_PDPT_SIZE);    //清空内核PML4表
-    bzero(reinterpret_cast<char*>(__knPDT),sizeof(PDT)*KERNEL_PDT_SIZE);    //清空内核PML4表
-    bzero(reinterpret_cast<char*>(__knPT),sizeof(PT)*KERNEL_PT_SIZE);    //清空内核PML4表
-    *reinterpret_cast<uint32_t*>(__knPML4)=reinterpret_cast<uint32_t>(__knPDPT)+0x3;
-    *reinterpret_cast<uint32_t*>(__knPDPT)=reinterpret_cast<uint32_t>(__knPDT)+0x3;
-    *reinterpret_cast<uint32_t*>(__knPDT)=reinterpret_cast<uint32_t>(__knPT)+0x3;
-    *reinterpret_cast<uint32_t*>(__knPDT+2)=reinterpret_cast<uint32_t>(__knPT)+0x1000+0x3;
-    *reinterpret_cast<uint32_t*>(__knPDT+4)=reinterpret_cast<uint32_t>(__knPT)+0x2000+0x3;
-    *reinterpret_cast<uint32_t*>(__knPDT+6)=reinterpret_cast<uint32_t>(__knPT)+0x3000+0x3;
-    *reinterpret_cast<uint32_t*>(__knPDT+8)=reinterpret_cast<uint32_t>(__knPT)+0x4000+0x3;
-    *reinterpret_cast<uint32_t*>(__knPDT+10)=reinterpret_cast<uint32_t>(__knPT)+0x5000+0x3;
-    uint32_t addr=0x3;
+    bzero(reinterpret_cast<char*>(__knPML4),sizeof(PML4E)*__KERNEL_PML4_SIZE);    //清空内核PML4表
+    bzero(reinterpret_cast<char*>(__knPDPT),sizeof(PDPTE)*__KERNEL_PDPT_SIZE);    //清空内核PML4表
+    bzero(reinterpret_cast<char*>(__knPDT),sizeof(PDT)*__KERNEL_PDT_SIZE);        //清空内核PML4表
+    bzero(reinterpret_cast<char*>(__knPT),sizeof(PT)*__KERNEL_PT_SIZE);           //清空内核PML4表
+    uint32_t* pml4=reinterpret_cast<uint32_t*>(__knPML4);
+    uint32_t* pdpt=reinterpret_cast<uint32_t*>(__knPDPT);
+    uint32_t* pdt=reinterpret_cast<uint32_t*>(__knPDT);
     uint32_t* pt=reinterpret_cast<uint32_t*>(__knPT);
-    for(uint32_t i=0;i<KERNEL_PT_SIZE;++i)
+    for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pdpt)+0x3;
+        i<__KERNEL_PDPT_NUM;
+        ++i,addr+=PAGE_SIZE)
     {
-        *pt=addr;
+        *(pml4)=addr;
+        pml4+=2;
+    }
+    for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pdt)+0x3;
+        i<__KERNEL_PDT_NUM;
+        ++i,addr+=PAGE_SIZE)
+    {
+        *(pdpt)=addr;
+        pdpt+=2;
+    }
+    for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pt)+0x3;
+        i<__KERNEL_PT_NUM;
+        ++i,addr+=PAGE_SIZE)
+    {
+        *(pdt)=addr;
+        pdt+=2;
+    }
+    for(uint32_t i=0,addr=0x3;
+        i<__KERNEL_PT_SIZE;
+        ++i,addr+=PAGE_SIZE)
+    {
+        *(pt)=addr;
         pt+=2;
-        addr+=PAGE_SIZE;
     }
 }
 

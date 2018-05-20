@@ -13,14 +13,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
+/*
+	该文件暂时用来配置系统的一些宏定义，例如选择机器架构、使用multiboot规范引导系统等
+*/
+
 #ifndef _KEVOS_ARCH_COMMON_ARCHCONF_H_
 #define _KEVOS_ARCH_COMMON_ARCHCONF_H_
 
-
+/*编译成x64架构下的kevos内核*/
 #ifndef __KEVOS_X64__
 #define __KEVOS_X64__
 #endif
 
+/*使用multiboot规范*/
 #ifndef __KEVOS_MULTIBOOT__
 #define __KEVOS_MULTIBOOT__
 #endif
