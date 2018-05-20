@@ -13,6 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef _CTYPES_H_
 #define _CTYPES_H_
 
@@ -105,4 +109,8 @@ inline int toupper(int ch)
 }
 
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif

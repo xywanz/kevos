@@ -21,12 +21,12 @@ limitations under the License.
 #define __KERNEL_PML4_NUM			1
 #define __KERNEL_PDPT_NUM			1
 #define __KERNEL_PDT_NUM 			1
-#define __KERNEL_PT_NUM 			8
+#define __KERNEL_PT_NUM 			16
 
-#define __KERNEL_PML4_SIZE			(__KERNEL_PML4_NUM*PML4_SIZE)
-#define __KERNEL_PDPT_SIZE			(__KERNEL_PDPT_NUM*PDPT_SIZE)
-#define __KERNEL_PDT_SIZE 			(__KERNEL_PDT_NUM*PDT_SIZE)
-#define __KERNEL_PT_SIZE 			(__KERNEL_PT_NUM*PT_SIZE)
+#define __KERNEL_PML4_SIZE			(__KERNEL_PML4_NUM*__PML4_SIZE)
+#define __KERNEL_PDPT_SIZE			(__KERNEL_PDPT_NUM*__PDPT_SIZE)
+#define __KERNEL_PDT_SIZE 			(__KERNEL_PDT_NUM*__PDT_SIZE)
+#define __KERNEL_PT_SIZE 			(__KERNEL_PT_NUM*__PT_SIZE)
 
 KEVOS_NSS_3(kevos,arch,x64);
 
@@ -35,6 +35,40 @@ extern PML4E __knPML4[__KERNEL_PML4_SIZE];
 extern PDPTE __knPDPT[__KERNEL_PDPT_SIZE];
 extern PDTE  __knPDT [__KERNEL_PDT_SIZE];
 extern PTE   __knPT  [__KERNEL_PT_SIZE];
+
+extern uint64_t __pml4PPN;
+
+
+struct VMemMap
+{
+	PML4E*  pml4;
+	PDPTE*  pdpt;
+	PDTE*	pdt;
+	PTE*	pt;
+
+	uint64_t pml4PPN;
+	uint64_t pdptPPN;
+	uint64_t pdtPPN;
+	uint64_t ptPPN;
+
+	uint64_t pageSize;
+
+	uint64_t pml4Index;
+	uint64_t pdptIndex;
+	uint64_t pdtIndex;
+	uint64_t ptIndex;		
+};
+
+
+class VMemManager
+{
+public:
+	static VMemMap resolveMap(uint64_t pml4PPN,uint64_t vPagePPN);
+	static uint64_t getPhysicalAddrFromPPN(uint64_t ppn,uint64_t pageSize=__PAGE_SIZE)
+	{
+		return ppn*pageSize;
+	}
+};
 
 
 KEVOS_NSE_3(x64,arch,kevos);

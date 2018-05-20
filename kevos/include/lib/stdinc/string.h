@@ -13,15 +13,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifdef __cplusplus
-extern "C"{
-#endif
-
 #ifndef _STRING_H_
 #define _STRING_H_
 
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C"{
+#endif
 
 void *memcpy(void *dst,const void *src,size_t count);
 void *memset(void *s,int ch,size_t n);
@@ -36,9 +35,8 @@ char *strncpy(char *dst,const char *src,size_t n);
 int strncmp(const char *s1,const char *s2,int maxlen);
 char *strnset(char *str,char c,size_t n);
 
-
-#endif
-
 #ifdef __cplusplus
 }
+#endif
+
 #endif

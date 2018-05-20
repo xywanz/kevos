@@ -87,5 +87,9 @@ using ssize_t  	=	int64_t;
 using ptrdiff_t	=	int64_t;
 #endif
 
+#ifndef _POINTER_T
+#define _POINTER_T
+using pointer_t = 	uint64_t;
+#endif
 
 #endif

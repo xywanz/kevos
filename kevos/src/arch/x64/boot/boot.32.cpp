@@ -62,7 +62,6 @@ static void setupKernelPage();
 static void enableLongMode();
 static void setupCR3();
 static void enablePaging();
-static void ljmpToEntry64();
 
 
 extern "C" void entry32()
@@ -74,8 +73,8 @@ extern "C" void entry32()
     setupCR3();             // Done!
     enableLongMode();       // Done!
     enablePaging();         // Done!
-    //setup64BitModeGDT();
-    ljmpToEntry64();
+    // setup64BitModeGDT();
+    __asmv__("ljmp %[cs],$entry64\n": : [cs]"i"(__KERNEL_CS));
 }
 
 
@@ -91,17 +90,17 @@ static void bzero(char* p,uint32_t size)
         *np++=0;
 }
 
-inline static void clearFrameBuffer()
+static void clearFrameBuffer()
 {
     bzero(reinterpret_cast<char*>(0xB8000),80*25);
 }
 
-inline static void clearBSS()
+static void clearBSS()
 {
     bzero(reinterpret_cast<char*>(&bss_start_address),&bss_end_address-&bss_start_address);
 }
 
-inline static void setup64BitModeGDT()
+static void setup64BitModeGDT()
 {
     setGDTEntry(0, 0, 0, 0, 0);                // Null segment
     setGDTEntry(1, 0, 0xFFFFFFFF, 0x92, 0xCF); // Data segment
@@ -125,14 +124,15 @@ inline static void setup64BitModeGDT()
         : : "a"(__KERNEL_DS)
     );
     __asm__(
-        "jmp %[cs],$__next\n"
+        "ljmp %[cs],$__next\n"
         "__next:\n"
+        "ret\n"
         : : [cs]"i"(__KERNEL_CS)
     );
 }
 
 /*PAE是CR4第5位*/
-inline static void setPAE()
+static void setPAE()
 {
     __asmv__(
         "mov %cr4,%eax\n"
@@ -141,7 +141,7 @@ inline static void setPAE()
     );
 }
 
-inline static void setupKernelPage()
+static void setupKernelPage()
 {
     bzero(reinterpret_cast<char*>(__knPML4),sizeof(PML4E)*__KERNEL_PML4_SIZE);    //清空内核PML4表
     bzero(reinterpret_cast<char*>(__knPDPT),sizeof(PDPTE)*__KERNEL_PDPT_SIZE);    //清空内核PML4表
@@ -153,35 +153,35 @@ inline static void setupKernelPage()
     uint32_t* pt=reinterpret_cast<uint32_t*>(__knPT);
     for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pdpt)+0x3;
         i<__KERNEL_PDPT_NUM;
-        ++i,addr+=PAGE_SIZE)
+        ++i,addr+=__PAGE_SIZE)
     {
         *(pml4)=addr;
         pml4+=2;
     }
     for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pdt)+0x3;
         i<__KERNEL_PDT_NUM;
-        ++i,addr+=PAGE_SIZE)
+        ++i,addr+=__PAGE_SIZE)
     {
         *(pdpt)=addr;
         pdpt+=2;
     }
     for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pt)+0x3;
         i<__KERNEL_PT_NUM;
-        ++i,addr+=PAGE_SIZE)
+        ++i,addr+=__PAGE_SIZE)
     {
         *(pdt)=addr;
         pdt+=2;
     }
     for(uint32_t i=0,addr=0x3;
         i<__KERNEL_PT_SIZE;
-        ++i,addr+=PAGE_SIZE)
+        ++i,addr+=__PAGE_SIZE)
     {
         *(pt)=addr;
         pt+=2;
     }
 }
 
-inline static void enableLongMode()
+static void enableLongMode()
 {
     __asmv__(
         "mov $0xC0000080,%ecx\n"
@@ -191,23 +191,18 @@ inline static void enableLongMode()
     );
 }
 
-inline static void setupCR3()
+static void setupCR3()
 {
     asm("mov %[pd],%%cr3" : : [pd]"r"(__knPML4));
 }
 
-inline static void enablePaging()
+static void enablePaging()
 {
     __asmv__(
         "mov %cr0,%eax\n"
         "or $0x80000001,%eax\n"
         "mov %eax,%cr0\n"
     );
-}
-
-inline static void ljmpToEntry64()
-{
-    __asmv__("ljmp %[cs],$entry64\n": : [cs]"i"(__KERNEL_CS));
 }
 
 

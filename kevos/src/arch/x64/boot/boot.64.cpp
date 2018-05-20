@@ -20,6 +20,12 @@ KEVOS_NSS_4(kevos,arch,x64,boot);
 
 extern "C" void entry64()
 {
+	char* framebuffer=(char*)0xB8000;
+	framebuffer[0]=78;
+	framebuffer[1]=78;
+	framebuffer[2]=75;
+	framebuffer[3]=0;
+	framebuffer[4]=0;
 	while(1);
 }
 

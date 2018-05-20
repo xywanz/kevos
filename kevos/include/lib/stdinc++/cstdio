@@ -13,24 +13,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STDLIB_H_
-#define _STDLIB_H_
+#ifndef _CSTDIO_
+#define _CSTDIO_
 
-#define RAND_MAX    32767
+#include <cstdarg>
 
-#ifdef __cplusplus
-extern "C"{
-#endif
+namespace std
+{
 
-void srand(unsigned int _seed);
-int rand();
+int vsprintf(char *str,const char *fmt,va_list args);
+int sprintf(char *str,const char *fmt,...);
 
-double atof(const char *nptr);
-
-char* itoa(int value,char* string,int radix);
-
-#ifdef __cplusplus
 }
-#endif
 
 #endif

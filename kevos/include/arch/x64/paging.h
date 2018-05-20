@@ -19,11 +19,11 @@ limitations under the License.
 #include <sys/portable.h>
 #include <arch/x64/types.h>
 
-#define PML4_SIZE 		512
-#define PDPT_SIZE		512
-#define PDT_SIZE 		512
-#define PT_SIZE 		512
-#define PAGE_SIZE		4096
+#define __PML4_SIZE 		512
+#define __PDPT_SIZE			512
+#define __PDT_SIZE 			512
+#define __PT_SIZE 			512
+#define __PAGE_SIZE			4096
 
 KEVOS_NSS_3(kevos,arch,x64);
 
@@ -97,10 +97,10 @@ struct __packed__ PTE
 	uint64_t executionDisabled	:	1;
 };
 
-using PML4=PML4E[PML4_SIZE];
-using PDPT=PDPTE[PDPT_SIZE];
-using PDT=PDTE[PDT_SIZE];
-using PT=PTE[PT_SIZE];
+using PML4=PML4E[__PML4_SIZE];
+using PDPT=PDPTE[__PDPT_SIZE];
+using PDT=PDTE[__PDT_SIZE];
+using PT=PTE[__PT_SIZE];
 
 
 KEVOS_NSE_3(x64,arch,kevos);
