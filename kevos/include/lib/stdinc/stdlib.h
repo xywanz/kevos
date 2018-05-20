@@ -13,15 +13,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <sys/portable.h>
+#ifdef __cplusplus
+extern "C"{
+#endif
 
-KEVOS_NSS_4(kevos,arch,x64,boot);
+#ifndef _STDLIB_H_
+#define _STDLIB_H_
+
+#define RAND_MAX    32767
+
+void srand(unsigned int _seed);
+int rand();
+
+double atof(const char *nptr);
+
+char* itoa(int value,char* string,int radix);
 
 
-extern "C" void entry64()
-{
-	while(1);
+#endif
+
+#ifdef __cplusplus
 }
-
-
-KEVOS_NSE_4(boot,x64,arch,kevos);
+#endif

@@ -13,15 +13,36 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <sys/portable.h>
-
-KEVOS_NSS_4(kevos,arch,x64,boot);
+#include <stdlib.h>
 
 
-extern "C" void entry64()
+char* itoa(int value,char* string,int radix)
 {
-	while(1);
+    char *ret=string;
+    if(radix==16)
+    {
+        *string++='0';
+        *string++='x';
+    }
+    else if(radix==8)
+    {
+        *string++='0';
+    }
+    if(value<0)
+        *string++='-';
+    int tmp,i=0;
+    char c;
+    do
+    {
+        tmp=value%radix;
+        string[i++]=tmp<10?tmp+'0':tmp+'a'-10;
+    }while(value/=radix);
+    string[i--]=0;
+    for(int j=0;j<i;++j,--i)
+    {
+        c=string[j];
+        string[j]=string[i];
+        string[i]=c;
+    }
+    return ret;
 }
-
-
-KEVOS_NSE_4(boot,x64,arch,kevos);

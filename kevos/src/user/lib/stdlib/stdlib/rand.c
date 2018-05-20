@@ -13,15 +13,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <sys/portable.h>
+#include <stddef.h>
+#include <stdlib.h>
 
-KEVOS_NSS_4(kevos,arch,x64,boot);
+static long seed = 1L;
 
-
-extern "C" void entry64()
+void srand(unsigned int _seed)
 {
-	while(1);
+    seed = (long)_seed;
 }
 
-
-KEVOS_NSE_4(boot,x64,arch,kevos);
+int rand()
+{
+    return(((seed = seed * 214013L + 2531011L) >> 16) & 0x7fff);

@@ -1,3 +1,17 @@
+/* Copyright 2018 kevin Lau (http://github.com/stormycatcat)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==============================================================================*/
 
 #ifndef _KEVOS_ARCH_COMMON_MULTIBOOT_H_
 #define _KEVOS_ARCH_COMMON_MULTIBOOT_H_
@@ -165,15 +179,18 @@ struct __packed__ MultibootHeader
 #ifdef __KEVOS_MULTIBOOT__
 
 #define __MAGIC ((uint32_t)MULTIBOOT_MAGIC)
-#define __FLAGS ((uint32_t)MULTIBOOT_PAGE_ALIGNED|MULTIBOOT_MEMORY_INFO)
+#define __FLAGS ((uint32_t)(MULTIBOOT_PAGE_ALIGNED|MULTIBOOT_MEMORY_INFO))
 #define __CHECKSUM ((uint32_t)(-(__MAGIC+__FLAGS)))
 
 __section__(".boot")
-static constexpr MultibootHeaderBase multibootHeader =
-{
-    __MAGIC,
-    __FLAGS,
-    __CHECKSUM
+static constexpr struct __packed__ {
+    uint32_t magic;
+    uint32_t flags;
+    uint32_t checksum;
+} multibootHeader = {
+        __MAGIC,
+        __FLAGS,
+        __CHECKSUM
 };
 
 #undef __MAGIC
