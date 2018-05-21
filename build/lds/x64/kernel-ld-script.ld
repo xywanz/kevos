@@ -21,6 +21,9 @@ limitations under the License.
 OUTPUT_FORMAT(elf64-x86-64)
 ENTRY(entry32)
 
+virtual = 0x0000FFFF00000000;
+physical = 0x100000;
+
 SECTIONS
 {
   . = 0x100000;

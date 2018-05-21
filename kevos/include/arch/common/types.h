@@ -40,6 +40,7 @@ limitations under the License.
 #ifndef _KEVOS_ARCH_COMMON_TYPES_H_
 #define _KEVOS_ARCH_COMMON_TYPES_H_
 
+#include <arch/common/config.h>
 
 #ifdef __KEVOS_X64__
 	#include <arch/x64/types.h>

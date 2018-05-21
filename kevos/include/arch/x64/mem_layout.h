@@ -25,7 +25,7 @@ limitations under the License.
 *****************************************************************************/
 
 #ifndef _KEVOS_ARCH_X64_MEMLAYOUT_H_
-#define _KEVOS_ARCH_X64_MEM_LAYOUT_H_
+#define _KEVOS_ARCH_X64_MEMLAYOUT_H_
 
 #include <sys/portable.h>
 #include <arch/x64/types.h>
@@ -41,6 +41,9 @@ extern "C" uint64_t data_end_address;
 
 extern "C" uint64_t bss_start_address;
 extern "C" uint64_t bss_end_address;
+
+extern "C" uint64_t kernel_start_address;
+extern "C" uint64_t kernel_end_address;
 
 
 KEVOS_NSE_3(x64,arch,kevos);

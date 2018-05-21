@@ -14,8 +14,8 @@ limitations under the License.
 ==============================================================================*/
 
 /*****************************************************************************
-*  @file     bitmap.h                            
-*  @brief    位图                 
+*  @file     config.h                            
+*  @brief    暂时用来配置系统的一些宏定义              
 *                                   
 *                                            
 *  @author   Kevin Lau                       
@@ -24,44 +24,18 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_COMMON_BITMAP_H_
-#define _KEVOS_ARCH_COMMON_BITMAP_H_
+#ifndef _KEVOS_ARCH_COMMON_CONFIG_H_
+#define _KEVOS_ARCH_COMMON_CONFIG_H_
 
-#include <sys/portable.h>
-#include <arch/common/types.h>
+/*编译成x64架构下的kevos内核*/
+#ifndef __KEVOS_X64__
+#define __KEVOS_X64__
+#endif
 
-KEVOS_NSS_3(kevos,arch,common);
+/*使用multiboot规范*/
+#ifndef __KEVOS_MULTIBOOT__
+#define __KEVOS_MULTIBOOT__
+#endif
 
-
-#define DynamicBitMap	0
-
-
-template<size_t ByteCount,class ByteType=uint8_t>
-class Bitmap
-{
-public:
-	Bitmap():
-		m_bitmap({0})
-	{
-	}
-	bool set(size_t index);
-	bool unset(size_t index);
-	bool get(size_t index);
-private:
-	ByteType m_bitmap[ByteCount];
-	size_t m_size;
-};
-
-
-template<class ByteType>
-class Bitmap<DynamicBitMap,ByteType>
-{
-private:
-	ByteType* m_bitmap;
-	size_t m_size;
-};
-
-
-KEVOS_NSE_3(common,arch,kevos);
 
 #endif

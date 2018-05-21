@@ -14,8 +14,8 @@ limitations under the License.
 ==============================================================================*/
 
 /*****************************************************************************
-*  @file     arch-conf.h                            
-*  @brief    暂时用来配置系统的一些宏定义              
+*  @file     page_manager.h                            
+*  @brief    对物理内存页面进行分配与回收等管理                 
 *                                   
 *                                            
 *  @author   Kevin Lau                       
@@ -24,18 +24,12 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_COMMON_ARCHCONF_H_
-#define _KEVOS_ARCH_COMMON_ARCHCONF_H_
+#ifndef _KEVOS_ARCH_COMMON_PAGEMANAGER_H_
+#define _KEVOS_ARCH_COMMON_PAGEMANAGER_H_
 
-/*编译成x64架构下的kevos内核*/
-#ifndef __KEVOS_X64__
-#define __KEVOS_X64__
-#endif
-
-/*使用multiboot规范*/
-#ifndef __KEVOS_MULTIBOOT__
-#define __KEVOS_MULTIBOOT__
-#endif
+#include <sys/portable.h>
+#include <arch/common/types.h>
+#include <arch/common/paging.h>
 
 
 #endif

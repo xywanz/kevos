@@ -44,7 +44,9 @@ g++-7 -m64 -fno-builtin -nostdinc -nostdinc++ -nostdlib -I../../kevos/include -s
 g++-7 -m64 -fno-builtin -nostdinc -nostdinc++ -nostdlib -I../../kevos/include -std=c++14 -O0 -fno-rtti -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding -c -o $wd/vm.o ../../kevos/src/arch/x64/vm.cpp -I../../kevos/include/lib/stdinc
 g++-7 -m64 -fno-builtin -nostdinc -nostdinc++ -nostdlib -I../../kevos/include -std=c++14 -O0 -fno-rtti -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding -c -o $wd/gdt.o ../../kevos/src/arch/x64/gdt.cpp -I../../kevos/include/lib/stdinc
 g++-7 -m64 -fno-builtin -nostdinc -nostdinc++ -nostdlib -I../../kevos/include -std=c++14 -O0 -fno-rtti -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding -c -o $wd/boot.64.cpp.o ../../kevos/src/arch/x64/boot/boot.64.cpp -I../../kevos/include/lib/stdinc
-ld -o $wd/kernel.bin -z max-page-size=0x1000 -T ../lds/x64/kernel-ld-script.ld $wd/boot.32.cpp.o $wd/vm.o $wd/boot.64.cpp.o $wd/gdt.o
+g++-7 -m64 -fno-builtin -nostdinc -nostdinc++ -nostdlib -I../../kevos/include -std=c++14 -O0 -fno-rtti -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding -c -o $wd/page_manager.o ../../kevos/src/arch/common/page_manager.cpp -I../../kevos/include/lib/stdinc
+g++-7 -m64 -fno-builtin -nostdinc -nostdinc++ -nostdlib -I../../kevos/include -std=c++14 -O0 -fno-rtti -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding -c -o $wd/bitmap.o ../../kevos/src/arch/common/bitmap.cpp -I../../kevos/include/lib/stdinc
+ld -o $wd/kernel.bin -z max-page-size=0x1000 -T ../lds/x64/kernel-ld-script.ld $wd/boot.32.cpp.o $wd/vm.o $wd/boot.64.cpp.o $wd/gdt.o $wd/page_manager.o $wd/bitmap.o
 
 sudo cp $wd/vd.img ~
 cd ~

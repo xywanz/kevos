@@ -90,6 +90,27 @@ class VirtualMemory
 public:
 	VirtualMemory();
 
+	~VirtualMemory();
+
+/**
+ * @brief 将物理页面映射到虚拟页面
+ *
+ * @param vPagePPN 		虚拟页面号
+ * @param pPagePPN 		物理页面号
+ * @param userAccess	用户态可访问
+ * @param pageSize 		页面大小
+ * @return				是否成功映射		
+ */
+	bool mapPage(uint64_t vPagePPN,uint64_t pPagePPN,uint64_t userAccessable,uint64_t pageSize=__PAGE_SIZE);
+
+/**
+ * @brief 将虚拟页面的映射取消
+ *
+ * @param vPagePPN 		虚拟页面号
+ * @return				是否成功取消映射		
+ */
+	bool unmapPage(uint64_t vPagePPN);
+
 /**
  * @brief 计算页面号为ppn的页面的地址，可以是虚拟页面号也可以是物理页面号
  *

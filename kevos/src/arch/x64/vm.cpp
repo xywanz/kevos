@@ -24,6 +24,16 @@ PDTE  	__knPDT [__KERNEL_PDT_SIZE] 	__aligned__(0x1000);
 PTE   	__knPT  [__KERNEL_PT_SIZE] 		__aligned__(0x1000);
 
 
+bool VirtualMemory::mapPage(uint64_t vPagePPN,uint64_t pPagePPN,uint64_t userAccessable,uint64_t pageSize)
+{
+	
+}
+
+bool VirtualMemory::unmapPage(uint64_t vPagePPN)
+{
+	return true;
+}
+
 VMemMap VirtualMemory::resolveMap(uint64_t pml4PPN,uint64_t vPagePPN)
 {
 	VMemMap vmm;
