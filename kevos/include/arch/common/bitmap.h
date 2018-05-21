@@ -71,6 +71,16 @@ private:
 	static constexpr size_t s_bitsPerByte=sizeof(ByteType)*8;
 	ByteType m_bitmap[ByteCount];
 	size_t m_size;
+
+	static constexpr size_t bitIndexOf(size_t bit)
+	{
+		return bit%s_bitsPerByte;
+	}
+
+	static constexpr size_t byteIndexOf(size_t bit)
+	{
+		return bit/s_bitsPerByte;
+	}
 };
 
 

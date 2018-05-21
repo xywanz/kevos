@@ -111,11 +111,11 @@ static void setup64BitModeGDT()
     struct __packed__
     {
         uint16_t limit;
-        uint32_t address;
-    } gdtr32;
-    gdtr32.limit=sizeof(__knGDT)-1;
-    gdtr32.address=reinterpret_cast<uint32_t>(__knGDT);
-    __asm__("lgdt %[gdtr]" : : [gdtr]"m"(gdtr32));
+        uint64_t address;
+    } gdtr;
+    gdtr.limit=sizeof(__knGDT)-1;
+    gdtr.address=reinterpret_cast<uint64_t>(__knGDT);
+    __asm__("lgdt %[gdtr]" : : [gdtr]"m"(gdtr));
     __asmv__(
         "mov %%ax,%%ds\n"
         "mov %%ax,%%es\n"

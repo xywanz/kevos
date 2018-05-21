@@ -14,8 +14,8 @@ limitations under the License.
 ==============================================================================*/
 
 /*****************************************************************************
-*  @file     assert.h                            
-*  @brief    内核断言                 
+*  @file     idt.h                            
+*  @brief    中断描述符表                 
 *                                   
 *                                            
 *  @author   Kevin Lau                       
@@ -24,13 +24,4 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_COMMON_ASSERT_H_
-#define _KEVOS_ARCH_COMMON_ASSERT_H_
 
-
-#define assert(cond) do {(cond)?void(0):__assert(#cond,__LINE__,__FILE__);}while(0)
-
-void __assert(const char* cond,uint32_t line,const char* file);
-
-
-#endif
