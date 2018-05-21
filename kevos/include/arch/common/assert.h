@@ -13,36 +13,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <stdlib.h>
+/*****************************************************************************
+*  @file     assert.h                            
+*  @brief    内核断言                 
+*                                   
+*                                            
+*  @author   Kevin Lau                       
+*  @email    skl510006@gmail.com              
+*  @version  0.1.1              
+*  @date     2018/5/20
+*****************************************************************************/
 
+#define assert(cond) do {(cond)?void(0):__assert(#cond,__LINE__,__FILE__);}while(0)
 
-char* itoa(int value,char* string,int radix)
-{
-    char *ret=string;
-    if(radix==16)
-    {
-        *string++='0';
-        *string++='x';
-    }
-    else if(radix==8)
-    {
-        *string++='0';
-    }
-    if(value<0)
-        *string++='-';
-    int tmp,i=0;
-    char c;
-    do
-    {
-        tmp=value%radix;
-        string[i++]=tmp<10?tmp+'0':tmp+'a'-10;
-    }while(value/=radix);
-    string[i--]=0;
-    for(int j=0;j<i;++j,--i)
-    {
-        c=string[j];
-        string[j]=string[i];
-        string[i]=c;
-    }
-    return ret;
-}
+void __assert(const char* cond,uint32_t line,const char* file);
