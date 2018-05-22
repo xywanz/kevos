@@ -20,7 +20,7 @@ KEVOS_NSS_3(kevos,kernel,mm);
 
 KernMemManager::KernMemManager(size_t vStartPagePPN,size_t vEndPagePPN)
 	:m_memStart(reinterpret_cast<MemHeader*>(vStartPagePPN*__PAGE_SIZE)),
-	 m_memEnd(reinterpret_cast<MemHeader*>(vEndPagePPN*__PAGE_SIZE-sizeof(MemHeader)))
+	 m_memEnd(reinterpret_cast<MemHeader*>(vEndPagePPN*__PAGE_SIZE)-1)
 {
 	m_memEnd->next=nullptr;
 	m_memEnd->prev=m_memStart;
@@ -48,14 +48,15 @@ void* KernMemManager::allocate(size_t size)
 			nnode->prev=block;
 			block->next=nnode;
 		}
-		return reinterpret_cast<char*>(block)+sizeof(MemHeader);
+		return block+1;
 	}
 	return 0;
 }
 
 void KernMemManager::deallocate(void* ptr)
 {
-	MemHeader* rnode=reinterpret_cast<MemHeader*>(reinterpret_cast<char*>(ptr)-sizeof(MemHeader));
+	MemHeader* rnode=reinterpret_cast<MemHeader*>(ptr)-1;
+	rnode->used=0;
 	if(!rnode->prev->used)
 	{
 		rnode->prev->next=rnode->next;
