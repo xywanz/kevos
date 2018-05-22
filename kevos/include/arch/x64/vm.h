@@ -35,7 +35,7 @@ limitations under the License.
 #define __KERNEL_PML4_NUM			1
 #define __KERNEL_PDPT_NUM			1
 #define __KERNEL_PDT_NUM 			1
-#define __KERNEL_PT_NUM 			16
+#define __KERNEL_PT_NUM 			32
 
 /**
  * @brief 内核中各分页结构表项的数量
@@ -61,7 +61,7 @@ extern PTE   __knPT  [__KERNEL_PT_SIZE];
 /**
  * @brief 一个虚拟内存页的映射信息
  */
-struct VMemMap
+struct __packed__ VMemMap
 {
 	PML4E*  pml4;
 	PDPTE*  pdpt;

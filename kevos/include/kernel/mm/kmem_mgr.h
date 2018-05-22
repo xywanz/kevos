@@ -32,12 +32,12 @@ public:
 
 	void deallocate(void* ptr);
 
-private:
-	struct __packed__ MemHeader
+public:
+	struct MemHeader
 	{
 		MemHeader* next;
 		MemHeader* prev;
-		unsigned char used;
+		size_t used;
 	};
 
 	MemHeader* m_memStart;

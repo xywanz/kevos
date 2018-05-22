@@ -42,13 +42,14 @@ VMemMap VirtualMemory::resolveMap(uint64_t pml4PPN,uint64_t vPagePPN)
 	vmm.pdtIndex=vmm.ptIndex/__PT_SIZE;
 	vmm.pdptIndex=vmm.pdtIndex/__PDT_SIZE;
 	vmm.pml4Index=vmm.pdptIndex/__PDPT_SIZE;
+
 	vmm.ptIndex%=__PT_SIZE;
 	vmm.pdtIndex%=__PDT_SIZE;
 	vmm.pdptIndex%=__PDPT_SIZE;
 	vmm.pml4Index%=__PML4_SIZE;
 
-	vmm.pml4=reinterpret_cast<PML4E*>(getAddressFromPPN(pml4PPN));
 	vmm.pml4PPN=pml4PPN;
+	vmm.pml4=reinterpret_cast<PML4E*>(getAddressFromPPN(pml4PPN));
 
 	vmm.pdptPPN=vmm.pml4[vmm.pml4Index].physicalPageNum;
 	vmm.pdpt=reinterpret_cast<PDPTE*>(getAddressFromPPN(vmm.pdptPPN));
@@ -58,6 +59,7 @@ VMemMap VirtualMemory::resolveMap(uint64_t pml4PPN,uint64_t vPagePPN)
 
 	vmm.ptPPN=vmm.pdt[vmm.pdtIndex].physicalPageNum;
 	vmm.pt=reinterpret_cast<PTE*>(getAddressFromPPN(vmm.ptPPN));
+	
 	vmm.pageSize=__PAGE_SIZE;
 
 	// if(vmm.pml4[vmm.pml4Index].present)

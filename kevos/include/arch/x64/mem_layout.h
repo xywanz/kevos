@@ -45,6 +45,12 @@ extern "C" uint64_t bss_end_address;
 extern "C" uint64_t kernel_start_address;
 extern "C" uint64_t kernel_end_address;
 
+extern "C" uint64_t kheap_start_address;
+extern "C" uint64_t kheap_end_address;
+
+extern "C" uint64_t kstack_start_address;
+extern "C" uint64_t kstack_end_address;
+
 
 KEVOS_NSE_3(x64,arch,kevos);
 

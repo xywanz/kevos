@@ -63,4 +63,19 @@ SECTIONS
     PROVIDE(kernel_end_address = .);
   }
 
+  .kern ALIGN(4096) :
+  {
+    kheap_start_address = .;
+    *(.heap.kern)
+    . = kheap_start_address + 0x1000000;
+    . = ALIGN(4096);
+    kheap_end_address = .;
+
+    kstack_start_address = .;
+    *(.stack.kern)
+    . = kstack_start_address + 0x1000000;
+    . = ALIGN(4096);
+    kstack_end_address = .;
+  }
+
 }

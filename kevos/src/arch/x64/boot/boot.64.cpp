@@ -14,18 +14,21 @@ limitations under the License.
 ==============================================================================*/
 
 #include <sys/portable.h>
+#include <arch/x64/mem_layout.h>
+#include <kernel/mm/kmem_mgr.h>
+#include <kernel/mm/page_mgr.h>
+#include <arch/x64/vm.h>
 
 KEVOS_NSS_4(kevos,arch,x64,boot);
 
 
-extern "C" void __noreturn__ entry64()
+	kernel::mm::KernMemManager kmm(
+		reinterpret_cast<size_t>(&kheap_start_address)>>12,
+		reinterpret_cast<size_t>(&kheap_end_address)>>12
+	);
+
+extern "C" void entry64()
 {
-	char* framebuffer=(char*)0xB8000;
-	framebuffer[0]=78;
-	framebuffer[1]=78;
-	framebuffer[2]=75;
-	framebuffer[3]=0;
-	framebuffer[4]=0;
 	while(1);
 }
 
