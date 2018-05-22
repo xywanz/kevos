@@ -22,25 +22,51 @@ KernMemManager::KernMemManager(size_t vStartPagePPN,size_t vEndPagePPN)
 	:m_memStart(reinterpret_cast<MemHeader*>(vStartPagePPN*__PAGE_SIZE))
 {
 	m_memEnd=reinterpret_cast<MemHeader*>(vEndPagePPN*__PAGE_SIZE-sizeof(MemHeader));
-	m_memEnd->next=0;
-	m_memEnd->size=sizeof(MemHeader);
+	m_memEnd->next=nullptr;
+	m_memEnd->prev=m_memStart;
 	m_memEnd->used=1;
 	m_memStart->next=m_memEnd;
-	m_memStart->size=reinterpret_cast<char*>(m_memEnd)-reinterpret_cast<char*>(m_memStart);
-	m_memStart->used=0;	
+	m_memStart->prev=nullptr;
+	m_memStart->used=0;
 }
 
 void* KernMemManager::allocate(size_t size)
 {
+	size_t nsize=size+sizeof(MemHeader);
 	for(MemHeader* block=m_memStart;block!=m_memEnd;block=block->next)
 	{
-		
+		size_t blockSize=reinterpret_cast<size_t>(block->next)-reinterpret_cast<size_t>(block);
+		if(block->used||blockSize<nsize)
+			continue;
+		block->used=1;
+		size_t rest=blockSize-nsize;
+		if(rest>sizeof(MemHeader))
+		{
+			MemHeader* nnode=reinterpret_cast<MemHeader*>(reinterpret_cast<char*>(block)+nsize);
+			nnode->used=0;
+			nnode->next=block->next;
+			nnode->prev=block;
+			block->next=nnode;
+		}
+		return reinterpret_cast<char*>(block)+sizeof(MemHeader);
 	}
+	return 0;
 }
 
 void KernMemManager::deallocate(void* ptr)
 {
-
+	MemHeader* rnode=reinterpret_cast<MemHeader*>(reinterpret_cast<char*>(ptr)-sizeof(MemHeader));
+	if(!rnode->prev->used)
+	{
+		rnode->prev->next=rnode->next;
+		rnode->next->prev=rnode->prev;
+		rnode=rnode->prev;
+	}
+	if(!rnode->next->used)
+	{
+		rnode->next->next->prev=rnode;
+		rnode->next=rnode->next->next;
+	}
 }
 
 

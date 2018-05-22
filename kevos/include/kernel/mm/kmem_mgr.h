@@ -33,11 +33,11 @@ public:
 	void deallocate(void* ptr);
 
 private:
-	struct MemHeader
+	struct __packed__ MemHeader
 	{
 		MemHeader* next;
-		size_t size 	:	(sizeof(size_t)*8-1);
-		size_t used		:	1;
+		MemHeader* prev;
+		unsigned char used;
 	};
 
 	MemHeader* m_memStart;
