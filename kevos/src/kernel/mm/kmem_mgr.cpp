@@ -19,9 +19,9 @@ KEVOS_NSS_3(kevos,kernel,mm);
 
 
 KernMemManager::KernMemManager(size_t vStartPagePPN,size_t vEndPagePPN)
-	:m_memStart(reinterpret_cast<MemHeader*>(vStartPagePPN*__PAGE_SIZE))
+	:m_memStart(reinterpret_cast<MemHeader*>(vStartPagePPN*__PAGE_SIZE)),
+	 m_memEnd(reinterpret_cast<MemHeader*>(vEndPagePPN*__PAGE_SIZE-sizeof(MemHeader)))
 {
-	m_memEnd=reinterpret_cast<MemHeader*>(vEndPagePPN*__PAGE_SIZE-sizeof(MemHeader));
 	m_memEnd->next=nullptr;
 	m_memEnd->prev=m_memStart;
 	m_memEnd->used=1;
