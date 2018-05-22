@@ -13,6 +13,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/common/page_manager.h>
+#include <kernel/mm/page_manager.h>
+
+KEVOS_NSS_3(kevos,kernel,mm);
 
 
+unsigned long PageManager::allocate(unsigned long pageSize)
+{
+
+}
+
+void PageManager::deallocate(unsigned long pPagePPN,unsigned long pageSize)
+{
+
+}
+
+
+KEVOS_NSE_3(mm,kernel,kevos);

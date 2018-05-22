@@ -30,10 +30,10 @@ limitations under the License.
 #include <sys/portable.h>
 #include <arch/common/types.h>
 
-KEVOS_NSS_3(kevos,arch,common);
+KEVOS_NSS_3(kevos,kernel,common);
 
 
-#define DynamicBitMap	0
+#define DynamicBitmap	0
 
 
 template<size_t ByteCount,class ByteType=unsigned char>
@@ -63,8 +63,7 @@ public:
 
 	bool get(size_t index)
 	{
-		ByteType mask=1<<bitIndexOf(index);
-		return m_bitmap[byteIndexOf(index)]&mask;
+		return m_bitmap[byteIndexOf(index)]&(1<<bitIndexOf(index));
 	}
 
 private:
@@ -85,16 +84,34 @@ private:
 
 
 template<class ByteType>
-class Bitmap<DynamicBitMap,ByteType>
+class Bitmap<DynamicBitmap,ByteType>
 {
 public:
+	Bitmap(ByteType* bitmap,size_t size);
+
+	bool set(size_t index);
+
+	bool unset(size_t index);
+
+	bool get(size_t index);
 
 private:
+	static constexpr size_t s_bitsPerByte=sizeof(ByteType)*8;
 	ByteType* m_bitmap;
 	size_t m_size;
+
+	static size_t bitIndexOf(size_t bit)
+	{
+		return bit%s_bitsPerByte;
+	}
+
+	static size_t byteIndexOf(size_t bit)
+	{
+		return bit/s_bitsPerByte;
+	}
 };
 
 
-KEVOS_NSE_3(common,arch,kevos);
+KEVOS_NSE_3(common,kernel,kevos);
 
 #endif

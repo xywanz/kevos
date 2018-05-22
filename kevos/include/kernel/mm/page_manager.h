@@ -30,20 +30,24 @@ limitations under the License.
 #include <sys/portable.h>
 #include <arch/common/types.h>
 #include <arch/common/paging.h>
-#include <arch/common/bitmap.h>
+#include <kernel/common/bitmap.h>
 
-KEVOS_NSS_3(kevos,arch,common);
+KEVOS_NSS_3(kevos,kernel,mm);
 
 
 class PageManager
 {
 public:
-	unsigned long allocate(unsigned long page_size=__PAGE_SIZE);
+
+	unsigned long allocate(unsigned long pageSize=__PAGE_SIZE);
+
+	void deallocate(unsigned long pPagePPN,unsigned long pageSize=__PAGE_SIZE);
+
 private:
-	//Bitmap<512>* m_mmap;
+	common::Bitmap<8*1024,unsigned int> m_bitmap;
 };
 
 
-KEVOS_NSE_3(common,arch,kevos);
+KEVOS_NSE_3(mm,kernel,kevos);
 
 #endif
