@@ -24,8 +24,8 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_COMMON_BITMAP_H_
-#define _KEVOS_ARCH_COMMON_BITMAP_H_
+#ifndef _KEVOS_KERNEL_COMMON_BITMAP_H_
+#define _KEVOS_KERNEL_COMMON_BITMAP_H_
 
 #include <sys/portable.h>
 #include <arch/common/types.h>

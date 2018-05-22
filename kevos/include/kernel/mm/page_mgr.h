@@ -24,8 +24,8 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_COMMON_PAGEMANAGER_H_
-#define _KEVOS_ARCH_COMMON_PAGEMANAGER_H_
+#ifndef _KEVOS_KERNEL_MM_PAGEMGR_H_
+#define _KEVOS_KERNEL_MM_PAGEMGR_H_
 
 #include <sys/portable.h>
 #include <arch/common/types.h>
@@ -39,9 +39,9 @@ class PageManager
 {
 public:
 
-	unsigned long allocate(unsigned long pageSize=__PAGE_SIZE);
+	size_t allocate(size_t pageSize=__PAGE_SIZE);
 
-	void deallocate(unsigned long pPagePPN,unsigned long pageSize=__PAGE_SIZE);
+	void deallocate(size_t pPagePPN,size_t pageSize=__PAGE_SIZE);
 
 private:
 	common::Bitmap<8*1024,unsigned int> m_bitmap;
