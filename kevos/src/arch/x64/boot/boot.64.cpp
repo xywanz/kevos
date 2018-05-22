@@ -22,13 +22,16 @@ limitations under the License.
 KEVOS_NSS_4(kevos,arch,x64,boot);
 
 
+extern "C" void entry64()
+{
+	__asm__("movq %[stack],%%rsp": : [stack]"i"((size_t)&kstack_end_address));
 	kernel::mm::KernMemManager kmm(
 		reinterpret_cast<size_t>(&kheap_start_address)>>12,
 		reinterpret_cast<size_t>(&kheap_end_address)>>12
 	);
-
-extern "C" void entry64()
-{
+	void* m=kmm.allocate(1);
+	//VMemMap vmm=VirtualMemory::resolveMap(((uint64_t)__knPML4)/__PAGE_SIZE,0);
+	*((unsigned short*)0xB8000)=0x7575;
 	while(1);
 }
 

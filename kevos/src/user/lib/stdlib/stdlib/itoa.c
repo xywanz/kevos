@@ -13,38 +13,36 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_KERNEL_MM_KMEMMGR_H_
-#define _KEVOS_KERNEL_MM_KMEMMGR_H_
-
-#include <sys/portable.h>
-#include <arch/common/types.h>
-#include <arch/common/paging.h>
-
-KEVOS_NSS_3(kevos,kernel,mm);
+#include <stdlib.h>
 
 
-class KernMemManager
+char* itoa(int value,char* string,int radix)
 {
-public:
-	KernMemManager(size_t vStartPagePPN,size_t vEndPagePPN);
-
-	void* allocate(size_t size);
-
-	void deallocate(void* ptr);
-
-private:
-	struct MemHeader
-	{
-		MemHeader* next;
-		MemHeader* prev;
-		size_t used;
-	};
-
-	MemHeader* m_memStart;
-	MemHeader* m_memEnd;
-};
-
-
-KEVOS_NSE_3(mm,kernel,kevos);
-
-#endif
+    char *ret=string;
+    if(radix==16)
+    {
+        *string++='0';
+        *string++='x';
+    }
+    else if(radix==8)
+    {
+        *string++='0';
+    }
+    if(value<0)
+        *string++='-';
+    int tmp,i=0;
+    char c;
+    do
+    {
+        tmp=value%radix;
+        string[i++]=tmp<10?tmp+'0':tmp+'a'-10;
+    }while(value/=radix);
+    string[i--]=0;
+    for(int j=0;j<i;++j,--i)
+    {
+        c=string[j];
+        string[j]=string[i];
+        string[i]=c;
+    }
+    return ret;
+}

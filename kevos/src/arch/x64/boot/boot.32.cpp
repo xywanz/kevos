@@ -52,6 +52,8 @@ static_assert(sizeof(int32_t)==4,"In x86-64 achitecture, int32_t must be 4 bytes
 static_assert(sizeof(uint64_t)==8,"In x86-64 achitecture, uint64_t must be 8 bytes!");
 static_assert(sizeof(int64_t)==8,"In x86-64 achitecture, int64_t must be 8 bytes!");
 
+#define __STACK_SIZE_BOOT_32    0x2000
+uint8_t __knStackOfBoot32[__STACK_SIZE_BOOT_32] __aligned__(0x1000);
 
 static void bzero(char* p,uint32_t size);
 static void clearFrameBuffer();
@@ -67,6 +69,7 @@ static void ljmpToEntry64();
 
 extern "C" void entry32()
 {
+    __asm__("movl %[stack],%%esp": : [stack]"i"(__knStackOfBoot32+__STACK_SIZE_BOOT_32));
     clearFrameBuffer();     // Done!
     clearBSS();             // Done!
     setupKernelPage();      // Done!
