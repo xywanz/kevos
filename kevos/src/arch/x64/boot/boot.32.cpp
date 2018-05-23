@@ -59,6 +59,7 @@ static void bzero(char* p,uint32_t size);
 static void clearFrameBuffer();
 static void clearBSS();
 static void setPAE();
+static void setGDTEntry(uint32_t index,uint32_t base,uint32_t limit,uint8_t access,uint8_t gran);
 static void setup64BitModeGDT();
 static void setupKernelPage();
 static void enableLongMode();
@@ -77,7 +78,7 @@ extern "C" void entry32()
     setupCR3();             // Done!
     enableLongMode();       // Done!
     enablePaging();         // Done!
-    // setup64BitModeGDT();
+    setup64BitModeGDT();    // Done!
     ljmpToEntry64();
 }
 
@@ -104,13 +105,39 @@ static void clearBSS()
     bzero(reinterpret_cast<char*>(&bss_start_address),&bss_end_address-&bss_start_address);
 }
 
+static void setGDTEntry(uint32_t index,uint32_t base,uint32_t limit,uint8_t access,uint8_t gran)
+{
+    struct SegmentHelper
+    {
+        uint16_t limitLow;           // The lower 16 bits of the limit.
+        uint16_t baseLow;            // The lower 16 bits of the base.
+        uint8_t  baseMiddle;         // The next 8 bits of the base.
+        uint8_t  access;              // Access flags, determine what ring this segment can be used in.
+        uint8_t  granularity;
+        uint8_t  baseHigh;           // The last 8 bits of the base.
+    };
+    SegmentHelper* helper=reinterpret_cast<SegmentHelper*>(__knGDT+index);
+    helper->baseLow=base&0xFFFF;
+    helper->baseMiddle=(base>>16)&0xFF;
+    helper->baseHigh=(base>>24)&0xFF;
+    helper->limitLow=limit&0xFFFF;
+    helper->granularity=(limit>>16)&0x0F;
+    helper->granularity|=gran&0xF0;
+    helper->access=access;
+}
+
 static void setup64BitModeGDT()
 {
     setGDTEntry(0, 0, 0, 0, 0);                // Null segment
-    setGDTEntry(1, 0, 0xFFFFFFFF, 0x92, 0xCF); // Data segment
-    setGDTEntry(2, 0, 0xFFFFFFFF, 0x9A, 0xCF); // Code segment 
-    setGDTEntry(3, 0, 0xFFFFFFFF, 0xF2, 0xCF); // User mode data segment
-    setGDTEntry(4, 0, 0xFFFFFFFF, 0xFA, 0xCF); // User mode code segment
+    setGDTEntry(1, 0, 0, 0, 0);                // Null segment
+    setGDTEntry(2, 0, 0xFFFFFFFF, 0x9A, 0xCF); // Code segment
+    setGDTEntry(3, 0, 0, 0, 0);                // Null segment 
+    setGDTEntry(4, 0, 0xFFFFFFFF, 0x92, 0xCF); // Data segment
+    setGDTEntry(5, 0, 0, 0, 0);                // Null segment
+    setGDTEntry(6, 0, 0xFFFFFFFF, 0xF2, 0xCF); // User mode data segment
+    setGDTEntry(7, 0, 0, 0, 0);                // Null segment
+    setGDTEntry(8, 0, 0xFFFFFFFF, 0xFA, 0xCF); // User mode code segment
+    setGDTEntry(9, 0, 0, 0, 0);                // Null segment
     struct __packed__
     {
         uint16_t limit;
@@ -119,6 +146,11 @@ static void setup64BitModeGDT()
     gdtr.limit=sizeof(__knGDT)-1;
     gdtr.address=reinterpret_cast<uint64_t>(__knGDT);
     __asm__("lgdt %[gdtr]" : : [gdtr]"m"(gdtr));
+    __asm__(
+        "ljmp %[cs],$__next\n"
+        "__next:\n"
+        : : [cs]"i"(__KERNEL_CS)
+    );
     __asmv__(
         "mov %%ax,%%ds\n"
         "mov %%ax,%%es\n"
@@ -126,12 +158,6 @@ static void setup64BitModeGDT()
         "mov %%ax,%%gs\n"
         "mov %%ax,%%ss\n"
         : : "a"(__KERNEL_DS)
-    );
-    __asm__(
-        "ljmp %[cs],$__next\n"
-        "__next:\n"
-        "ret\n"
-        : : [cs]"i"(__KERNEL_CS)
     );
 }
 
@@ -211,7 +237,7 @@ static void enablePaging()
 
 static void ljmpToEntry64()
 {
-    __asmv__("ljmp %[cs],$entry64\n": : [cs]"i"(__KERNEL_CS));
+    __asmv__("ljmp %[cs],$entry64\n": : [cs]"i"(0x10));
 }
 
 

@@ -29,17 +29,15 @@ limitations under the License.
 
 #include <arch/x64/descriptor.h>
 
-#define __KERNEL_DS               0x08
 #define __KERNEL_CS               0x10
+#define __KERNEL_DS               0x20
 
-#define __GDT_SIZE	5
+#define __GDT_SIZE	10
 
 KEVOS_NSS_3(kevos,arch,x64);
 
 
 extern SegmentDescriptor __knGDT[__GDT_SIZE];
-
-void setGDTEntry(uint32_t index,uint32_t base,uint32_t limit,uint8_t attr1,uint8_t attr2);
 
 
 KEVOS_NSE_3(x64,arch,kevos);

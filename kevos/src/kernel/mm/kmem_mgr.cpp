@@ -33,23 +33,22 @@ KernMemManager::KernMemManager(size_t vStartPagePPN,size_t vEndPagePPN)
 void* KernMemManager::allocate(size_t size)
 {
 	size_t nsize=size+sizeof(MemHeader);
-	MemHeader* block;
-	for(block=m_memStart;block!=m_memEnd;block=block->next)
+	for(auto block=m_memStart;block!=m_memEnd;block=block->next)
 	{
-		// size_t blockSize=reinterpret_cast<size_t>(block->next)-reinterpret_cast<size_t>(block);
-		// if(block->used||blockSize<nsize)
-		// 	continue;
-		// block->used=1;
-		// size_t rest=blockSize-nsize;
-		// if(rest>sizeof(MemHeader))
-		// {
-		// 	MemHeader* nnode=reinterpret_cast<MemHeader*>(reinterpret_cast<char*>(block)+nsize);
-		// 	nnode->used=0;
-		// 	nnode->next=block->next;
-		// 	nnode->prev=block;
-		// 	block->next=nnode;
-		// }
-		// return block+1;
+		size_t blockSize=reinterpret_cast<size_t>(block->next)-reinterpret_cast<size_t>(block);
+		if(block->used||blockSize<nsize)
+			continue;
+		block->used=1;
+		size_t rest=blockSize-nsize;
+		if(rest>sizeof(MemHeader))
+		{
+			MemHeader* nnode=reinterpret_cast<MemHeader*>(reinterpret_cast<char*>(block)+nsize);
+			nnode->used=0;
+			nnode->next=block->next;
+			nnode->prev=block;
+			block->next=nnode;
+		}
+		return block+1;
 	}
 	return 0;
 }

@@ -20,28 +20,5 @@ KEVOS_NSS_3(kevos,arch,x64);
 
 SegmentDescriptor __knGDT[__GDT_SIZE];
 
-struct SegmentHelper
-{
-   uint16_t limitLow;           // The lower 16 bits of the limit.
-   uint16_t baseLow;            // The lower 16 bits of the base.
-   uint8_t  baseMiddle;         // The next 8 bits of the base.
-   uint8_t  access;              // Access flags, determine what ring this segment can be used in.
-   uint8_t  granularity;
-   uint8_t  baseHigh;           // The last 8 bits of the base.
-};
-
-void setGDTEntry(uint32_t index,uint32_t base,uint32_t limit,uint8_t access,uint8_t gran)
-{
-	SegmentHelper* helper=reinterpret_cast<SegmentHelper*>(__knGDT+index);
-	helper->baseLow=base&0xFFFF;
-	helper->baseMiddle=(base>>16)&0xFF;
-	helper->baseHigh=(base>>24)&0xFF;
-	helper->limitLow=limit&0xFFFF;
-	helper->granularity=(limit>>16)&0x0F;
-	helper->granularity|=gran&0xF0;
-	helper->access=access;
-	
-}
-
 
 KEVOS_NSE_3(x64,arch,kevos);

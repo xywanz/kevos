@@ -19,19 +19,31 @@ limitations under the License.
 #include <kernel/mm/page_mgr.h>
 #include <arch/x64/vm.h>
 
+void* operator new(size_t,void* ptr)
+{
+	return ptr;
+}
+
 KEVOS_NSS_4(kevos,arch,x64,boot);
+
+using namespace kernel::mm;
 
 
 extern "C" void entry64()
 {
+	__asm__("mov %%rax, %%cr3" : : "a"(__knPML4));
 	__asm__("movq %[stack],%%rsp": : [stack]"i"((size_t)&kstack_end_address));
-	kernel::mm::KernMemManager kmm(
-		reinterpret_cast<size_t>(&kheap_start_address)>>12,
-		reinterpret_cast<size_t>(&kheap_end_address)>>12
-	);
-	void* m=kmm.allocate(1);
+    *((unsigned short*)(0xB8000))=0x7575;
+	KernMemManager *kmm=new((void*)0x1000000) KernMemManager(reinterpret_cast<size_t>(&kheap_start_address)>>12,
+							reinterpret_cast<size_t>(&kheap_end_address)>>12);
+
+	// kmm->KernMemManager
+	// (
+	// 	reinterpret_cast<size_t>(&kheap_start_address)>>12,
+	// 	reinterpret_cast<size_t>(&kheap_end_address)>>12
+	// );
+
 	//VMemMap vmm=VirtualMemory::resolveMap(((uint64_t)__knPML4)/__PAGE_SIZE,0);
-	*((unsigned short*)0xB8000)=0x7575;
 	while(1);
 }
 
