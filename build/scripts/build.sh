@@ -37,6 +37,10 @@ sudo rm -rf ~/kevos
 cd /mnt/shared/kevos/build/scripts
 fi
 
+if [ ! -d "../tmp" ]; then
+mkdir ../tmp
+fi
+
 wd=../tmp
 mnt=/mnt/kevos
 

@@ -222,3 +222,4 @@ static void enablePaging()
 KEVOS_NSE_4(x64,arch,kevos,boot);
 
 __asm__(".code64");
+__asm__(".align 8");
