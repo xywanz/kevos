@@ -146,3 +146,73 @@ unsigned short _ctype[256] = {
         _CONTROL,               /* 7F (DEL) */
         /* and the rest are 0... */
 };
+
+inline int isalpha(int ch)   //Check whether ch is a letter.
+{
+    return _ctype[ch]&(_UPPER|_LOWER);
+}
+
+inline int isdigit(int ch)   //Check whether ch is a digit.
+{
+    return _ctype[ch]&_DIGIT;
+}
+
+inline int isxdigit(int ch)
+{
+    return _ctype[ch]&_HEX;
+}
+
+inline int isalnum(int ch)
+{
+    return _ctype[ch]&(_DIGIT|_ALPHA);
+}
+
+inline int iscntrl(int ch)   //Check whether ch is a Control Character. That is to say, 0<=ch<=0x1F.
+{
+    return _ctype[ch]&_CONTROL;
+}
+
+inline int isgraph(int ch)   //Check whether ch is a displayable character. (0x21<=ch<=0x7E).
+{
+    return _ctype[ch]&(_PUNCT|_UPPER|_LOWER|_DIGIT);
+}
+
+inline int islower(int ch)   //Check whether ch is a lowercase.
+{
+    return _ctype[ch]&_LOWER;
+}
+
+inline int isupper(int ch)
+{
+    return _ctype[ch]&_UPPER;
+}
+
+inline int isprint(int ch)
+{
+    return _ctype[ch]&(_BLANK|_PUNCT|_UPPER|_LOWER|_DIGIT);
+}
+
+inline int ispunct(int ch)
+{
+    return _ctype[ch]&_PUNCT;
+}
+
+inline int isspace(int ch)
+{
+    return _ctype[ch]&_SPACE;
+}
+
+inline int isascii(int ch)
+{
+    return ((unsigned char)ch)<0x80;
+}
+
+inline int tolower(int ch)
+{
+    return ch+0x20;
+}
+
+inline int toupper(int ch)
+{
+    return ch-0x20;
+}

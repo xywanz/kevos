@@ -18,55 +18,55 @@ limitations under the License.
 #include <string.h>
 
 
-int vsprintf(char *str,const char *fmt,va_list args)
-{
-    static char buf[16]={0};
-    char *ptr=str,*p;
-    while(*fmt)
-    {
-        if(*fmt=='%')
-        {
-            switch(*(++fmt))
-            {
-                case 'd':
-                case 'i':
-                    p=itoa(va_arg(args,int),buf,10);
-                    while(*p)
-                        *str++=*p++;
-                    break;
-                case 'u':
-                    p=itoa(va_arg(args,unsigned int),buf,10);
-                    while(*p)
-                        *str++=*p++;
-                    break;
-                case 's':
-                    p=va_arg(args,char*);
-                    while(*p)
-                        *str++=*p++;
-                    break;
-                case 'o':
-                    p=itoa(va_arg(args,int),buf,8);
-                    while(*p)
-                        *str++=*p++;
-                    break;
-                case 'p':
-                    p=itoa(va_arg(args,unsigned int),buf,16);
-                    while(*p)
-                        *str++=*p++;
-                    break;
-                case 'c':
-                    *str++=va_arg(args,char);
-                    break;
-                case '%':
-                    *str++='%';
-                    break;
-                default:
-                    break;
-            }
-            ++fmt;
-        }
-        *str++=*fmt++;
-    }
-    *str=0;
-    return strlen(ptr);
-}
+// int vsprintf(char *str,const char *fmt,va_list args)
+// {
+//     static char buf[16]={0};
+//     char *ptr=str,*p;
+//     while(*fmt)
+//     {
+//         if(*fmt=='%')
+//         {
+//             switch(*(++fmt))
+//             {
+//                 case 'd':
+//                 case 'i':
+//                     p=itoa(va_arg(args,int),buf,10);
+//                     while(*p)
+//                         *str++=*p++;
+//                     break;
+//                 case 'u':
+//                     p=itoa(va_arg(args,unsigned int),buf,10);
+//                     while(*p)
+//                         *str++=*p++;
+//                     break;
+//                 case 's':
+//                     p=va_arg(args,char*);
+//                     while(*p)
+//                         *str++=*p++;
+//                     break;
+//                 case 'o':
+//                     p=itoa(va_arg(args,int),buf,8);
+//                     while(*p)
+//                         *str++=*p++;
+//                     break;
+//                 case 'p':
+//                     p=itoa(va_arg(args,unsigned int),buf,16);
+//                     while(*p)
+//                         *str++=*p++;
+//                     break;
+//                 case 'c':
+//                     *str++=va_arg(args,char);
+//                     break;
+//                 case '%':
+//                     *str++='%';
+//                     break;
+//                 default:
+//                     break;
+//             }
+//             ++fmt;
+//         }
+//         *str++=*fmt++;
+//     }
+//     *str=0;
+//     return strlen(ptr);
+// }

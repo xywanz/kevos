@@ -38,75 +38,33 @@ extern "C" {
 extern unsigned short _ctype[];
 
 
-inline int isalpha(int ch)   //Check whether ch is a letter.
-{
-    return _ctype[ch]&(_UPPER|_LOWER);
-}
+int isalpha(int ch);
 
-inline int isdigit(int ch)   //Check whether ch is a digit.
-{
-    return _ctype[ch]&_DIGIT;
-}
+int isdigit(int ch);
 
-inline int isxdigit(int ch)
-{
-    return _ctype[ch]&_HEX;
-}
+int isxdigit(int ch);
 
-inline int isalnum(int ch)
-{
-    return _ctype[ch]&(_DIGIT|_ALPHA);
-}
+int isalnum(int ch);
 
-inline int iscntrl(int ch)   //Check whether ch is a Control Character. That is to say, 0<=ch<=0x1F.
-{
-    return _ctype[ch]&_CONTROL;
-}
+int iscntrl(int ch);
 
-inline int isgraph(int ch)   //Check whether ch is a displayable character. (0x21<=ch<=0x7E).
-{
-    return _ctype[ch]&(_PUNCT|_UPPER|_LOWER|_DIGIT);
-}
+int isgraph(int ch);
 
-inline int islower(int ch)   //Check whether ch is a lowercase.
-{
-    return _ctype[ch]&_LOWER;
-}
+int islower(int ch);
 
-inline int isupper(int ch)
-{
-    return _ctype[ch]&_UPPER;
-}
+int isupper(int ch);
 
-inline int isprint(int ch)
-{
-    return _ctype[ch]&(_BLANK|_PUNCT|_UPPER|_LOWER|_DIGIT);
-}
+int isprint(int ch);
 
-inline int ispunct(int ch)
-{
-    return _ctype[ch]&_PUNCT;
-}
+int ispunct(int ch);
 
-inline int isspace(int ch)
-{
-    return _ctype[ch]&_SPACE;
-}
+int isspace(int ch);
 
-inline int isascii(int ch)
-{
-    return ((unsigned char)ch)<0x80;
-}
+int isascii(int ch);
 
-inline int tolower(int ch)
-{
-    return ch+0x20;
-}
+int tolower(int ch);
 
-inline int toupper(int ch)
-{
-    return ch-0x20;
-}
+int toupper(int ch);
 
 
 #endif

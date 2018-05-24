@@ -15,12 +15,11 @@
 
 POBJ = ../../../../build/tmp
 PINC = ../../../include
-PSRC = 
-PSTDINC = ../../../include/lib/stdinc
-PSTDINCXX = ../../../include/lib/stdinc++
+PSTDINC = $(PINC)/lib/stdinc
+PSTDINCXX = $(PINC)/lib/stdinc++
 
 CC = gcc-7
-CCFLAGS = -m64 -fno-builtin -nostdinc -nostdinc++ -nostdlib -I$(PINC) -O0 -fno-rtti -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding -c -o $(POBJ)/$@ -c $<
+CCFLAGS = -m64 -fno-builtin -nostdinc -nostdlib -I$(PINC) -O0 -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding -c -o $(POBJ)/$@ -c $<
 CXX = g++-7
 CXXFLAGS = -m64 -fno-builtin -nostdinc -nostdinc++ -nostdlib -I$(PINC) -std=c++14 -O0 -fno-rtti -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding -c -o $(POBJ)/$@ -c $<
 ASM = g++-7

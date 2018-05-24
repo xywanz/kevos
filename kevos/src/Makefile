@@ -28,12 +28,19 @@ all:
 	make -C arch/common
 	make -C arch/x64
 	make -C arch/x64/boot
+
 	make -C kernel
 	make -C kernel/common
 	make -C kernel/drivers
 	make -C kernel/fs
 	make -C kernel/mm
 	make -C kernel/net
+
+	make -C user/lib/stdlib
+	make -C user/lib/stdlib/stdio
+	make -C user/lib/stdlib/stdlib
+	make -C user/lib/stdlib/string
+
 	make
 
 .PHONY:clean

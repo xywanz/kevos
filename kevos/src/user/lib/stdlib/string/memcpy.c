@@ -19,7 +19,7 @@ limitations under the License.
 void* memcpy(void* dst,const void* src,size_t count)
 {
     char* d=(char*)dst;
-    ptrdiff_t diff=(int)dst-(int)src;
+    ptrdiff_t diff=(ptrdiff_t)((char*)dst-(char*)src);
     do
     {
         d[0]=d[-diff];

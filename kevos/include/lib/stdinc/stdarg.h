@@ -16,7 +16,7 @@ limitations under the License.
 #ifndef _STDARG_H_
 #define _STDARG_H_
 
-using va_list = char *;
+typedef char* va_list;
 
 #define va_start(v,l)	__builtin_va_start(v,l)
 #define va_end(v)		__builtin_va_end(v)

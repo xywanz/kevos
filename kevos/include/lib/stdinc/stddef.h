@@ -19,18 +19,18 @@ limitations under the License.
 
 #ifndef _SIZE_T
 #define _SIZE_T
-using size_t=unsigned long;
+typedef unsigned long size_t;
 #endif
 
 #ifndef _PTRDIFF_T
 #define _PTRDIFF_T
-using ptrdiff_t=long;
+typedef long ptrdiff_t;
 #endif
 
 #ifndef __cplusplus
 #ifndef _WCHAR_T
 #define _WCHAR_T
-using wchar_t=short;
+typedef short wchar_t;
 #endif
 #endif
 
