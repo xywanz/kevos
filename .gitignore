@@ -35,4 +35,5 @@
 *.o
 *.img
 *.vmdk
+*.vdi
 build/tmp/*.32.S
