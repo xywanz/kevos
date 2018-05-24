@@ -35,4 +35,4 @@
 *.o
 *.img
 *.vmdk
-build/tmp/*.S
+build/tmp/*.32.S
