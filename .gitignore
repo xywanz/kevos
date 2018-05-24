@@ -31,6 +31,6 @@
 *.out
 *.app
 
-build/tmp/*
+build/tmp/*.*
 build/*.img
 build/*.vmdk
