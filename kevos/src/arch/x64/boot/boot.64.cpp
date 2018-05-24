@@ -25,34 +25,29 @@ KEVOS_NSS_4(kevos,arch,x64,boot);
 using namespace kernel::mm;
 
 
-extern "C" void entry64();
-
-extern "C" void setupStack64()
-{
-	__asm__("movq %[stack],%%rsp": : [stack]"i"((uint64_t)&kstack_end_address));
-	// setup64BitModeGDT();
-	__asm__("jmp *%[entry64]": : [entry64]"r"(entry64));
-}	
-
 extern "C" void entry64()
 {
+	__asm__("movq %[stack],%%rsp": : [stack]"i"((uint64_t)&kstack_end_address-0x10000));
+
 	__asm__("mov %%rax, %%cr3" : : "a"(__knPML4));
+
+	struct __packed__ GDTPointer
+    {
+        uint16_t limit;
+        uint64_t address;
+    } gdtPtr;
+    gdtPtr.limit=sizeof(__knGDT)-1;
+    gdtPtr.address=reinterpret_cast<uint64_t>(__knGDT);
+    __asm__("lgdt %[gdtr]" : : [gdtr]"m"(gdtPtr));
 
 	KernMemManager kmm(reinterpret_cast<uint64_t>(&kheap_start_address)>>12,
 		reinterpret_cast<uint64_t>(&kheap_end_address)>>12);
-	*((uint16_t*)(0xB8000))=0x7575;
-	kmm.allocate(1);
-	// while(1){}
-	
-	// kmm.allocate(1);
-	
-	// kmm->KernMemManager
-	// (
-	// 	reinterpret_cast<size_t>(&kheap_start_address)>>12,
-	// 	reinterpret_cast<size_t>(&kheap_end_address)>>12
-	// );
+	void* ptr=kmm.allocate(1);
+	kmm.deallocate(ptr);
 
-	//VMemMap vmm=VirtualMemory::resolveMap(((uint64_t)__knPML4)/__PAGE_SIZE,0);
+	PageManager pm;
+
+	*((uint16_t*)(0xB8000))=0x7575;
 	while(1);
 }
 

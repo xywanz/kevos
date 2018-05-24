@@ -78,8 +78,11 @@ extern "C" void entry32()
     enableLongMode();       // Done!
     enablePaging();         // Done!
 
+    // 设置GDT及段寄存器，最后将跳到64位长模式
     setSystemDescriptor(1, 0, 0, 0, 1);
     setSystemDescriptor(2, 0, 0, 0, 0);
+    setSystemDescriptor(3, 0, 0, 3, 1);
+    setSystemDescriptor(4, 0, 0, 3, 0);
     struct __packed__ GDTPointer
     {
         uint16_t limit;
@@ -96,7 +99,9 @@ extern "C" void entry32()
         "mov %%ax,%%gs\n"
         : : "a"(__KERNEL_DS)
     );
-    __asm__("ljmp %[cs],$setupStack64\n": : [cs]"i"(__KERNEL_CS));
+    __asm__("ljmp %[cs],$entry64\n": : [cs]"i"(__KERNEL_CS));
+
+    __unreachable__();
 }
 
 

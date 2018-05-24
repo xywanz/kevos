@@ -16,7 +16,7 @@ limitations under the License.
 .code64
 .text
 
-.equ KERNEL_DS,0x08
+.equ KERNEL_DS,0x20
 
 .macro setupSegment
 	movw $KERNEL_DS,%ax
@@ -26,3 +26,56 @@ limitations under the License.
 	movw %ax,%fs
 	movw %ax,%gs
 .endm
+
+.macro save
+	pushq %rsp
+	pushq %rax
+	pushq %rcx
+	pushq %rdx
+	pushq %rbx
+	pushq %rbp
+	pushq %rsi
+	pushq %rdi
+	pushq %r8
+	pushq %r9
+	pushq %r10
+	pushq %r11
+	pushq %r12
+	pushq %r13
+	pushq %r14
+	pushq %r15
+.endm
+
+.macro load
+	popq %r15
+	popq %r14
+	popq %r13
+	popq %r12
+	popq %r11
+	popq %r10
+	popq %r9
+	popq %r8
+	popq %rdi
+	popq %rsi
+	popq %rbp
+	popq %rbx
+	popq %rdx
+	popq %rcx
+	popq %rax
+	popq %rsp
+.endm
+
+
+.macro irqAsmHandler number
+.global irqAsmHandler\number
+.extern irqCppHandler\number
+irqAsmHandler\number:
+	save
+	call irqCppHandler\number
+	load
+	iretq
+.endm
+
+// .irp number,0,1
+// irqAsmHandler \number
+// .endr

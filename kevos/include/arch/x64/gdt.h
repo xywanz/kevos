@@ -31,6 +31,8 @@ limitations under the License.
 
 #define __KERNEL_CS               0x10
 #define __KERNEL_DS               0x20
+#define __USER_CS				  0x30
+#define __USER_DS				  0x40
 
 #define __GDT_SIZE	5
 

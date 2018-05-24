@@ -51,7 +51,7 @@ bool Bitmap<DynamicBitmap,ByteType>::unset(size_t index)
 }
 
 template<class ByteType>
-bool Bitmap<DynamicBitmap,ByteType>::get(size_t index)
+bool Bitmap<DynamicBitmap,ByteType>::get(size_t index)const
 {
 	return m_bitmap[byteIndexOf(index)]&(1<<bitIndexOf(index));
 }

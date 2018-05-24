@@ -36,13 +36,14 @@ KEVOS_NSS_3(kevos,kernel,common);
 #define DynamicBitmap	0
 
 
-template<size_t ByteCount,class ByteType=unsigned char>
+template<size_t byteCount,class ByteType=unsigned char>
 class Bitmap
 {
 public:
-	Bitmap():
-		m_bitmap({0})
+	Bitmap()
 	{
+		for(size_t i=0;i<byteCount;++i)
+			m_bitmap[i]=0;
 	}
 
 	bool set(size_t index)
@@ -61,14 +62,14 @@ public:
 		return retVal;
 	}
 
-	bool get(size_t index)
+	bool get(size_t index)const
 	{
 		return m_bitmap[byteIndexOf(index)]&(1<<bitIndexOf(index));
 	}
 
 private:
 	static constexpr size_t s_bitsPerByte=sizeof(ByteType)*8;
-	ByteType m_bitmap[ByteCount];
+	ByteType m_bitmap[byteCount];
 	size_t m_size;
 
 	static constexpr size_t bitIndexOf(size_t bit)
@@ -93,7 +94,7 @@ public:
 
 	bool unset(size_t index);
 
-	bool get(size_t index);
+	bool get(size_t index)const;
 
 private:
 	static constexpr size_t s_bitsPerByte=sizeof(ByteType)*8;

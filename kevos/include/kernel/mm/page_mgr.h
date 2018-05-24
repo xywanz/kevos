@@ -39,12 +39,14 @@ class PageManager
 {
 public:
 
+	PageManager();
+
 	size_t allocate(size_t pageSize=__PAGE_SIZE);
 
 	void deallocate(size_t pPagePPN,size_t pageSize=__PAGE_SIZE);
 
 private:
-	common::Bitmap<8*1024,unsigned int> m_bitmap;
+	// common::Bitmap<DynamicBitmap,unsigned int> m_bitmap;
 };
 
 

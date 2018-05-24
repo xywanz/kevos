@@ -27,6 +27,8 @@ limitations under the License.
 #ifndef _KEVOS_ARCH_COMMON_ASSERT_H_
 #define _KEVOS_ARCH_COMMON_ASSERT_H_
 
+#include <arch/common/types.h>
+
 #ifndef __KEVOS_NODEBUG__
 	#define assert(cond) do {(cond)?void(0):__assert(#cond,__LINE__,__FILE__);}while(0)
 #else

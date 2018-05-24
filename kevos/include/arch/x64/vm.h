@@ -29,6 +29,9 @@ limitations under the License.
 
 #include <arch/x64/paging.h>
 
+
+KEVOS_NSS_3(kevos,arch,x64);
+
 /**
  * @brief 内核中各分页结构表的大小
  */
@@ -44,10 +47,6 @@ limitations under the License.
 #define __KERNEL_PDPT_SIZE			(__KERNEL_PDPT_NUM*__PDPT_SIZE)
 #define __KERNEL_PDT_SIZE 			(__KERNEL_PDT_NUM*__PDT_SIZE)
 #define __KERNEL_PT_SIZE 			(__KERNEL_PT_NUM*__PT_SIZE)
-
-
-KEVOS_NSS_3(kevos,arch,x64);
-
 
 /**
  * @brief 内核态的分页结构表

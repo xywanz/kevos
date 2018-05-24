@@ -51,6 +51,8 @@ limitations under the License.
 
 	#define __noreturn__		__attribute__((noreturn))
 
+	#define __unreachable__()	__builtin_unreachable();		
+
 #else
 
 	#define __mode__(x)

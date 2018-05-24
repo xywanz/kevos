@@ -18,6 +18,11 @@ limitations under the License.
 KEVOS_NSS_3(kevos,kernel,mm);
 
 
+PageManager::PageManager()
+{
+
+}
+
 size_t PageManager::allocate(size_t pageSize)
 {
 
