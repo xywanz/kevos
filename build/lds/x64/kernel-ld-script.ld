@@ -15,7 +15,7 @@ limitations under the License.
 
 /**
  * this linker script tells ld how to link and which symbols to add to the
- * kernel.x binary
+ * kernel.bin binary
  */
  
 OUTPUT_FORMAT(elf64-x86-64)

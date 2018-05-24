@@ -55,17 +55,16 @@ static_assert(sizeof(int64_t)==8,"In x86-64 achitecture, int64_t must be 8 bytes
 #define __STACK_SIZE_BOOT_32    0x2000
 uint8_t __knStackOfBoot32[__STACK_SIZE_BOOT_32] __aligned__(0x1000);
 
+static void setSystemDescriptor(uint32_t index,uint32_t baseHigh,uint32_t baseLow,
+            uint32_t limit,uint8_t code);
 static void bzero(char* p,uint32_t size);
 static void clearFrameBuffer();
 static void clearBSS();
 static void setPAE();
-static void setGDTEntry(uint32_t index,uint32_t base,uint32_t limit,uint8_t access,uint8_t gran);
-static void setup64BitModeGDT();
 static void setupKernelPage();
 static void enableLongMode();
 static void setupCR3();
 static void enablePaging();
-static void ljmpToEntry64();
 
 
 extern "C" void entry32()
@@ -78,10 +77,45 @@ extern "C" void entry32()
     setupCR3();             // Done!
     enableLongMode();       // Done!
     enablePaging();         // Done!
-    setup64BitModeGDT();    // Done!
-    ljmpToEntry64();
+
+    setSystemDescriptor(1, 0, 0, 0, 1);
+    setSystemDescriptor(2, 0, 0, 0, 0);
+    struct __packed__ GDTPointer
+    {
+        uint16_t limit;
+        uint32_t address;
+    } gdtPtr;
+    gdtPtr.limit=sizeof(__knGDT)-1;
+    gdtPtr.address=reinterpret_cast<uint32_t>(__knGDT);
+    __asm__("lgdt %[gdtr]" : : [gdtr]"m"(gdtPtr));
+    __asm__(
+        "mov %%ax,%%ds\n"
+        "mov %%ax,%%es\n"
+        "mov %%ax,%%ss\n"
+        "mov %%ax,%%fs\n"
+        "mov %%ax,%%gs\n"
+        : : "a"(__KERNEL_DS)
+    );
+    __asm__("ljmp %[cs],$setupStack64\n": : [cs]"i"(__KERNEL_CS));
 }
 
+
+static void setSystemDescriptor(uint32_t index,uint32_t baseHigh,uint32_t baseLow,
+            uint32_t limit,uint8_t code)
+{
+    uint8_t* gdtHelper=(uint8_t*)(&__knGDT[index]);
+    *((uint16_t*)(&gdtHelper[0]))=limit&0xFFFF;
+    *((uint16_t*)(&gdtHelper[2]))=baseLow&0xFFFF;
+    gdtHelper[4]=(baseLow>>16)&0xFF;
+
+    gdtHelper[5]=0x92|((0x0&0x3)<<5)|(code?0x8:0);
+    gdtHelper[6]=((limit>>16)&0xF)|(code?0xA0:0xC0);
+
+    gdtHelper[7]=(baseLow>>24)&0xFF;
+    *((uint32_t*)(&gdtHelper[8]))=baseHigh;
+
+    *((uint32_t*)(&gdtHelper[12]))=0;
+}
 
 static void bzero(char* p,uint32_t size)
 {
@@ -105,66 +139,10 @@ static void clearBSS()
     bzero(reinterpret_cast<char*>(&bss_start_address),&bss_end_address-&bss_start_address);
 }
 
-static void setGDTEntry(uint32_t index,uint32_t base,uint32_t limit,uint8_t access,uint8_t gran)
-{
-    struct SegmentHelper
-    {
-        uint16_t limitLow;           // The lower 16 bits of the limit.
-        uint16_t baseLow;            // The lower 16 bits of the base.
-        uint8_t  baseMiddle;         // The next 8 bits of the base.
-        uint8_t  access;              // Access flags, determine what ring this segment can be used in.
-        uint8_t  granularity;
-        uint8_t  baseHigh;           // The last 8 bits of the base.
-    };
-    SegmentHelper* helper=reinterpret_cast<SegmentHelper*>(__knGDT+index);
-    helper->baseLow=base&0xFFFF;
-    helper->baseMiddle=(base>>16)&0xFF;
-    helper->baseHigh=(base>>24)&0xFF;
-    helper->limitLow=limit&0xFFFF;
-    helper->granularity=(limit>>16)&0x0F;
-    helper->granularity|=gran&0xF0;
-    helper->access=access;
-}
-
-static void setup64BitModeGDT()
-{
-    setGDTEntry(0, 0, 0, 0, 0);                // Null segment
-    setGDTEntry(1, 0, 0, 0, 0);                // Null segment
-    setGDTEntry(2, 0, 0xFFFFFFFF, 0x9A, 0xCF); // Code segment
-    setGDTEntry(3, 0, 0, 0, 0);                // Null segment 
-    setGDTEntry(4, 0, 0xFFFFFFFF, 0x92, 0xCF); // Data segment
-    setGDTEntry(5, 0, 0, 0, 0);                // Null segment
-    setGDTEntry(6, 0, 0xFFFFFFFF, 0xF2, 0xCF); // User mode data segment
-    setGDTEntry(7, 0, 0, 0, 0);                // Null segment
-    setGDTEntry(8, 0, 0xFFFFFFFF, 0xFA, 0xCF); // User mode code segment
-    setGDTEntry(9, 0, 0, 0, 0);                // Null segment
-    struct __packed__
-    {
-        uint16_t limit;
-        uint64_t address;
-    } gdtr;
-    gdtr.limit=sizeof(__knGDT)-1;
-    gdtr.address=reinterpret_cast<uint64_t>(__knGDT);
-    __asm__("lgdt %[gdtr]" : : [gdtr]"m"(gdtr));
-    __asm__(
-        "ljmp %[cs],$__next\n"
-        "__next:\n"
-        : : [cs]"i"(__KERNEL_CS)
-    );
-    __asmv__(
-        "mov %%ax,%%ds\n"
-        "mov %%ax,%%es\n"
-        "mov %%ax,%%fs\n"
-        "mov %%ax,%%gs\n"
-        "mov %%ax,%%ss\n"
-        : : "a"(__KERNEL_DS)
-    );
-}
-
 /*PAE是CR4第5位*/
 static void setPAE()
 {
-    __asmv__(
+    __asm__(
         "mov %cr4,%eax\n"
         "or $0x20, %eax\n"
         "mov %eax,%cr4\n"
@@ -213,7 +191,7 @@ static void setupKernelPage()
 
 static void enableLongMode()
 {
-    __asmv__(
+    __asm__(
         "mov $0xC0000080,%ecx\n"
         "rdmsr\n"
         "or $0x900,%eax\n"
@@ -223,21 +201,16 @@ static void enableLongMode()
 
 static void setupCR3()
 {
-    asm("mov %[pd],%%cr3" : : [pd]"r"(__knPML4));
+    __asm__("mov %[pd],%%cr3" : : [pd]"r"(__knPML4));
 }
 
 static void enablePaging()
 {
-    __asmv__(
+    __asm__(
         "mov %cr0,%eax\n"
         "or $0x80000001,%eax\n"
         "mov %eax,%cr0\n"
     );
-}
-
-static void ljmpToEntry64()
-{
-    __asmv__("ljmp %[cs],$entry64\n": : [cs]"i"(0x10));
 }
 
 

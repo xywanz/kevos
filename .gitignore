@@ -36,3 +36,4 @@ build/*.img
 build/*.bin
 build/*.vmdk
 build/*.vdi
+build/bochsout.txt

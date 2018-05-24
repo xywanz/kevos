@@ -15,28 +15,37 @@ limitations under the License.
 
 #include <sys/portable.h>
 #include <arch/x64/mem_layout.h>
+#include <arch/x64/gdt.h>
 #include <kernel/mm/kmem_mgr.h>
 #include <kernel/mm/page_mgr.h>
 #include <arch/x64/vm.h>
-
-void* operator new(size_t,void* ptr)
-{
-	return ptr;
-}
 
 KEVOS_NSS_4(kevos,arch,x64,boot);
 
 using namespace kernel::mm;
 
 
+extern "C" void entry64();
+
+extern "C" void setupStack64()
+{
+	__asm__("movq %[stack],%%rsp": : [stack]"i"((uint64_t)&kstack_end_address));
+	// setup64BitModeGDT();
+	__asm__("jmp *%[entry64]": : [entry64]"r"(entry64));
+}	
+
 extern "C" void entry64()
 {
 	__asm__("mov %%rax, %%cr3" : : "a"(__knPML4));
-	__asm__("movq %[stack],%%rsp": : [stack]"i"((size_t)&kstack_end_address));
-    *((unsigned short*)(0xB8000))=0x7575;
-	KernMemManager *kmm=new((void*)0x1000000) KernMemManager(reinterpret_cast<size_t>(&kheap_start_address)>>12,
-							reinterpret_cast<size_t>(&kheap_end_address)>>12);
 
+	KernMemManager kmm(reinterpret_cast<uint64_t>(&kheap_start_address)>>12,
+		reinterpret_cast<uint64_t>(&kheap_end_address)>>12);
+	*((uint16_t*)(0xB8000))=0x7575;
+	kmm.allocate(1);
+	// while(1){}
+	
+	// kmm.allocate(1);
+	
 	// kmm->KernMemManager
 	// (
 	// 	reinterpret_cast<size_t>(&kheap_start_address)>>12,

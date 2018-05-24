@@ -32,12 +32,12 @@ limitations under the License.
 #define __KERNEL_CS               0x10
 #define __KERNEL_DS               0x20
 
-#define __GDT_SIZE	10
+#define __GDT_SIZE	5
 
 KEVOS_NSS_3(kevos,arch,x64);
 
 
-extern SegmentDescriptor __knGDT[__GDT_SIZE];
+extern SystemDescriptor __knGDT[__GDT_SIZE];
 
 
 KEVOS_NSE_3(x64,arch,kevos);
