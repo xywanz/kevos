@@ -76,6 +76,6 @@ irqAsmHandler\number:
 	iretq
 .endm
 
-// .irp number,0,1
-// irqAsmHandler \number
-// .endr
+.irp number,0,1
+irqAsmHandler \number
+.endr

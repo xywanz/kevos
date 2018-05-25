@@ -24,10 +24,10 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_X64_DESCRIPTOR_H_
-#define _KEVOS_ARCH_X64_DESCRIPTOR_H_
+#ifndef _KEVOS_ARCH_x86_64_X64_DESCRIPTOR_H_
+#define _KEVOS_ARCH_x86_64_X64_DESCRIPTOR_H_
 
-#include <arch/x64/types.h>
+#include <arch/common/types.h>
 
 #define __SEGMENT_DATA_R          0x0
 #define __SEGMENT_DATA_RW         0x2
@@ -39,7 +39,7 @@ limitations under the License.
 #define __SEGMENT_CODE_XRC        0xE
 
 
-KEVOS_NSS_3(kevos,arch,x64);
+KEVOS_NSS_4(kevos,arch,x86_64,x64);
 
 /**
  * @brief 段描述符
@@ -115,6 +115,6 @@ struct __packed__ SystemDescriptor
 };
 
 
-KEVOS_NSE_3(x64,arch,kevos);
+KEVOS_NSE_4(x64,x86_64,arch,kevos);
 
 #endif

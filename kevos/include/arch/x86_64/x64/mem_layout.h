@@ -24,13 +24,12 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_X64_MEMLAYOUT_H_
-#define _KEVOS_ARCH_X64_MEMLAYOUT_H_
+#ifndef _KEVOS_ARCH_x86_64_X64_MEMLAYOUT_H_
+#define _KEVOS_ARCH_x86_64_X64_MEMLAYOUT_H_
 
-#include <sys/portable.h>
-#include <arch/x64/types.h>
+#include <arch/common/types.h>
 
-KEVOS_NSS_3(kevos,arch,x64);
+KEVOS_NSS_4(kevos,arch,x86_64,x64);
 
 
 extern "C" uint64_t text_start_address;
@@ -52,6 +51,6 @@ extern "C" uint64_t kstack_start_address;
 extern "C" uint64_t kstack_end_address;
 
 
-KEVOS_NSE_3(x64,arch,kevos);
+KEVOS_NSE_4(x64,x86_64,arch,kevos);
 
 #endif

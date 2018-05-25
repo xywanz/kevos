@@ -24,10 +24,10 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_X64_GDT_H_
-#define _KEVOS_ARCH_X64_GDT_H_
+#ifndef _KEVOS_ARCH_x86_64_X64_GDT_H_
+#define _KEVOS_ARCH_x86_64_X64_GDT_H_
 
-#include <arch/x64/descriptor.h>
+#include <arch/x86_64/x64/descriptor.h>
 
 #define __KERNEL_CS               0x10
 #define __KERNEL_DS               0x20
@@ -36,12 +36,12 @@ limitations under the License.
 
 #define __GDT_SIZE	5
 
-KEVOS_NSS_3(kevos,arch,x64);
+KEVOS_NSS_4(kevos,arch,x86_64,x64);
 
 
 extern SystemDescriptor __knGDT[__GDT_SIZE];
 
 
-KEVOS_NSE_3(x64,arch,kevos);
+KEVOS_NSE_4(x64,x86_64,arch,kevos);
 
 #endif

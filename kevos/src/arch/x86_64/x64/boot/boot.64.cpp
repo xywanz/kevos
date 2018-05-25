@@ -14,13 +14,13 @@ limitations under the License.
 ==============================================================================*/
 
 #include <sys/portable.h>
-#include <arch/x64/mem_layout.h>
-#include <arch/x64/gdt.h>
+#include <arch/x86_64/x64/mem_layout.h>
+#include <arch/x86_64/x64/gdt.h>
+#include <arch/x86_64/x64/vm.h>
 #include <kernel/mm/kmem_mgr.h>
 #include <kernel/mm/page_mgr.h>
-#include <arch/x64/vm.h>
 
-KEVOS_NSS_4(kevos,arch,x64,boot);
+KEVOS_NSS_5(kevos,arch,x86_64,x64,boot);
 
 using namespace kernel::mm;
 
@@ -52,4 +52,4 @@ extern "C" void entry64()
 }
 
 
-KEVOS_NSE_4(boot,x64,arch,kevos);
+KEVOS_NSE_5(boot,x64,x86_64,arch,kevos);

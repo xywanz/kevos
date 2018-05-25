@@ -13,12 +13,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x64/gdt.h>
+#include <arch/x86_64/x64/gdt.h>
 
-KEVOS_NSS_3(kevos,arch,x64);
+KEVOS_NSS_4(kevos,arch,x86_64,x64);
 
 
 SystemDescriptor __knGDT[__GDT_SIZE];
 
 
-KEVOS_NSE_3(x64,arch,kevos);
+KEVOS_NSE_4(x64,x86_64,arch,kevos);

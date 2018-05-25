@@ -41,10 +41,6 @@ limitations under the License.
 	/*设置段*/
 	#define __section__(x)		__attribute__((section(x)))
 
-	/*GCC内嵌ATT汇编*/
-	#define __asm__(x)			asm(x)
-	#define __asmv__(x)			__asm__ __volatile__(x)
-
 	/*用于编译器优化分支选择*/
 	#define __likely__(x)		__builtin_expect((x),1)
 	#define __unlikely__(x)		__builtin_expect((x),0)

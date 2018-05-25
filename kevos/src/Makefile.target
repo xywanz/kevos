@@ -16,17 +16,17 @@
 SRC_C := $(wildcard *.c)
 SRC_CXX := $(wildcard *.cpp)
 SRC_ASM := $(wildcard *.S)
-OBJ_C = $(SRC_C:.c=.o)
-OBJ_CXX = $(SRC_CXX:.cpp=.o)
-OBJ_ASM = $(SRC_ASM:.S=.o)
+OBJ_C = $(SRC_C:.c=.c.o)
+OBJ_CXX = $(SRC_CXX:.cpp=.cpp.o)
+OBJ_ASM = $(SRC_ASM:.S=.S.o)
 
 out: $(OBJ_C) $(OBJ_CXX) $(OBJ_ASM)
 
-%.o:%.cpp
+%.cpp.o:%.cpp
 	$(CXX) $(CXXFLAGS)
 
-%.o:%.S
+%.S.o:%.S
 	$(ASM) $(ASMFLAGS)
 
-%.o:%.c
+%.c.o:%.c
 	$(CC) $(CCFLAGS)

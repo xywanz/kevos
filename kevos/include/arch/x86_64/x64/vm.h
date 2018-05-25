@@ -24,13 +24,13 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_X64_VM_H_
-#define _KEVOS_ARCH_X64_VM_H_
+#ifndef _KEVOS_ARCH_x86_64_X64_VM_H_
+#define _KEVOS_ARCH_x86_64_X64_VM_H_
 
-#include <arch/x64/paging.h>
+#include <arch/x86_64/x64/paging.h>
 
 
-KEVOS_NSS_3(kevos,arch,x64);
+KEVOS_NSS_4(kevos,arch,x86_64,x64);
 
 /**
  * @brief 内核中各分页结构表的大小
@@ -152,6 +152,6 @@ private:
 };
 
 
-KEVOS_NSE_3(x64,arch,kevos);
+KEVOS_NSE_4(x64,x86_64,arch,kevos);
 
 #endif

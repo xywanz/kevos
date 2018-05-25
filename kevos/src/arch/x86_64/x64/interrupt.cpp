@@ -13,13 +13,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_ARCH_COMMON_PAGING_H_
-#define _KEVOS_ARCH_COMMON_PAGING_H_
+#include <arch/x86_64/x64/interrupt.h>
+#include <arch/x86_64/common/port.h>
+
+KEVOS_NSS_4(kevos,arch,x86_64,x64);
+
+extern "C"
+{
+	void irqCppHandler0()
+	{
+		
+	}
+
+	void irqCppHandler1()
+	{
+
+	}
+}
 
 
-#ifdef __KEVOS_X64__
-#include <arch/x86_64/x64/paging.h>
-#endif
-
-
-#endif
+KEVOS_NSE_4(x64,x86_64,arch,kevos);
