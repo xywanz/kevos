@@ -56,7 +56,7 @@ static_assert(sizeof(int64_t)==8,"In x86-64 achitecture, int64_t must be 8 bytes
 uint8_t __knStackOfBoot32[__STACK_SIZE_BOOT_32] __aligned__(0x1000);
 
 static void setSystemDescriptor(uint32_t index,uint32_t baseHigh,uint32_t baseLow,
-            uint32_t limit,uint8_t code);
+            uint32_t limit,uint8_t dpl,uint8_t code);
 static void bzero(char* p,uint32_t size);
 static void clearFrameBuffer();
 static void clearBSS();
@@ -79,10 +79,10 @@ extern "C" void entry32()
     enablePaging();         // Done!
 
     // 设置GDT及段寄存器，最后将跳到64位长模式
-    setSystemDescriptor(1, 0, 0, 0, 1);
-    setSystemDescriptor(2, 0, 0, 0, 0);
-    setSystemDescriptor(3, 0, 0, 3, 1);
-    setSystemDescriptor(4, 0, 0, 3, 0);
+    setSystemDescriptor(1, 0, 0, 0, 0, 1);
+    setSystemDescriptor(2, 0, 0, 0, 0, 0);
+    setSystemDescriptor(3, 0, 0, 0, 3, 1);
+    setSystemDescriptor(4, 0, 0, 0, 3, 0);
     struct __packed__ GDTPointer
     {
         uint16_t limit;
@@ -106,14 +106,14 @@ extern "C" void entry32()
 
 
 static void setSystemDescriptor(uint32_t index,uint32_t baseHigh,uint32_t baseLow,
-            uint32_t limit,uint8_t code)
+            uint32_t limit,uint8_t dpl,uint8_t code)
 {
     uint8_t* gdtHelper=(uint8_t*)(&__knGDT[index]);
     *((uint16_t*)(&gdtHelper[0]))=limit&0xFFFF;
     *((uint16_t*)(&gdtHelper[2]))=baseLow&0xFFFF;
     gdtHelper[4]=(baseLow>>16)&0xFF;
 
-    gdtHelper[5]=0x92|((0x0&0x3)<<5)|(code?0x8:0);
+    gdtHelper[5]=0x92|((dpl&0x3)<<5)|(code?0x8:0);
     gdtHelper[6]=((limit>>16)&0xF)|(code?0xA0:0xC0);
 
     gdtHelper[7]=(baseLow>>24)&0xFF;

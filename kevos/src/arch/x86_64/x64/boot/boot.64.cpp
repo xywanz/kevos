@@ -19,6 +19,7 @@ limitations under the License.
 #include <arch/x86_64/x64/vm.h>
 #include <kernel/mm/kmem_mgr.h>
 #include <kernel/mm/page_mgr.h>
+#include <arch/x86_64/common/cpuid.h>
 
 KEVOS_NSS_5(kevos,arch,x86_64,x64,boot);
 
@@ -46,6 +47,8 @@ extern "C" void entry64()
 	kmm.deallocate(ptr);
 
 	PageManager pm;
+
+	common::CPUInfo cpuInfo;
 
 	*((uint16_t*)(0xB8000))=0x7575;
 	while(1);

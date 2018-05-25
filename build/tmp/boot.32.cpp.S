@@ -42,37 +42,41 @@ entry32:
 	call	_ZN5kevos4arch6x86_643x644bootL8setupCR3Ev
 	call	_ZN5kevos4arch6x86_643x644bootL14enableLongModeEv
 	call	_ZN5kevos4arch6x86_643x644bootL12enablePagingEv
-	subl	$12, %esp
+	subl	$8, %esp
 	pushl	$1
 	pushl	$0
 	pushl	$0
 	pushl	$0
+	pushl	$0
 	pushl	$1
-	call	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjh
+	call	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh
 	addl	$32, %esp
-	subl	$12, %esp
+	subl	$8, %esp
+	pushl	$0
 	pushl	$0
 	pushl	$0
 	pushl	$0
 	pushl	$0
 	pushl	$2
-	call	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjh
+	call	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh
 	addl	$32, %esp
-	subl	$12, %esp
+	subl	$8, %esp
 	pushl	$1
 	pushl	$3
 	pushl	$0
 	pushl	$0
-	pushl	$3
-	call	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjh
-	addl	$32, %esp
-	subl	$12, %esp
 	pushl	$0
 	pushl	$3
+	call	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh
+	addl	$32, %esp
+	subl	$8, %esp
+	pushl	$0
+	pushl	$3
+	pushl	$0
 	pushl	$0
 	pushl	$0
 	pushl	$4
-	call	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjh
+	call	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh
 	addl	$32, %esp
 	movw	$79, -14(%ebp)
 	movl	$_ZN5kevos4arch6x86_643x647__knGDTE, %eax
@@ -100,43 +104,51 @@ mov %ax,%gs
 	.cfi_endproc
 .LFE2:
 	.size	entry32, .-entry32
-	.type	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjh, @function
-_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjh:
+	.type	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh, @function
+_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh:
 .LFB3:
 	.cfi_startproc
-	subl	$20, %esp
-	.cfi_def_cfa_offset 24
-	movl	40(%esp), %eax
+	subl	$24, %esp
+	.cfi_def_cfa_offset 28
+	movl	44(%esp), %edx
+	movl	48(%esp), %eax
+	movb	%dl, 4(%esp)
 	movb	%al, (%esp)
-	movl	24(%esp), %eax
+	movl	28(%esp), %eax
 	sall	$4, %eax
 	addl	$_ZN5kevos4arch6x86_643x647__knGDTE, %eax
-	movl	%eax, 16(%esp)
-	movl	36(%esp), %eax
+	movl	%eax, 20(%esp)
+	movl	40(%esp), %eax
 	movl	%eax, %edx
-	movl	16(%esp), %eax
+	movl	20(%esp), %eax
 	movw	%dx, (%eax)
-	movl	16(%esp), %eax
+	movl	20(%esp), %eax
 	addl	$2, %eax
-	movl	32(%esp), %edx
+	movl	36(%esp), %edx
 	movw	%dx, (%eax)
-	movl	32(%esp), %eax
+	movl	36(%esp), %eax
 	shrl	$16, %eax
 	movl	%eax, %edx
-	movl	16(%esp), %eax
+	movl	20(%esp), %eax
 	addl	$4, %eax
 	movb	%dl, (%eax)
+	movzbl	4(%esp), %eax
+	sall	$5, %eax
+	andl	$96, %eax
+	orl	$-110, %eax
+	movl	%eax, %edx
 	cmpb	$0, (%esp)
 	je	.L3
-	movl	$-102, %edx
+	movl	$8, %eax
 	jmp	.L4
 .L3:
-	movl	$-110, %edx
+	movl	$0, %eax
 .L4:
-	movl	16(%esp), %eax
+	orl	%eax, %edx
+	movl	20(%esp), %eax
 	addl	$5, %eax
 	movb	%dl, (%eax)
-	movl	36(%esp), %eax
+	movl	40(%esp), %eax
 	shrl	$16, %eax
 	andl	$15, %eax
 	movl	%eax, %edx
@@ -147,30 +159,30 @@ _ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjh:
 .L5:
 	movl	$-64, %ecx
 .L6:
-	movl	16(%esp), %eax
+	movl	20(%esp), %eax
 	addl	$6, %eax
 	orl	%ecx, %edx
 	movb	%dl, (%eax)
-	movl	32(%esp), %eax
+	movl	36(%esp), %eax
 	shrl	$24, %eax
 	movl	%eax, %edx
-	movl	16(%esp), %eax
+	movl	20(%esp), %eax
 	addl	$7, %eax
 	movb	%dl, (%eax)
-	movl	16(%esp), %eax
+	movl	20(%esp), %eax
 	leal	8(%eax), %edx
-	movl	28(%esp), %eax
+	movl	32(%esp), %eax
 	movl	%eax, (%edx)
-	movl	16(%esp), %eax
+	movl	20(%esp), %eax
 	addl	$12, %eax
 	movl	$0, (%eax)
 	nop
-	addl	$20, %esp
+	addl	$24, %esp
 	.cfi_def_cfa_offset 4
 	ret
 	.cfi_endproc
 .LFE3:
-	.size	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjh, .-_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjh
+	.size	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh, .-_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh
 	.type	_ZN5kevos4arch6x86_643x644bootL5bzeroEPcj, @function
 _ZN5kevos4arch6x86_643x644bootL5bzeroEPcj:
 .LFB4:
