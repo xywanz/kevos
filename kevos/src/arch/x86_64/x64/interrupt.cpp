@@ -13,8 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
+#include <arch/common/interrupt.h>
 #include <arch/x86_64/x64/interrupt.h>
-#include <arch/x86_64/common/port.h>
 
 KEVOS_NSS_4(kevos,arch,x86_64,x64);
 
@@ -31,5 +31,16 @@ extern "C"
 	}
 }
 
-
 KEVOS_NSE_4(x64,x86_64,arch,kevos);
+
+
+
+KEVOS_NSS_3(kevos,arch,common);
+
+void InterruptManager::initialize()
+{
+
+}
+
+KEVOS_NSE_3(common,arch,kevos);
+

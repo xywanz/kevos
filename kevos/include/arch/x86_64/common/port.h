@@ -27,11 +27,9 @@ limitations under the License.
 #ifndef _KEVOS_ARCH_x86_64_COMMON_PORT_H_
 #define _KEVOS_ARCH_x86_64_COMMON_PORT_H_
 
-#include <sys/portable.h>
 #include <arch/common/types.h>
 
 KEVOS_NSS_4(kevos,arch,x86_64,common);
-
 
 static inline uint8_t inportb(uint16_t port)
 {
@@ -135,7 +133,6 @@ static inline void outportld(uint16_t port,uint32_t value)
 	__asm__ __volatile__("outl %0,%1": : "a"(value), "d"(port));
 	__asm__ __volatile__("nop\nnop");
 }
-
 
 KEVOS_NSE_4(common,x86_64,arch,kevos);
 

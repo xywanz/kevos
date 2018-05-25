@@ -27,11 +27,15 @@ limitations under the License.
 #ifndef _KEVOS_ARCH_x86_64_COMMON_I8259A_H_
 #define _KEVOS_ARCH_x86_64_COMMON_I8259A_H_
 
-#include <sys/portable.h>
 #include <arch/common/types.h>
+#include <arch/x86_64/common/port.h>
 
 KEVOS_NSS_4(kevos,arch,x86_64,common);
 
+#define I8259A_PIC1_CONTROL_PORT	0x20
+#define I8259A_PIC2_CONTROL_PORT	0xA0
+#define I8259A_PIC1_DATA_PORT		0x21
+#define I8259A_PIC2_DATA_PORT		0xA1
 
 class I8259A
 {
@@ -39,12 +43,34 @@ public:
 
 	static void initialize();
 
-	static void enableIRQ(uint16_t num);
+	static void enableIRQ(uint16_t num)
+	{
+		mask &= (~(1<<num));
+		if(num&8)
+			outportb(I8259A_PIC2_DATA_PORT,mask>>8);
+		else
+			outportb(I8259A_PIC1_DATA_PORT,mask%8);
+	}
 
-	static void disableIRQ(uint16_t num);
-	
+	static void disableIRQ(uint16_t num)
+	{
+		mask |= (1<<num);
+		if(num&8)
+			outportb(I8259A_PIC2_DATA_PORT,mask>>8);
+		else
+			outportb(I8259A_PIC1_DATA_PORT,mask%8);	
+	}
+
+	static void sendEOI(uint16_t num)
+	{
+		uint16_t port=num>7?I8259A_PIC2_CONTROL_PORT:I8259A_PIC1_CONTROL_PORT;
+		outportb(port,0x20);
+	}
+
+private:
+	static uint32_t mask;
+
 };
-
 
 KEVOS_NSE_4(common,x86_64,arch,kevos);
 

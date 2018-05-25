@@ -32,7 +32,6 @@ limitations under the License.
 
 KEVOS_NSS_3(kevos,kernel,common);
 
-
 #define DynamicBitmap	0
 
 
@@ -111,7 +110,6 @@ private:
 		return bit/s_bitsPerByte;
 	}
 };
-
 
 KEVOS_NSE_3(common,kernel,kevos);
 

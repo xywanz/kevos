@@ -38,9 +38,7 @@ limitations under the License.
 
 KEVOS_NSS_4(kevos,arch,x86_64,x64);
 
-
 extern SystemDescriptor __knGDT[__GDT_SIZE];
-
 
 KEVOS_NSE_4(x64,x86_64,arch,kevos);
 

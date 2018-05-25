@@ -13,10 +13,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x86_64/x64/gdt.h>
+#ifndef _KEVOS_ARCH_COMMON_INTERRUPT_H_
+#define _KEVOS_ARCH_COMMON_INTERRUPT_H_
 
-KEVOS_NSS_4(kevos,arch,x86_64,x64);
+#include <arch/common/types.h>
 
-SystemDescriptor __knGDT[__GDT_SIZE];
+KEVOS_NSS_3(kevos,arch,common);
 
-KEVOS_NSE_4(x64,x86_64,arch,kevos);
+class InterruptManager
+{
+public:
+	static void initialize();
+};
+
+KEVOS_NSE_3(kevos,arch,common);
+
+#endif

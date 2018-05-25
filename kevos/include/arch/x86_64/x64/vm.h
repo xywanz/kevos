@@ -29,7 +29,6 @@ limitations under the License.
 
 #include <arch/x86_64/x64/paging.h>
 
-
 KEVOS_NSS_4(kevos,arch,x86_64,x64);
 
 /**
@@ -56,7 +55,6 @@ extern PDPTE __knPDPT[__KERNEL_PDPT_SIZE];
 extern PDTE  __knPDT [__KERNEL_PDT_SIZE];
 extern PTE   __knPT  [__KERNEL_PT_SIZE];
 
-
 /**
  * @brief 一个虚拟内存页的映射信息
  */
@@ -79,7 +77,6 @@ struct __packed__ VMemMap
 	uint64_t pdtIndex;
 	uint64_t ptIndex;		
 };
-
 
 /**
  * @brief 虚拟内存的抽象，表示一个完整的虚拟内存
@@ -150,7 +147,6 @@ private:
 	uint64_t m_pml4PPN;
 	
 };
-
 
 KEVOS_NSE_4(x64,x86_64,arch,kevos);
 

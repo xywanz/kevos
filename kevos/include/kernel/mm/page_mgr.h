@@ -34,7 +34,6 @@ limitations under the License.
 
 KEVOS_NSS_3(kevos,kernel,mm);
 
-
 class PageManager
 {
 public:
@@ -48,7 +47,6 @@ public:
 private:
 	// common::Bitmap<DynamicBitmap,unsigned int> m_bitmap;
 };
-
 
 KEVOS_NSE_3(mm,kernel,kevos);
 

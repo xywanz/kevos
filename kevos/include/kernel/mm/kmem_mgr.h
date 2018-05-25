@@ -22,7 +22,6 @@ limitations under the License.
 
 KEVOS_NSS_3(kevos,kernel,mm);
 
-
 class KernMemManager
 {
 public:
@@ -43,7 +42,6 @@ private:
 	MemHeader* m_memStart;
 	MemHeader* m_memEnd;
 };
-
 
 KEVOS_NSE_3(mm,kernel,kevos);
 

@@ -17,12 +17,10 @@ limitations under the License.
 
 KEVOS_NSS_4(kevos,arch,x86_64,x64);
 
-
 PML4E 	__knPML4[__KERNEL_PML4_SIZE] 	__aligned__(0x1000);
 PDPTE 	__knPDPT[__KERNEL_PDPT_SIZE]	__aligned__(0x1000);
 PDTE  	__knPDT [__KERNEL_PDT_SIZE] 	__aligned__(0x1000);
 PTE   	__knPT  [__KERNEL_PT_SIZE] 		__aligned__(0x1000);
-
 
 bool VirtualMemory::mapPage(uint64_t vPagePPN,uint64_t pPagePPN,uint64_t userAccessable,uint64_t pageSize)
 {
@@ -83,6 +81,5 @@ VMemMap VirtualMemory::resolveMap(uint64_t pml4PPN,uint64_t vPagePPN)
 
 	return vmm;
 }
-
 
 KEVOS_NSE_4(x64,x86_64,arch,kevos);

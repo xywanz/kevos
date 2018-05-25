@@ -114,7 +114,6 @@ struct __packed__ SystemDescriptor
     uint64_t    reserved    :   32;
 };
 
-
 KEVOS_NSE_4(x64,x86_64,arch,kevos);
 
 #endif

@@ -29,7 +29,6 @@ limitations under the License.
 
 #include <sys/portable.h>
 
-
 #ifndef _INT8_T
 #define _INT8_T
 using int8_t __mode__(__QI__)	=	char;
@@ -99,5 +98,6 @@ using ptrdiff_t	=	int64_t;
 #define _POINTER_T
 using pointer_t = 	uint64_t;
 #endif
+
 
 #endif

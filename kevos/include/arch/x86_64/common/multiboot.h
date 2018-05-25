@@ -27,7 +27,6 @@ limitations under the License.
 #ifndef _KEVOS_ARCH_x86_64_COMMON_MULTIBOOT_H_
 #define _KEVOS_ARCH_x86_64_COMMON_MULTIBOOT_H_
 
-#include <sys/portable.h>
 #include <arch/common/types.h>
 
 #define MULTIBOOT_PAGE_ALIGNED    (1U<<0)
@@ -36,7 +35,6 @@ limitations under the License.
 #define MULTIBOOT_MAGIC           (0x1BADB002U)
 
 KEVOS_NSS_4(kevos,arch,x86_64,common);
-
 
 struct __packed__ ElfSymbolTable
 {
@@ -210,8 +208,6 @@ static constexpr struct __packed__ {
 
 #endif
 
-
 KEVOS_NSE_4(common,x86_64,arch,kevos);
-
 
 #endif

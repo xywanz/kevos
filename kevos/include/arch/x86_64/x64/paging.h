@@ -27,7 +27,6 @@ limitations under the License.
 #ifndef _KEVOS_ARCH_x86_64_X64_PAGING_H_
 #define _KEVOS_ARCH_x86_64_X64_PAGING_H_
 
-#include <sys/portable.h>
 #include <arch/common/types.h>
 
 #define __PML4_SIZE 		512
@@ -37,7 +36,6 @@ limitations under the License.
 #define __PAGE_SIZE			4096
 
 KEVOS_NSS_4(kevos,arch,x86_64,x64);
-
 
 struct __packed__ PML4E
 {
@@ -112,7 +110,6 @@ using PML4=PML4E[__PML4_SIZE];
 using PDPT=PDPTE[__PDPT_SIZE];
 using PDT=PDTE[__PDT_SIZE];
 using PT=PTE[__PT_SIZE];
-
 
 KEVOS_NSE_4(x64,x86_64,arch,kevos);
 

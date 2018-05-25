@@ -17,7 +17,6 @@ limitations under the License.
 
 KEVOS_NSS_3(kevos,kernel,common);
 
-
 template<class ByteType>
 Bitmap<DynamicBitmap,ByteType>::Bitmap(ByteType* bitmap,size_t size)
 	:m_bitmap(bitmap),m_size(size)
@@ -55,6 +54,5 @@ bool Bitmap<DynamicBitmap,ByteType>::get(size_t index)const
 {
 	return m_bitmap[byteIndexOf(index)]&(1<<bitIndexOf(index));
 }
-
 
 KEVOS_NSE_3(common,kernel,kevos);

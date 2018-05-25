@@ -17,7 +17,6 @@ limitations under the License.
 
 KEVOS_NSS_3(kevos,kernel,mm);
 
-
 PageManager::PageManager()
 {
 
@@ -32,6 +31,5 @@ void PageManager::deallocate(size_t pPagePPN,size_t pageSize)
 {
 
 }
-
 
 KEVOS_NSE_3(mm,kernel,kevos);

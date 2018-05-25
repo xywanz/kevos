@@ -17,7 +17,6 @@ limitations under the License.
 
 KEVOS_NSS_3(kevos,kernel,mm);
 
-
 KernMemManager::KernMemManager(size_t vStartPagePPN,size_t vEndPagePPN)
 	:m_memStart(reinterpret_cast<MemHeader*>(vStartPagePPN*__PAGE_SIZE)),
 	 m_memEnd(reinterpret_cast<MemHeader*>(vEndPagePPN*__PAGE_SIZE)-1)
@@ -69,6 +68,5 @@ void KernMemManager::deallocate(void* ptr)
 		rnode->next=rnode->next->next;
 	}
 }
-
 
 KEVOS_NSE_3(mm,kernel,kevos);

@@ -31,7 +31,6 @@ limitations under the License.
 
 KEVOS_NSS_4(kevos,arch,x86_64,x64);
 
-
 extern "C" uint64_t text_start_address;
 extern "C" uint64_t text_end_address;
 
@@ -49,7 +48,6 @@ extern "C" uint64_t kheap_end_address;
 
 extern "C" uint64_t kstack_start_address;
 extern "C" uint64_t kstack_end_address;
-
 
 KEVOS_NSE_4(x64,x86_64,arch,kevos);
 
