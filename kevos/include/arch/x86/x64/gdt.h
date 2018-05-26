@@ -29,16 +29,25 @@ limitations under the License.
 
 #include <arch/x86/x64/descriptor.h>
 
+KEVOS_NSS_3(arch,x86,x64);
+
 #define __KERNEL_CS               0x10
 #define __KERNEL_DS               0x20
 #define __USER_CS				  0x30
 #define __USER_DS				  0x40
 
-#define __GDT_SIZE	5
+class GDT
+{
+public:
 
-KEVOS_NSS_3(arch,x86,x64);
+	static void load();
 
-extern SystemDescriptor __knGDT[__GDT_SIZE];
+	static void setItem(uint32_t index,uint32_t baseHigh,uint32_t baseLow,
+            	uint32_t limit,uint8_t dpl,uint8_t code,uint8_t tss);
+
+	static constexpr uint32_t gdtSize=5;
+	static SystemDescriptor items[5];
+};
 
 KEVOS_NSE_3(x64,x86,arch);
 

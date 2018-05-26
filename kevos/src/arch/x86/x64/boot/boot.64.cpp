@@ -33,16 +33,7 @@ extern "C" void entry64()
 
 	__asm__("mov %%rax, %%cr3" : : "a"(__knPML4));
 
-	struct __packed__ GDTPointer
-    {
-        uint16_t limit;
-        uint64_t address;
-    } gdtPtr;
-    gdtPtr.limit=sizeof(__knGDT)-1;
-    gdtPtr.address=reinterpret_cast<uint64_t>(__knGDT);
-    __asm__("lgdt %[gdtr]" : : [gdtr]"m"(gdtPtr));
-
-
+	GDT::load();
 
 	KernMemManager kmm(reinterpret_cast<uint64_t>(&kheap_start_address)>>12,
 		reinterpret_cast<uint64_t>(&kheap_end_address)>>12);

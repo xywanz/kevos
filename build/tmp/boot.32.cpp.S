@@ -60,35 +60,17 @@ entry32:
 	pushl	$2
 	call	_ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh
 	addl	$32, %esp
-	subl	$8, %esp
-	pushl	$1
-	pushl	$3
-	pushl	$0
-	pushl	$0
-	pushl	$0
-	pushl	$3
-	call	_ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh
-	addl	$32, %esp
-	subl	$8, %esp
-	pushl	$0
-	pushl	$3
-	pushl	$0
-	pushl	$0
-	pushl	$0
-	pushl	$4
-	call	_ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh
-	addl	$32, %esp
 	movw	$79, -14(%ebp)
-	movl	$_ZN4arch3x863x647__knGDTE, %eax
+	movl	$_ZN4arch3x863x643GDT5itemsE, %eax
 	movl	%eax, -12(%ebp)
 #APP
-# 93 "boot.32.cpp" 1
+# 91 "boot.32.cpp" 1
 	lgdt -14(%ebp)
 # 0 "" 2
 #NO_APP
 	movl	$32, %eax
 #APP
-# 101 "boot.32.cpp" 1
+# 99 "boot.32.cpp" 1
 	mov %ax,%ds
 mov %ax,%es
 mov %ax,%ss
@@ -96,7 +78,7 @@ mov %ax,%fs
 mov %ax,%gs
 
 # 0 "" 2
-# 102 "boot.32.cpp" 1
+# 100 "boot.32.cpp" 1
 	ljmp $16,$entry64
 
 # 0 "" 2
@@ -116,7 +98,7 @@ _ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh:
 	movb	%al, (%esp)
 	movl	28(%esp), %eax
 	sall	$4, %eax
-	addl	$_ZN4arch3x863x647__knGDTE, %eax
+	addl	$_ZN4arch3x863x643GDT5itemsE, %eax
 	movl	%eax, 20(%esp)
 	movl	40(%esp), %eax
 	movl	%eax, %edx
@@ -286,7 +268,7 @@ _ZN4arch3x863x644bootL6setPAEEv:
 .LFB7:
 	.cfi_startproc
 #APP
-# 154 "boot.32.cpp" 1
+# 152 "boot.32.cpp" 1
 	mov %cr4,%eax
 or $0x20, %eax
 mov %eax,%cr4
@@ -407,7 +389,7 @@ _ZN4arch3x863x644bootL14enableLongModeEv:
 .LFB9:
 	.cfi_startproc
 #APP
-# 204 "boot.32.cpp" 1
+# 202 "boot.32.cpp" 1
 	mov $0xC0000080,%ecx
 rdmsr
 or $0x900,%eax
@@ -426,7 +408,7 @@ _ZN4arch3x863x644bootL8setupCR3Ev:
 	.cfi_startproc
 	movl	$_ZN4arch3x863x648__knPML4E, %eax
 #APP
-# 209 "boot.32.cpp" 1
+# 207 "boot.32.cpp" 1
 	mov %eax,%cr3
 # 0 "" 2
 #NO_APP
@@ -440,7 +422,7 @@ _ZN4arch3x863x644bootL12enablePagingEv:
 .LFB11:
 	.cfi_startproc
 #APP
-# 218 "boot.32.cpp" 1
+# 216 "boot.32.cpp" 1
 	mov %cr0,%eax
 or $0x80000001,%eax
 mov %eax,%cr0

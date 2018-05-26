@@ -72,7 +72,6 @@ limitations under the License.
 irqAsmHandler\number:
 	save
 	call irqCppHandler\number
-	load
 	iretq
 .endm
 

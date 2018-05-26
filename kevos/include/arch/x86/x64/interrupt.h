@@ -20,15 +20,45 @@ limitations under the License.
 
 KEVOS_NSS_3(arch,x86,x64);
 
+#define IRQ_TIMER		0
+#define IRQ_KEYBOARD	1
+
 extern "C"
 {
 	void irqAsmHandler0();
 	void irqAsmHandler1();
+	void irqAsmHandler2();
+	void irqAsmHandler3();
+	void irqAsmHandler4();
+	void irqAsmHandler5();
+	void irqAsmHandler6();
+	void irqAsmHandler7();
+	void irqAsmHandler8();
+	void irqAsmHandler9();
+	void irqAsmHandler10();
+	void irqAsmHandler11();
+	void irqAsmHandler12();
+	void irqAsmHandler13();
+	void irqAsmHandler14();
+	void irqAsmHandler15();
 
 	void irqCppHandler0();
 	void irqCppHandler1();
+	void irqCppHandler2();
+	void irqCppHandler3();
+	void irqCppHandler4();
+	void irqCppHandler5();
+	void irqCppHandler6();
+	void irqCppHandler7();
+	void irqCppHandler8();
+	void irqCppHandler9();
+	void irqCppHandler10();
+	void irqCppHandler11();
+	void irqCppHandler12();
+	void irqCppHandler13();
+	void irqCppHandler14();
+	void irqCppHandler15();
 }
-
 
 KEVOS_NSE_3(x64,x86,arch);
 

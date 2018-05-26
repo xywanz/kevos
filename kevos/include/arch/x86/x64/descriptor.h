@@ -114,6 +114,22 @@ struct __packed__ SystemDescriptor
     uint64_t    reserved    :   32;
 };
 
+
+struct InterruptDescriptor
+{
+    uint16_t offsetLow;
+    uint16_t codeSelector;
+    uint8_t  ist    :   3;
+    uint8_t  zero1  :   5;
+    uint8_t  type   :   4;
+    uint8_t  zero2  :   1;
+    uint8_t  dpl    :   2;
+    uint8_t  present:   1;
+    uint16_t offsetMid;
+    uint32_t offsetHigh;
+    uint32_t reserved;
+};
+
 KEVOS_NSE_3(x64,x86,arch);
 
 #endif

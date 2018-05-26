@@ -25,11 +25,17 @@ class InterruptManager
 public:
 	static void initialize();
 
-	static void enableIRQ(int num);
-	static void disableIRQ(int num);
-
 	static void enableInterrupts();
 	static void disableInterrupts();
+
+	static void sendEndSignal(uint16_t num);
+
+	static void enableTimer();
+	static void disableTimer();
+	static void setTimerFrequency(uint32_t freq);
+
+	static void enableKeyboard();
+	static void disableKeyboard();
 };
 
 KEVOS_NSE_2(common,arch);

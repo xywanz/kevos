@@ -13,32 +13,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-/*****************************************************************************
-*  @file     idt.h                            
-*  @brief    中断描述符表                 
-*                                   
-*                                            
-*  @author   Kevin Lau                       
-*  @email    skl510006@gmail.com              
-*  @version  0.1.1              
-*  @date     2018/5/20
-*****************************************************************************/
-#ifndef _KEVOS_ARCH_X86_X64_IDT_H_
-#define _KEVOS_ARCH_X86_X64_IDT_H_
-
-#include <arch/x86/x64/descriptor.h>
+#include <arch/x86/x64/idt.h>
 
 KEVOS_NSS_3(arch,x86,x64);
 
-class IDT
-{
-public:
-	static void initialize();
 
-	static constexpr idtSize=128;
-	static InterruptDescriptor items[idtSize];
-};
+void IDT::initialize()
+{
+	
+}
+
 
 KEVOS_NSE_3(x64,x86,arch);
-
-#endif
