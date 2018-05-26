@@ -28,12 +28,11 @@ KEVOS_NSS_4(arch,x86,x64,boot);
 
 using namespace kernel::mm;
 
+inline void confirmImAlive() {*((uint16_t*)(0xB8000))=0x7575;}
+
 extern "C" void entry64()
 {
-	__asm__("movq %[stack],%%rsp": : [stack]"i"((uint64_t)&kstack_end_address-0x10000));
-
 	__asm__("mov %%rax, %%cr3" : : "a"(__knPML4));
-
 
 	GDT::initialize();
 
@@ -48,7 +47,7 @@ extern "C" void entry64()
 	int* a=new int[5];
 	delete[]  a;
 
-	*((uint16_t*)(0xB8000))=0x7575;
+	confirmImAlive();
 	while(1);
 }
 

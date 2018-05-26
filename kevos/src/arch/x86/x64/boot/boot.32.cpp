@@ -52,9 +52,6 @@ static_assert(sizeof(int32_t)==4,"In x86-64 achitecture, int32_t must be 4 bytes
 static_assert(sizeof(uint64_t)==8,"In x86-64 achitecture, uint64_t must be 8 bytes!");
 static_assert(sizeof(int64_t)==8,"In x86-64 achitecture, int64_t must be 8 bytes!");
 
-#define __STACK_SIZE_BOOT_32    0x2000
-uint8_t __knStackOfBoot32[__STACK_SIZE_BOOT_32] __aligned__(0x1000);
-
 static void setSystemDescriptor(uint32_t index,uint32_t baseHigh,uint32_t baseLow,
             uint32_t limit,uint8_t dpl,uint8_t code);
 static void bzero(char* p,uint32_t size);
@@ -66,10 +63,8 @@ static void enableLongMode();
 static void setupCR3();
 static void enablePaging();
 
-
 extern "C" void entry32()
 {
-    __asm__ __volatile__("movl %[stack],%%esp": : [stack]"i"(__knStackOfBoot32+__STACK_SIZE_BOOT_32));
     clearFrameBuffer();     // Done!
     clearBSS();             // Done!
     setupKernelPage();      // Done!
@@ -98,6 +93,7 @@ extern "C" void entry32()
         "mov %%ax,%%gs\n"
         : : "a"(__KERNEL_DS)
     );
+    __asm__ __volatile__("movl %[stack],%%esp": : [stack]"i"(reinterpret_cast<uint32_t>(&kstack_end_address)));
     __asm__ __volatile__("ljmp %[cs],$entry64\n": : [cs]"i"(__KERNEL_CS));
 
     __unreachable__();

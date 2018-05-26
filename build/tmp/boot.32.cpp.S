@@ -11,13 +11,6 @@ _ZN4arch3x866commonL15multibootHeaderE:
 	.long	464367618
 	.long	3
 	.long	-464367621
-	.globl	_ZN4arch3x863x644boot17__knStackOfBoot32E
-	.bss
-	.align 4096
-	.type	_ZN4arch3x863x644boot17__knStackOfBoot32E, @object
-	.size	_ZN4arch3x863x644boot17__knStackOfBoot32E, 8192
-_ZN4arch3x863x644boot17__knStackOfBoot32E:
-	.zero	8192
 	.text
 	.globl	entry32
 	.type	entry32, @function
@@ -30,11 +23,6 @@ entry32:
 	movl	%esp, %ebp
 	.cfi_def_cfa_register 5
 	subl	$24, %esp
-#APP
-# 72 "boot.32.cpp" 1
-	movl $_ZN4arch3x863x644boot17__knStackOfBoot32E+8192,%esp
-# 0 "" 2
-#NO_APP
 	call	_ZN4arch3x863x644bootL16clearFrameBufferEv
 	call	_ZN4arch3x863x644bootL8clearBSSEv
 	call	_ZN4arch3x863x644bootL15setupKernelPageEv
@@ -64,13 +52,13 @@ entry32:
 	movl	$_ZN4arch3x863x643GDT5itemsE, %eax
 	movl	%eax, -12(%ebp)
 #APP
-# 92 "boot.32.cpp" 1
+# 87 "boot.32.cpp" 1
 	lgdt -14(%ebp)
 # 0 "" 2
 #NO_APP
 	movl	$32, %eax
 #APP
-# 100 "boot.32.cpp" 1
+# 95 "boot.32.cpp" 1
 	mov %ax,%ds
 mov %ax,%es
 mov %ax,%ss
@@ -78,7 +66,10 @@ mov %ax,%fs
 mov %ax,%gs
 
 # 0 "" 2
-# 101 "boot.32.cpp" 1
+# 96 "boot.32.cpp" 1
+	movl $kstack_end_address,%esp
+# 0 "" 2
+# 97 "boot.32.cpp" 1
 	ljmp $16,$entry64
 
 # 0 "" 2
@@ -268,7 +259,7 @@ _ZN4arch3x863x644bootL6setPAEEv:
 .LFB7:
 	.cfi_startproc
 #APP
-# 153 "boot.32.cpp" 1
+# 149 "boot.32.cpp" 1
 	mov %cr4,%eax
 or $0x20, %eax
 mov %eax,%cr4
@@ -389,7 +380,7 @@ _ZN4arch3x863x644bootL14enableLongModeEv:
 .LFB9:
 	.cfi_startproc
 #APP
-# 203 "boot.32.cpp" 1
+# 199 "boot.32.cpp" 1
 	mov $0xC0000080,%ecx
 rdmsr
 or $0x900,%eax
@@ -408,7 +399,7 @@ _ZN4arch3x863x644bootL8setupCR3Ev:
 	.cfi_startproc
 	movl	$_ZN4arch3x863x648__knPML4E, %eax
 #APP
-# 208 "boot.32.cpp" 1
+# 204 "boot.32.cpp" 1
 	mov %eax,%cr3
 # 0 "" 2
 #NO_APP
@@ -422,7 +413,7 @@ _ZN4arch3x863x644bootL12enablePagingEv:
 .LFB11:
 	.cfi_startproc
 #APP
-# 217 "boot.32.cpp" 1
+# 213 "boot.32.cpp" 1
 	mov %cr0,%eax
 or $0x80000001,%eax
 mov %eax,%cr0

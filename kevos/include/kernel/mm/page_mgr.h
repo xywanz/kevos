@@ -34,6 +34,12 @@ limitations under the License.
 
 KEVOS_NSS_2(kernel,mm);
 
+template<class ByteType>
+static constexpr size_t bitmapByteNeeded(size_t memorySize,size_t pageSize=__PAGE_SIZE)
+{
+	return memorySize/(pageSize*sizeof(ByteType));
+}
+
 class PageManager
 {
 public:
@@ -45,7 +51,7 @@ public:
 	void deallocate(size_t pPagePPN,size_t pageSize=__PAGE_SIZE);
 
 private:
-	// common::Bitmap<DynamicBitmap,unsigned int> m_bitmap;
+	common::Bitmap<bitmapByteNeeded<unsigned int>(1024*1024*128),unsigned int> m_bitmap;
 };
 
 KEVOS_NSE_2(mm,kernel);

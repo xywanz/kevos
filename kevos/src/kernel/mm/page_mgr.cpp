@@ -19,7 +19,7 @@ KEVOS_NSS_2(kernel,mm);
 
 PageManager::PageManager()
 {
-
+	
 }
 
 size_t PageManager::allocate(size_t pageSize)
