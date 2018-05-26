@@ -24,12 +24,12 @@ limitations under the License.
 *  @date     2018/5/25
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_x86_64_COMMON_PORT_H_
-#define _KEVOS_ARCH_x86_64_COMMON_PORT_H_
+#ifndef _KEVOS_ARCH_x86_COMMON_PORT_H_
+#define _KEVOS_ARCH_x86_COMMON_PORT_H_
 
 #include <arch/common/types.h>
 
-KEVOS_NSS_4(kevos,arch,x86_64,common);
+KEVOS_NSS_3(arch,x86,common);
 
 static inline uint8_t inportb(uint16_t port)
 {
@@ -134,6 +134,6 @@ static inline void outportld(uint16_t port,uint32_t value)
 	__asm__ __volatile__("nop\nnop");
 }
 
-KEVOS_NSE_4(common,x86_64,arch,kevos);
+KEVOS_NSE_3(common,x86,arch);
 
 #endif

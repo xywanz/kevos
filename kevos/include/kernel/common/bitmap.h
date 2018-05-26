@@ -30,7 +30,7 @@ limitations under the License.
 #include <sys/portable.h>
 #include <arch/common/types.h>
 
-KEVOS_NSS_3(kevos,kernel,common);
+KEVOS_NSS_2(kernel,common);
 
 #define DynamicBitmap	0
 
@@ -111,6 +111,6 @@ private:
 	}
 };
 
-KEVOS_NSE_3(common,kernel,kevos);
+KEVOS_NSE_2(common,kernel);
 
 #endif

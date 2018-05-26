@@ -13,12 +13,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_ARCH_x86_64_X64_INTERRUPT_H_
-#define _KEVOS_ARCH_x86_64_X64_INTERRUPT_H_
+#ifndef _KEVOS_ARCH_x86_X64_INTERRUPT_H_
+#define _KEVOS_ARCH_x86_X64_INTERRUPT_H_
 
 #include <arch/common/types.h>
 
-KEVOS_NSS_4(kevos,arch,x86_64,x64);
+KEVOS_NSS_3(arch,x86,x64);
 
 extern "C"
 {
@@ -30,6 +30,6 @@ extern "C"
 }
 
 
-KEVOS_NSE_4(x64,x86_64,arch,kevos);
+KEVOS_NSE_3(x64,x86,arch);
 
 #endif

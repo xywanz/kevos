@@ -20,7 +20,7 @@ limitations under the License.
 #include <arch/common/types.h>
 #include <arch/common/paging.h>
 
-KEVOS_NSS_3(kevos,kernel,mm);
+KEVOS_NSS_2(kernel,mm);
 
 class KernMemManager
 {
@@ -43,6 +43,6 @@ private:
 	MemHeader* m_memEnd;
 };
 
-KEVOS_NSE_3(mm,kernel,kevos);
+KEVOS_NSE_2(mm,kernel);
 
 #endif

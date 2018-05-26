@@ -15,7 +15,7 @@ limitations under the License.
 
 #include <kernel/mm/page_mgr.h>
 
-KEVOS_NSS_3(kevos,kernel,mm);
+KEVOS_NSS_2(kernel,mm);
 
 PageManager::PageManager()
 {
@@ -32,4 +32,4 @@ void PageManager::deallocate(size_t pPagePPN,size_t pageSize)
 
 }
 
-KEVOS_NSE_3(mm,kernel,kevos);
+KEVOS_NSE_2(mm,kernel);

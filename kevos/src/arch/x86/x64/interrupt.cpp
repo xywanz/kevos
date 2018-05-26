@@ -13,10 +13,38 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x86_64/x64/gdt.h>
+#include <arch/common/interrupt.h>
+#include <arch/x86/x64/interrupt.h>
+#include <arch/x86/common/i8259a.h>
 
-KEVOS_NSS_4(kevos,arch,x86_64,x64);
+KEVOS_NSS_3(arch,x86,x64);
 
-SystemDescriptor __knGDT[__GDT_SIZE];
+extern "C"
+{
+	void irqCppHandler0()
+	{
+		
+	}
 
-KEVOS_NSE_4(x64,x86_64,arch,kevos);
+	void irqCppHandler1()
+	{
+
+	}
+}
+
+KEVOS_NSE_3(x64,x86,arch);
+
+
+
+KEVOS_NSS_2(arch,common);
+
+
+void InterruptManager::initialize()
+{
+	x86::common::I8259A::initialize();
+}
+
+
+
+KEVOS_NSE_2(common,arch);
+

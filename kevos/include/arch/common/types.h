@@ -44,7 +44,7 @@ limitations under the License.
 #include <arch/common/config.h>
 
 #ifdef __KEVOS_X64__
-	#include <arch/x86_64/x64/types.h>
+	#include <arch/x86/x64/types.h>
 #else
 
 #include <sys/portable.h>

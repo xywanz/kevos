@@ -18,14 +18,20 @@ limitations under the License.
 
 #include <arch/common/types.h>
 
-KEVOS_NSS_3(kevos,arch,common);
+KEVOS_NSS_2(arch,common);
 
 class InterruptManager
 {
 public:
 	static void initialize();
+
+	static void enableIRQ(int num);
+	static void disableIRQ(int num);
+
+	static void enableInterrupts();
+	static void disableInterrupts();
 };
 
-KEVOS_NSE_3(kevos,arch,common);
+KEVOS_NSE_2(common,arch);
 
 #endif

@@ -15,7 +15,7 @@ limitations under the License.
 
 #include <kernel/mm/kmem_mgr.h>
 
-KEVOS_NSS_3(kevos,kernel,mm);
+KEVOS_NSS_2(kernel,mm);
 
 KernMemManager::KernMemManager(size_t vStartPagePPN,size_t vEndPagePPN)
 	:m_memStart(reinterpret_cast<MemHeader*>(vStartPagePPN*__PAGE_SIZE)),
@@ -69,4 +69,4 @@ void KernMemManager::deallocate(void* ptr)
 	}
 }
 
-KEVOS_NSE_3(mm,kernel,kevos);
+KEVOS_NSE_2(mm,kernel);

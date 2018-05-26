@@ -15,7 +15,7 @@ limitations under the License.
 
 #include <kernel/common/bitmap.h>
 
-KEVOS_NSS_3(kevos,kernel,common);
+KEVOS_NSS_2(kernel,common);
 
 template<class ByteType>
 Bitmap<DynamicBitmap,ByteType>::Bitmap(ByteType* bitmap,size_t size)
@@ -55,4 +55,4 @@ bool Bitmap<DynamicBitmap,ByteType>::get(size_t index)const
 	return m_bitmap[byteIndexOf(index)]&(1<<bitIndexOf(index));
 }
 
-KEVOS_NSE_3(common,kernel,kevos);
+KEVOS_NSE_2(common,kernel);

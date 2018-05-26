@@ -1,14 +1,13 @@
 
-#include <arch/x86_64/common/i8259a.h>
+#include <arch/x86/common/i8259a.h>
 
-KEVOS_NSS_4(kevos,arch,x86_64,common);
+KEVOS_NSS_3(arch,x86,common);
 
 uint32_t I8259A::mask=0xFFFF;
 
 void I8259A::initialize()
 {
-	outportb(I8259A_PIC1_DATA_PORT,0xFF);
-    outportb(I8259A_PIC2_DATA_PORT,0xFF);
+	disableAllIRQ();
 
 	outportb(I8259A_PIC1_CONTROL_PORT, 0x11);
     outportb(I8259A_PIC1_DATA_PORT, 0x20);
@@ -24,4 +23,4 @@ void I8259A::initialize()
   		sendEOI(i);
 }
 
-KEVOS_NSE_4(common,x86_64,arch,kevos);
+KEVOS_NSE_3(common,x86,arch);

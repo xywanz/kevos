@@ -13,9 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x86_64/x64/vm.h>
+#include <arch/x86/x64/vm.h>
 
-KEVOS_NSS_4(kevos,arch,x86_64,x64);
+KEVOS_NSS_3(arch,x86,x64);
 
 PML4E 	__knPML4[__KERNEL_PML4_SIZE] 	__aligned__(0x1000);
 PDPTE 	__knPDPT[__KERNEL_PDPT_SIZE]	__aligned__(0x1000);
@@ -82,4 +82,4 @@ VMemMap VirtualMemory::resolveMap(uint64_t pml4PPN,uint64_t vPagePPN)
 	return vmm;
 }
 
-KEVOS_NSE_4(x64,x86_64,arch,kevos);
+KEVOS_NSE_3(x64,x86,arch);

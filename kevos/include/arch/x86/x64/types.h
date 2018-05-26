@@ -24,8 +24,8 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_x86_64_X64_TYPES_H_
-#define _KEVOS_ARCH_x86_64_X64_TYPES_H_
+#ifndef _KEVOS_ARCH_x86_X64_TYPES_H_
+#define _KEVOS_ARCH_x86_X64_TYPES_H_
 
 #include <sys/portable.h>
 

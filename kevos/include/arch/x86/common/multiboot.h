@@ -24,8 +24,8 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_x86_64_COMMON_MULTIBOOT_H_
-#define _KEVOS_ARCH_x86_64_COMMON_MULTIBOOT_H_
+#ifndef _KEVOS_ARCH_x86_COMMON_MULTIBOOT_H_
+#define _KEVOS_ARCH_x86_COMMON_MULTIBOOT_H_
 
 #include <arch/common/types.h>
 
@@ -34,7 +34,7 @@ limitations under the License.
 #define MULTIBOOT_VESA_INFO       (1U<<2)
 #define MULTIBOOT_MAGIC           (0x1BADB002U)
 
-KEVOS_NSS_4(kevos,arch,x86_64,common);
+KEVOS_NSS_3(arch,x86,common);
 
 struct __packed__ ElfSymbolTable
 {
@@ -208,6 +208,6 @@ static constexpr struct __packed__ {
 
 #endif
 
-KEVOS_NSE_4(common,x86_64,arch,kevos);
+KEVOS_NSE_3(common,x86,arch);
 
 #endif

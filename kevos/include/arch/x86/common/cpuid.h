@@ -13,12 +13,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_ARCH_X86_64_COMMON_CPUID_H_
-#define _KEVOS_ARCH_X86_64_COMMON_CPUID_H_
+#ifndef _KEVOS_ARCH_X86_COMMON_CPUID_H_
+#define _KEVOS_ARCH_X86_COMMON_CPUID_H_
 
 #include <arch/common/types.h>
 
-KEVOS_NSS_4(kevos,arch,x86_64,common);
+KEVOS_NSS_3(arch,x86,common);
 
 class CPUID
 {
@@ -277,6 +277,6 @@ private:
 	uint32_t m_reserved						:	5;
 };
 
-KEVOS_NSE_4(common,x86_64,arch,kevos);
+KEVOS_NSE_3(common,x86,arch);
 
 #endif

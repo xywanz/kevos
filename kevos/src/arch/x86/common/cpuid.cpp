@@ -13,9 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x86_64/common/cpuid.h>
+#include <arch/x86/common/cpuid.h>
 
-KEVOS_NSS_4(kevos,arch,x86_64,common);
+KEVOS_NSS_3(arch,x86,common);
 
 void CPUID::cpuid(uint32_t typeInfo)
 {
@@ -89,4 +89,4 @@ CPUInfo::CPUInfo()
 	id.cpuid(2);
 }
 
-KEVOS_NSE_4(common,x86_64,arch,kevos);
+KEVOS_NSE_3(common,x86,arch);

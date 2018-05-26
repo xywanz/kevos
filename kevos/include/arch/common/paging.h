@@ -18,7 +18,7 @@ limitations under the License.
 
 
 #ifdef __KEVOS_X64__
-#include <arch/x86_64/x64/paging.h>
+#include <arch/x86/x64/paging.h>
 #endif
 
 

@@ -32,7 +32,7 @@ limitations under the License.
 #include <arch/common/paging.h>
 #include <kernel/common/bitmap.h>
 
-KEVOS_NSS_3(kevos,kernel,mm);
+KEVOS_NSS_2(kernel,mm);
 
 class PageManager
 {
@@ -48,6 +48,6 @@ private:
 	// common::Bitmap<DynamicBitmap,unsigned int> m_bitmap;
 };
 
-KEVOS_NSE_3(mm,kernel,kevos);
+KEVOS_NSE_2(mm,kernel);
 
 #endif

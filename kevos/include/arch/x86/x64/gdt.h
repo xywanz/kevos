@@ -14,8 +14,8 @@ limitations under the License.
 ==============================================================================*/
 
 /*****************************************************************************
-*  @file     mem_layout.h                            
-*  @brief    段内存分布                 
+*  @file     gdt.h                            
+*  @brief    全局描述符表                 
 *                                   
 *                                            
 *  @author   Kevin Lau                       
@@ -24,31 +24,22 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_x86_64_X64_MEMLAYOUT_H_
-#define _KEVOS_ARCH_x86_64_X64_MEMLAYOUT_H_
+#ifndef _KEVOS_ARCH_x86_X64_GDT_H_
+#define _KEVOS_ARCH_x86_X64_GDT_H_
 
-#include <arch/common/types.h>
+#include <arch/x86/x64/descriptor.h>
 
-KEVOS_NSS_4(kevos,arch,x86_64,x64);
+#define __KERNEL_CS               0x10
+#define __KERNEL_DS               0x20
+#define __USER_CS				  0x30
+#define __USER_DS				  0x40
 
-extern "C" uint64_t text_start_address;
-extern "C" uint64_t text_end_address;
+#define __GDT_SIZE	5
 
-extern "C" uint64_t data_start_address;
-extern "C" uint64_t data_end_address;
+KEVOS_NSS_3(arch,x86,x64);
 
-extern "C" uint64_t bss_start_address;
-extern "C" uint64_t bss_end_address;
+extern SystemDescriptor __knGDT[__GDT_SIZE];
 
-extern "C" uint64_t kernel_start_address;
-extern "C" uint64_t kernel_end_address;
-
-extern "C" uint64_t kheap_start_address;
-extern "C" uint64_t kheap_end_address;
-
-extern "C" uint64_t kstack_start_address;
-extern "C" uint64_t kstack_end_address;
-
-KEVOS_NSE_4(x64,x86_64,arch,kevos);
+KEVOS_NSE_3(x64,x86,arch);
 
 #endif

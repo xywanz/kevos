@@ -26,9 +26,9 @@ kernel.bin:
 
 all:
 	make -C arch/common
-	make -C arch/x86_64/common
-	make -C arch/x86_64/x64
-	make -C arch/x86_64/x64/boot
+	make -C arch/x86/common
+	make -C arch/x86/x64
+	make -C arch/x86/x64/boot
 
 	make -C kernel
 	make -C kernel/common

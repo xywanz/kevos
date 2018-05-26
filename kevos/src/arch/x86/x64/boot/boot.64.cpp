@@ -14,14 +14,15 @@ limitations under the License.
 ==============================================================================*/
 
 #include <sys/portable.h>
-#include <arch/x86_64/x64/mem_layout.h>
-#include <arch/x86_64/x64/gdt.h>
-#include <arch/x86_64/x64/vm.h>
+#include <arch/x86/x64/mem_layout.h>
+#include <arch/x86/x64/gdt.h>
+#include <arch/x86/x64/vm.h>
 #include <kernel/mm/kmem_mgr.h>
 #include <kernel/mm/page_mgr.h>
-#include <arch/x86_64/common/cpuid.h>
+#include <arch/x86/common/cpuid.h>
+#include <arch/common/interrupt.h>
 
-KEVOS_NSS_5(kevos,arch,x86_64,x64,boot);
+KEVOS_NSS_4(arch,x86,x64,boot);
 
 using namespace kernel::mm;
 
@@ -41,6 +42,8 @@ extern "C" void entry64()
     gdtPtr.address=reinterpret_cast<uint64_t>(__knGDT);
     __asm__("lgdt %[gdtr]" : : [gdtr]"m"(gdtPtr));
 
+
+
 	KernMemManager kmm(reinterpret_cast<uint64_t>(&kheap_start_address)>>12,
 		reinterpret_cast<uint64_t>(&kheap_end_address)>>12);
 	void* ptr=kmm.allocate(1);
@@ -50,9 +53,11 @@ extern "C" void entry64()
 
 	common::CPUInfo cpuInfo;
 
+	arch::common::InterruptManager::initialize();
+
 	*((uint16_t*)(0xB8000))=0x7575;
 	while(1);
 }
 
 
-KEVOS_NSE_5(boot,x64,x86_64,arch,kevos);
+KEVOS_NSE_4(boot,x64,x86,arch);

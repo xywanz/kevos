@@ -5,18 +5,18 @@
 #NO_APP
 	.section	.boot,"a",@progbits
 	.align 4
-	.type	_ZN5kevos4arch6x86_646commonL15multibootHeaderE, @object
-	.size	_ZN5kevos4arch6x86_646commonL15multibootHeaderE, 12
-_ZN5kevos4arch6x86_646commonL15multibootHeaderE:
+	.type	_ZN4arch3x866commonL15multibootHeaderE, @object
+	.size	_ZN4arch3x866commonL15multibootHeaderE, 12
+_ZN4arch3x866commonL15multibootHeaderE:
 	.long	464367618
 	.long	3
 	.long	-464367621
-	.globl	_ZN5kevos4arch6x86_643x644boot17__knStackOfBoot32E
+	.globl	_ZN4arch3x863x644boot17__knStackOfBoot32E
 	.bss
 	.align 4096
-	.type	_ZN5kevos4arch6x86_643x644boot17__knStackOfBoot32E, @object
-	.size	_ZN5kevos4arch6x86_643x644boot17__knStackOfBoot32E, 8192
-_ZN5kevos4arch6x86_643x644boot17__knStackOfBoot32E:
+	.type	_ZN4arch3x863x644boot17__knStackOfBoot32E, @object
+	.size	_ZN4arch3x863x644boot17__knStackOfBoot32E, 8192
+_ZN4arch3x863x644boot17__knStackOfBoot32E:
 	.zero	8192
 	.text
 	.globl	entry32
@@ -32,16 +32,16 @@ entry32:
 	subl	$24, %esp
 #APP
 # 72 "boot.32.cpp" 1
-	movl $_ZN5kevos4arch6x86_643x644boot17__knStackOfBoot32E+8192,%esp
+	movl $_ZN4arch3x863x644boot17__knStackOfBoot32E+8192,%esp
 # 0 "" 2
 #NO_APP
-	call	_ZN5kevos4arch6x86_643x644bootL16clearFrameBufferEv
-	call	_ZN5kevos4arch6x86_643x644bootL8clearBSSEv
-	call	_ZN5kevos4arch6x86_643x644bootL15setupKernelPageEv
-	call	_ZN5kevos4arch6x86_643x644bootL6setPAEEv
-	call	_ZN5kevos4arch6x86_643x644bootL8setupCR3Ev
-	call	_ZN5kevos4arch6x86_643x644bootL14enableLongModeEv
-	call	_ZN5kevos4arch6x86_643x644bootL12enablePagingEv
+	call	_ZN4arch3x863x644bootL16clearFrameBufferEv
+	call	_ZN4arch3x863x644bootL8clearBSSEv
+	call	_ZN4arch3x863x644bootL15setupKernelPageEv
+	call	_ZN4arch3x863x644bootL6setPAEEv
+	call	_ZN4arch3x863x644bootL8setupCR3Ev
+	call	_ZN4arch3x863x644bootL14enableLongModeEv
+	call	_ZN4arch3x863x644bootL12enablePagingEv
 	subl	$8, %esp
 	pushl	$1
 	pushl	$0
@@ -49,7 +49,7 @@ entry32:
 	pushl	$0
 	pushl	$0
 	pushl	$1
-	call	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh
+	call	_ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh
 	addl	$32, %esp
 	subl	$8, %esp
 	pushl	$0
@@ -58,7 +58,7 @@ entry32:
 	pushl	$0
 	pushl	$0
 	pushl	$2
-	call	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh
+	call	_ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh
 	addl	$32, %esp
 	subl	$8, %esp
 	pushl	$1
@@ -67,7 +67,7 @@ entry32:
 	pushl	$0
 	pushl	$0
 	pushl	$3
-	call	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh
+	call	_ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh
 	addl	$32, %esp
 	subl	$8, %esp
 	pushl	$0
@@ -76,10 +76,10 @@ entry32:
 	pushl	$0
 	pushl	$0
 	pushl	$4
-	call	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh
+	call	_ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh
 	addl	$32, %esp
 	movw	$79, -14(%ebp)
-	movl	$_ZN5kevos4arch6x86_643x647__knGDTE, %eax
+	movl	$_ZN4arch3x863x647__knGDTE, %eax
 	movl	%eax, -12(%ebp)
 #APP
 # 93 "boot.32.cpp" 1
@@ -104,8 +104,8 @@ mov %ax,%gs
 	.cfi_endproc
 .LFE2:
 	.size	entry32, .-entry32
-	.type	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh, @function
-_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh:
+	.type	_ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh, @function
+_ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh:
 .LFB3:
 	.cfi_startproc
 	subl	$24, %esp
@@ -116,7 +116,7 @@ _ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh:
 	movb	%al, (%esp)
 	movl	28(%esp), %eax
 	sall	$4, %eax
-	addl	$_ZN5kevos4arch6x86_643x647__knGDTE, %eax
+	addl	$_ZN4arch3x863x647__knGDTE, %eax
 	movl	%eax, 20(%esp)
 	movl	40(%esp), %eax
 	movl	%eax, %edx
@@ -182,9 +182,9 @@ _ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh:
 	ret
 	.cfi_endproc
 .LFE3:
-	.size	_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh, .-_ZN5kevos4arch6x86_643x644bootL19setSystemDescriptorEjjjjhh
-	.type	_ZN5kevos4arch6x86_643x644bootL5bzeroEPcj, @function
-_ZN5kevos4arch6x86_643x644bootL5bzeroEPcj:
+	.size	_ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh, .-_ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh
+	.type	_ZN4arch3x863x644bootL5bzeroEPcj, @function
+_ZN4arch3x863x644bootL5bzeroEPcj:
 .LFB4:
 	.cfi_startproc
 	subl	$16, %esp
@@ -233,9 +233,9 @@ _ZN5kevos4arch6x86_643x644bootL5bzeroEPcj:
 	ret
 	.cfi_endproc
 .LFE4:
-	.size	_ZN5kevos4arch6x86_643x644bootL5bzeroEPcj, .-_ZN5kevos4arch6x86_643x644bootL5bzeroEPcj
-	.type	_ZN5kevos4arch6x86_643x644bootL16clearFrameBufferEv, @function
-_ZN5kevos4arch6x86_643x644bootL16clearFrameBufferEv:
+	.size	_ZN4arch3x863x644bootL5bzeroEPcj, .-_ZN4arch3x863x644bootL5bzeroEPcj
+	.type	_ZN4arch3x863x644bootL16clearFrameBufferEv, @function
+_ZN4arch3x863x644bootL16clearFrameBufferEv:
 .LFB5:
 	.cfi_startproc
 	pushl	%ebp
@@ -245,7 +245,7 @@ _ZN5kevos4arch6x86_643x644bootL16clearFrameBufferEv:
 	.cfi_def_cfa_register 5
 	pushl	$2000
 	pushl	$753664
-	call	_ZN5kevos4arch6x86_643x644bootL5bzeroEPcj
+	call	_ZN4arch3x863x644bootL5bzeroEPcj
 	addl	$8, %esp
 	nop
 	leave
@@ -254,9 +254,9 @@ _ZN5kevos4arch6x86_643x644bootL16clearFrameBufferEv:
 	ret
 	.cfi_endproc
 .LFE5:
-	.size	_ZN5kevos4arch6x86_643x644bootL16clearFrameBufferEv, .-_ZN5kevos4arch6x86_643x644bootL16clearFrameBufferEv
-	.type	_ZN5kevos4arch6x86_643x644bootL8clearBSSEv, @function
-_ZN5kevos4arch6x86_643x644bootL8clearBSSEv:
+	.size	_ZN4arch3x863x644bootL16clearFrameBufferEv, .-_ZN4arch3x863x644bootL16clearFrameBufferEv
+	.type	_ZN4arch3x863x644bootL8clearBSSEv, @function
+_ZN4arch3x863x644bootL8clearBSSEv:
 .LFB6:
 	.cfi_startproc
 	pushl	%ebp
@@ -271,7 +271,7 @@ _ZN5kevos4arch6x86_643x644bootL8clearBSSEv:
 	sarl	$3, %eax
 	pushl	%eax
 	pushl	$bss_start_address
-	call	_ZN5kevos4arch6x86_643x644bootL5bzeroEPcj
+	call	_ZN4arch3x863x644bootL5bzeroEPcj
 	addl	$8, %esp
 	nop
 	leave
@@ -280,9 +280,9 @@ _ZN5kevos4arch6x86_643x644bootL8clearBSSEv:
 	ret
 	.cfi_endproc
 .LFE6:
-	.size	_ZN5kevos4arch6x86_643x644bootL8clearBSSEv, .-_ZN5kevos4arch6x86_643x644bootL8clearBSSEv
-	.type	_ZN5kevos4arch6x86_643x644bootL6setPAEEv, @function
-_ZN5kevos4arch6x86_643x644bootL6setPAEEv:
+	.size	_ZN4arch3x863x644bootL8clearBSSEv, .-_ZN4arch3x863x644bootL8clearBSSEv
+	.type	_ZN4arch3x863x644bootL6setPAEEv, @function
+_ZN4arch3x863x644bootL6setPAEEv:
 .LFB7:
 	.cfi_startproc
 #APP
@@ -297,9 +297,9 @@ mov %eax,%cr4
 	ret
 	.cfi_endproc
 .LFE7:
-	.size	_ZN5kevos4arch6x86_643x644bootL6setPAEEv, .-_ZN5kevos4arch6x86_643x644bootL6setPAEEv
-	.type	_ZN5kevos4arch6x86_643x644bootL15setupKernelPageEv, @function
-_ZN5kevos4arch6x86_643x644bootL15setupKernelPageEv:
+	.size	_ZN4arch3x863x644bootL6setPAEEv, .-_ZN4arch3x863x644bootL6setPAEEv
+	.type	_ZN4arch3x863x644bootL15setupKernelPageEv, @function
+_ZN4arch3x863x644bootL15setupKernelPageEv:
 .LFB8:
 	.cfi_startproc
 	pushl	%ebp
@@ -309,25 +309,25 @@ _ZN5kevos4arch6x86_643x644bootL15setupKernelPageEv:
 	.cfi_def_cfa_register 5
 	subl	$48, %esp
 	pushl	$4096
-	pushl	$_ZN5kevos4arch6x86_643x648__knPML4E
-	call	_ZN5kevos4arch6x86_643x644bootL5bzeroEPcj
+	pushl	$_ZN4arch3x863x648__knPML4E
+	call	_ZN4arch3x863x644bootL5bzeroEPcj
 	addl	$8, %esp
 	pushl	$4096
-	pushl	$_ZN5kevos4arch6x86_643x648__knPDPTE
-	call	_ZN5kevos4arch6x86_643x644bootL5bzeroEPcj
+	pushl	$_ZN4arch3x863x648__knPDPTE
+	call	_ZN4arch3x863x644bootL5bzeroEPcj
 	addl	$8, %esp
 	pushl	$2097152
-	pushl	$_ZN5kevos4arch6x86_643x647__knPDTE
-	call	_ZN5kevos4arch6x86_643x644bootL5bzeroEPcj
+	pushl	$_ZN4arch3x863x647__knPDTE
+	call	_ZN4arch3x863x644bootL5bzeroEPcj
 	addl	$8, %esp
 	pushl	$67108864
-	pushl	$_ZN5kevos4arch6x86_643x646__knPTE
-	call	_ZN5kevos4arch6x86_643x644bootL5bzeroEPcj
+	pushl	$_ZN4arch3x863x646__knPTE
+	call	_ZN4arch3x863x644bootL5bzeroEPcj
 	addl	$8, %esp
-	movl	$_ZN5kevos4arch6x86_643x648__knPML4E, -36(%ebp)
-	movl	$_ZN5kevos4arch6x86_643x648__knPDPTE, -40(%ebp)
-	movl	$_ZN5kevos4arch6x86_643x647__knPDTE, -44(%ebp)
-	movl	$_ZN5kevos4arch6x86_643x646__knPTE, -48(%ebp)
+	movl	$_ZN4arch3x863x648__knPML4E, -36(%ebp)
+	movl	$_ZN4arch3x863x648__knPDPTE, -40(%ebp)
+	movl	$_ZN4arch3x863x647__knPDTE, -44(%ebp)
+	movl	$_ZN4arch3x863x646__knPTE, -48(%ebp)
 	movl	$0, -4(%ebp)
 	movl	-40(%ebp), %eax
 	addl	$3, %eax
@@ -401,9 +401,9 @@ _ZN5kevos4arch6x86_643x644bootL15setupKernelPageEv:
 	ret
 	.cfi_endproc
 .LFE8:
-	.size	_ZN5kevos4arch6x86_643x644bootL15setupKernelPageEv, .-_ZN5kevos4arch6x86_643x644bootL15setupKernelPageEv
-	.type	_ZN5kevos4arch6x86_643x644bootL14enableLongModeEv, @function
-_ZN5kevos4arch6x86_643x644bootL14enableLongModeEv:
+	.size	_ZN4arch3x863x644bootL15setupKernelPageEv, .-_ZN4arch3x863x644bootL15setupKernelPageEv
+	.type	_ZN4arch3x863x644bootL14enableLongModeEv, @function
+_ZN4arch3x863x644bootL14enableLongModeEv:
 .LFB9:
 	.cfi_startproc
 #APP
@@ -419,12 +419,12 @@ wrmsr
 	ret
 	.cfi_endproc
 .LFE9:
-	.size	_ZN5kevos4arch6x86_643x644bootL14enableLongModeEv, .-_ZN5kevos4arch6x86_643x644bootL14enableLongModeEv
-	.type	_ZN5kevos4arch6x86_643x644bootL8setupCR3Ev, @function
-_ZN5kevos4arch6x86_643x644bootL8setupCR3Ev:
+	.size	_ZN4arch3x863x644bootL14enableLongModeEv, .-_ZN4arch3x863x644bootL14enableLongModeEv
+	.type	_ZN4arch3x863x644bootL8setupCR3Ev, @function
+_ZN4arch3x863x644bootL8setupCR3Ev:
 .LFB10:
 	.cfi_startproc
-	movl	$_ZN5kevos4arch6x86_643x648__knPML4E, %eax
+	movl	$_ZN4arch3x863x648__knPML4E, %eax
 #APP
 # 209 "boot.32.cpp" 1
 	mov %eax,%cr3
@@ -434,9 +434,9 @@ _ZN5kevos4arch6x86_643x644bootL8setupCR3Ev:
 	ret
 	.cfi_endproc
 .LFE10:
-	.size	_ZN5kevos4arch6x86_643x644bootL8setupCR3Ev, .-_ZN5kevos4arch6x86_643x644bootL8setupCR3Ev
-	.type	_ZN5kevos4arch6x86_643x644bootL12enablePagingEv, @function
-_ZN5kevos4arch6x86_643x644bootL12enablePagingEv:
+	.size	_ZN4arch3x863x644bootL8setupCR3Ev, .-_ZN4arch3x863x644bootL8setupCR3Ev
+	.type	_ZN4arch3x863x644bootL12enablePagingEv, @function
+_ZN4arch3x863x644bootL12enablePagingEv:
 .LFB11:
 	.cfi_startproc
 #APP
@@ -451,7 +451,7 @@ mov %eax,%cr0
 	ret
 	.cfi_endproc
 .LFE11:
-	.size	_ZN5kevos4arch6x86_643x644bootL12enablePagingEv, .-_ZN5kevos4arch6x86_643x644bootL12enablePagingEv
+	.size	_ZN4arch3x863x644bootL12enablePagingEv, .-_ZN4arch3x863x644bootL12enablePagingEv
 #APP
 	.code64
 	.align 8

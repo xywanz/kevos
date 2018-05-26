@@ -24,13 +24,13 @@ limitations under the License.
 *  @date     2018/5/25
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_x86_64_COMMON_I8259A_H_
-#define _KEVOS_ARCH_x86_64_COMMON_I8259A_H_
+#ifndef _KEVOS_ARCH_x86_COMMON_I8259A_H_
+#define _KEVOS_ARCH_x86_COMMON_I8259A_H_
 
 #include <arch/common/types.h>
-#include <arch/x86_64/common/port.h>
+#include <arch/x86/common/port.h>
 
-KEVOS_NSS_4(kevos,arch,x86_64,common);
+KEVOS_NSS_3(arch,x86,common);
 
 #define I8259A_PIC1_CONTROL_PORT	0x20
 #define I8259A_PIC2_CONTROL_PORT	0xA0
@@ -49,7 +49,14 @@ public:
 		if(num&8)
 			outportb(I8259A_PIC2_DATA_PORT,mask>>8);
 		else
-			outportb(I8259A_PIC1_DATA_PORT,mask%8);
+			outportb(I8259A_PIC1_DATA_PORT,mask&0xFF);
+	}
+
+	static void enableAllIRQ()
+	{
+		mask = 0;
+		outportb(I8259A_PIC1_DATA_PORT,0);
+		outportb(I8259A_PIC2_DATA_PORT,0);
 	}
 
 	static void disableIRQ(uint16_t num)
@@ -58,7 +65,14 @@ public:
 		if(num&8)
 			outportb(I8259A_PIC2_DATA_PORT,mask>>8);
 		else
-			outportb(I8259A_PIC1_DATA_PORT,mask%8);	
+			outportb(I8259A_PIC1_DATA_PORT,mask&0xFF);	
+	}
+
+	static void disableAllIRQ()
+	{
+		mask = 0xFFFF;
+		outportb(I8259A_PIC1_DATA_PORT,0xFF);
+		outportb(I8259A_PIC2_DATA_PORT,0xFF);
 	}
 
 	static void sendEOI(uint16_t num)
@@ -72,6 +86,6 @@ private:
 
 };
 
-KEVOS_NSE_4(common,x86_64,arch,kevos);
+KEVOS_NSE_3(common,x86,arch);
 
 #endif

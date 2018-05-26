@@ -31,16 +31,16 @@ __asm__(".align 4");
 
 
 #include <arch/common/config.h>
-#include <arch/x86_64/x64/mem_layout.h>
-#include <arch/x86_64/x64/paging.h>
-#include <arch/x86_64/x64/gdt.h>
-#include <arch/x86_64/x64/vm.h>
+#include <arch/x86/x64/mem_layout.h>
+#include <arch/x86/x64/paging.h>
+#include <arch/x86/x64/gdt.h>
+#include <arch/x86/x64/vm.h>
 
 #ifdef __KEVOS_MULTIBOOT__
-#include <arch/x86_64/common/multiboot.h>
+#include <arch/x86/common/multiboot.h>
 #endif
 
-KEVOS_NSS_5(kevos,arch,x86_64,x64,boot);
+KEVOS_NSS_4(arch,x86,x64,boot);
 
 
 static_assert(sizeof(uint8_t)==1,"In x86-64 achitecture, uint8_t must be 1 byte!");
@@ -219,7 +219,7 @@ static void enablePaging()
 }
 
 
-KEVOS_NSE_5(x64,x86_64,arch,kevos,boot);
+KEVOS_NSE_4(boot,x64,x86,arch);
 
 __asm__(".code64");
 __asm__(".align 8");
