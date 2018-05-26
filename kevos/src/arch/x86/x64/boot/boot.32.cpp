@@ -31,10 +31,10 @@ __asm__(".align 4");
 
 
 #include <arch/common/config.h>
-#include <arch/x86/x64/mem_layout.h>
 #include <arch/x86/x64/paging.h>
 #include <arch/x86/x64/gdt.h>
 #include <arch/x86/x64/vm.h>
+#include <kernel/mm/mem_layout.h>
 
 #ifdef __KEVOS_MULTIBOOT__
 #include <arch/x86/common/multiboot.h>
@@ -69,7 +69,7 @@ static void enablePaging();
 
 extern "C" void entry32()
 {
-    __asm__("movl %[stack],%%esp": : [stack]"i"(__knStackOfBoot32+__STACK_SIZE_BOOT_32));
+    __asm__ __volatile__("movl %[stack],%%esp": : [stack]"i"(__knStackOfBoot32+__STACK_SIZE_BOOT_32));
     clearFrameBuffer();     // Done!
     clearBSS();             // Done!
     setupKernelPage();      // Done!
@@ -85,11 +85,12 @@ extern "C" void entry32()
     {
         uint16_t limit;
         uint32_t address;
-    } gdtPtr;
-    gdtPtr.limit=sizeof(GDT::items)-1;
-    gdtPtr.address=reinterpret_cast<uint32_t>(GDT::items);
-    __asm__("lgdt %[gdtr]" : : [gdtr]"m"(gdtPtr));
-    __asm__(
+    } gdtPtr={
+        sizeof(GDT::items)-1,
+        reinterpret_cast<uint32_t>(GDT::items)
+    };
+    __asm__ __volatile__("lgdt %[gdtr]" : : [gdtr]"m"(gdtPtr));
+    __asm__ __volatile__(
         "mov %%ax,%%ds\n"
         "mov %%ax,%%es\n"
         "mov %%ax,%%ss\n"
@@ -97,7 +98,7 @@ extern "C" void entry32()
         "mov %%ax,%%gs\n"
         : : "a"(__KERNEL_DS)
     );
-    __asm__("ljmp %[cs],$entry64\n": : [cs]"i"(__KERNEL_CS));
+    __asm__ __volatile__("ljmp %[cs],$entry64\n": : [cs]"i"(__KERNEL_CS));
 
     __unreachable__();
 }
@@ -145,7 +146,7 @@ static void clearBSS()
 /*PAE是CR4第5位*/
 static void setPAE()
 {
-    __asm__(
+    __asm__ __volatile__(
         "mov %cr4,%eax\n"
         "or $0x20, %eax\n"
         "mov %eax,%cr4\n"
@@ -194,7 +195,7 @@ static void setupKernelPage()
 
 static void enableLongMode()
 {
-    __asm__(
+    __asm__ __volatile__(
         "mov $0xC0000080,%ecx\n"
         "rdmsr\n"
         "or $0x900,%eax\n"
@@ -204,12 +205,12 @@ static void enableLongMode()
 
 static void setupCR3()
 {
-    __asm__("mov %[pd],%%cr3" : : [pd]"r"(__knPML4));
+    __asm__ __volatile__("mov %[pd],%%cr3" : : [pd]"r"(__knPML4));
 }
 
 static void enablePaging()
 {
-    __asm__(
+    __asm__ __volatile__(
         "mov %cr0,%eax\n"
         "or $0x80000001,%eax\n"
         "mov %eax,%cr0\n"

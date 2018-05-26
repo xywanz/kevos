@@ -24,31 +24,27 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_x86_X64_MEMLAYOUT_H_
-#define _KEVOS_ARCH_x86_X64_MEMLAYOUT_H_
+#ifndef _KEVOS_KERNEL_MM_MEMLAYOUT_H_
+#define _KEVOS_KERNEL_MM_MEMLAYOUT_H_
 
-#include <arch/common/types.h>
+#include <sys/portable.h>
 
-KEVOS_NSS_3(arch,x86,x64);
+extern unsigned int text_start_address;
+extern unsigned int text_end_address;
 
-extern "C" uint64_t text_start_address;
-extern "C" uint64_t text_end_address;
+extern unsigned int data_start_address;
+extern unsigned int data_end_address;
 
-extern "C" uint64_t data_start_address;
-extern "C" uint64_t data_end_address;
+extern unsigned int bss_start_address;
+extern unsigned int bss_end_address;
 
-extern "C" uint64_t bss_start_address;
-extern "C" uint64_t bss_end_address;
+extern unsigned int kernel_start_address;
+extern unsigned int kernel_end_address;
 
-extern "C" uint64_t kernel_start_address;
-extern "C" uint64_t kernel_end_address;
+extern unsigned int kheap_start_address;
+extern unsigned int kheap_end_address;
 
-extern "C" uint64_t kheap_start_address;
-extern "C" uint64_t kheap_end_address;
-
-extern "C" uint64_t kstack_start_address;
-extern "C" uint64_t kstack_end_address;
-
-KEVOS_NSE_3(x64,x86,arch);
+extern unsigned int kstack_start_address;
+extern unsigned int kstack_end_address;
 
 #endif

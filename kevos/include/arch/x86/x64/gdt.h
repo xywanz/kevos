@@ -39,14 +39,12 @@ KEVOS_NSS_3(arch,x86,x64);
 class GDT
 {
 public:
+	static void setItem(size_t index,uint64_t base,uint32_t limit,
+						uint8_t dpl,uint8_t code,uint8_t tss);
+	static void initialize();
 
-	static void load();
-
-	static void setItem(uint32_t index,uint32_t baseHigh,uint32_t baseLow,
-            	uint32_t limit,uint8_t dpl,uint8_t code,uint8_t tss);
-
-	static constexpr uint32_t gdtSize=5;
-	static SystemDescriptor items[5];
+	static constexpr uint16_t gdtSize=6;
+	static SystemDescriptor items[gdtSize];
 };
 
 KEVOS_NSE_3(x64,x86,arch);

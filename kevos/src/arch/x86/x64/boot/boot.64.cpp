@@ -14,18 +14,19 @@ limitations under the License.
 ==============================================================================*/
 
 #include <sys/portable.h>
-#include <arch/x86/x64/mem_layout.h>
 #include <arch/x86/x64/gdt.h>
 #include <arch/x86/x64/vm.h>
-#include <kernel/mm/kmem_mgr.h>
+#include <kernel/mm/mem_layout.h>
+#include <kernel/mm/heap_mem.h>
+#include <kernel/mm/kheap_mem.h>
 #include <kernel/mm/page_mgr.h>
 #include <arch/x86/common/cpuid.h>
 #include <arch/common/interrupt.h>
+#include <kernel/mm/new.h>
 
 KEVOS_NSS_4(arch,x86,x64,boot);
 
 using namespace kernel::mm;
-
 
 extern "C" void entry64()
 {
@@ -33,18 +34,19 @@ extern "C" void entry64()
 
 	__asm__("mov %%rax, %%cr3" : : "a"(__knPML4));
 
-	GDT::load();
 
-	KernMemManager kmm(reinterpret_cast<uint64_t>(&kheap_start_address)>>12,
-		reinterpret_cast<uint64_t>(&kheap_end_address)>>12);
-	void* ptr=kmm.allocate(1);
-	kmm.deallocate(ptr);
+	GDT::initialize();
 
 	PageManager pm;
 
 	common::CPUInfo cpuInfo;
 
 	arch::common::InterruptManager::initialize();
+
+	KernelHeap::initialize();
+
+	int* a=new int[5];
+	delete[]  a;
 
 	*((uint16_t*)(0xB8000))=0x7575;
 	while(1);

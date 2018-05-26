@@ -13,36 +13,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_KERNEL_MM_KMEMMGR_H_
-#define _KEVOS_KERNEL_MM_KMEMMGR_H_
-
-#include <sys/portable.h>
-#include <arch/common/types.h>
-#include <arch/common/paging.h>
+#include <kernel/mm/kheap_mem.h>
+#include <kernel/mm/mem_layout.h>
 
 KEVOS_NSS_2(kernel,mm);
 
-class KernMemManager
+HeapMemory KernelHeap::khm;
+
+void KernelHeap::initialize()
 {
-public:
-	KernMemManager(size_t vStartPagePPN,size_t vEndPagePPN);
-
-	void* allocate(size_t size);
-
-	void deallocate(void* ptr);
-
-private:
-	struct MemHeader
-	{
-		MemHeader* next;
-		MemHeader* prev;
-		size_t used;
-	};
-
-	MemHeader* m_memStart;
-	MemHeader* m_memEnd;
-};
+	khm.setup(reinterpret_cast<size_t>(&kheap_start_address),
+		reinterpret_cast<size_t>(&kheap_end_address));
+}
 
 KEVOS_NSE_2(mm,kernel);
-
-#endif

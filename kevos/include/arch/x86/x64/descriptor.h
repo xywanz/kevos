@@ -29,14 +29,14 @@ limitations under the License.
 
 #include <arch/common/types.h>
 
-#define __SEGMENT_DATA_R          0x0
-#define __SEGMENT_DATA_RW         0x2
-#define __SEGMENT_DATA_RED        0x4
-#define __SEGMENT_DATA_RWED       0x6
-#define __SEGMENT_CODE_X          0x8
-#define __SEGMENT_CODE_XR         0xA
-#define __SEGMENT_CODE_XC         0xC
-#define __SEGMENT_CODE_XRC        0xE
+#define SEGMENT_DATA_R          0x0
+#define SEGMENT_DATA_RW         0x2
+#define SEGMENT_DATA_RED        0x4
+#define SEGMENT_DATA_RWED       0x6
+#define SEGMENT_CODE_X          0x8
+#define SEGMENT_CODE_XR         0xA
+#define SEGMENT_CODE_XC         0xC
+#define SEGMENT_CODE_XRC        0xE
 
 
 KEVOS_NSS_3(arch,x86,x64);
@@ -115,7 +115,10 @@ struct __packed__ SystemDescriptor
 };
 
 
-struct InterruptDescriptor
+#define GATE_TYPE_INTERRUPT     14
+#define GATE_TYPE_TRAP          15
+
+struct __packed__ GateDescriptor
 {
     uint16_t offsetLow;
     uint16_t codeSelector;

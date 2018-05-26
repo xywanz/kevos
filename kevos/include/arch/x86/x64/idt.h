@@ -33,10 +33,11 @@ KEVOS_NSS_3(arch,x86,x64);
 class IDT
 {
 public:
+	static void setItem(size_t index,void (*handler)());
 	static void initialize();
 
-	static constexpr idtSize=128;
-	static InterruptDescriptor items[idtSize];
+	static constexpr uint16_t idtSize=128;
+	static GateDescriptor items[idtSize];
 };
 
 KEVOS_NSE_3(x64,x86,arch);

@@ -13,13 +13,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <kernel/mm/kmem_mgr.h>
+#include <kernel/mm/heap_mem.h>
 
 KEVOS_NSS_2(kernel,mm);
 
-KernMemManager::KernMemManager(size_t vStartPagePPN,size_t vEndPagePPN)
-	:m_memStart(reinterpret_cast<MemHeader*>(vStartPagePPN*__PAGE_SIZE)),
-	 m_memEnd(reinterpret_cast<MemHeader*>(vEndPagePPN*__PAGE_SIZE)-1)
+HeapMemory::HeapMemory(size_t vStartAddr,size_t vEndAddr)
+	:m_memStart(reinterpret_cast<MemoryHeader*>(vStartAddr)),
+	 m_memEnd(reinterpret_cast<MemoryHeader*>(vEndAddr)-1)
 {
 	m_memEnd->next=nullptr;
 	m_memEnd->prev=m_memStart;
@@ -29,9 +29,21 @@ KernMemManager::KernMemManager(size_t vStartPagePPN,size_t vEndPagePPN)
 	m_memStart->used=0;
 }
 
-void* KernMemManager::allocate(size_t size)
+void HeapMemory::setup(size_t vStartAddr,size_t vEndAddr)
 {
-	size_t nsize=size+sizeof(MemHeader);
+	m_memStart=reinterpret_cast<MemoryHeader*>(vStartAddr),
+	m_memEnd=reinterpret_cast<MemoryHeader*>(vEndAddr)-1;
+	m_memEnd->next=nullptr;
+	m_memEnd->prev=m_memStart;
+	m_memEnd->used=1;
+	m_memStart->next=m_memEnd;
+	m_memStart->prev=nullptr;
+	m_memStart->used=0;
+}
+
+void* HeapMemory::allocate(size_t size)
+{
+	size_t nsize=size+sizeof(MemoryHeader);
 	for(auto block=m_memStart;block!=m_memEnd;block=block->next)
 	{
 		size_t blockSize=reinterpret_cast<size_t>(block->next)-reinterpret_cast<size_t>(block);
@@ -39,9 +51,9 @@ void* KernMemManager::allocate(size_t size)
 			continue;
 		block->used=1;
 		size_t rest=blockSize-nsize;
-		if(rest>sizeof(MemHeader))
+		if(rest>sizeof(MemoryHeader))
 		{
-			MemHeader* nnode=reinterpret_cast<MemHeader*>(reinterpret_cast<char*>(block)+nsize);
+			MemoryHeader* nnode=reinterpret_cast<MemoryHeader*>(reinterpret_cast<char*>(block)+nsize);
 			nnode->used=0;
 			nnode->next=block->next;
 			nnode->prev=block;
@@ -52,9 +64,9 @@ void* KernMemManager::allocate(size_t size)
 	return 0;
 }
 
-void KernMemManager::deallocate(void* ptr)
+void HeapMemory::deallocate(void* ptr)
 {
-	MemHeader* rnode=reinterpret_cast<MemHeader*>(ptr)-1;
+	MemoryHeader* rnode=reinterpret_cast<MemoryHeader*>(ptr)-1;
 	rnode->used=0;
 	if(!rnode->prev->used)
 	{

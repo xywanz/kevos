@@ -59,8 +59,6 @@ SECTIONS
     *(COMMON) /* common symbols, usually placed in .bss */
     . = ALIGN(4096);
     bss_end_address = .;
-
-    PROVIDE(kernel_end_address = .);
   }
 
   .kern ALIGN(4096) :
@@ -76,6 +74,7 @@ SECTIONS
     . = kstack_start_address + 0x1000000;
     . = ALIGN(4096);
     kstack_end_address = .;
+    PROVIDE(kernel_end_address = .);
   }
 
 }
