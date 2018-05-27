@@ -75,7 +75,7 @@ struct __packed__ VMemMap
 	uint64_t pml4Index;
 	uint64_t pdptIndex;
 	uint64_t pdtIndex;
-	uint64_t ptIndex;		
+	uint64_t ptIndex;
 };
 
 /**
@@ -140,6 +140,10 @@ public:
 	}
 
 private:
+
+	template<class T>
+	static void setPagingEntry(T* entries,size_t index,size_t ppn,
+			uint64_t isToClear,uint64_t userAccessable,uint64_t writable);
 
 /**
  * @brief 管理PML4的物理页面号，代表了整个虚拟内存

@@ -45,16 +45,16 @@ class PageManager
 {
 public:
 
-	PageManager();
+	static void initialize();
 
-	size_t allocate(size_t pageSize=__PAGE_SIZE);
+	static size_t allocate(size_t pageSize=__PAGE_SIZE);
 
-	void deallocate(size_t pPagePPN,size_t pageSize=__PAGE_SIZE);
+	static void deallocate(size_t pPagePPN,size_t pageSize=__PAGE_SIZE);
 
 private:
-	size_t m_size;
-	common::Bitmap<bitmapByteNeeded<unsigned int>(1024*1024*128),unsigned int> m_bitmap;
-	size_t m_cache;
+	static size_t m_size;
+	static common::Bitmap<bitmapByteNeeded<unsigned int>(1024*1024*128),unsigned int> m_bitmap;
+	static size_t m_cache;
 };
 
 KEVOS_NSE_2(mm,kernel);

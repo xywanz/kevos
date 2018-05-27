@@ -14,17 +14,18 @@ limitations under the License.
 ==============================================================================*/
 
 #include <sys/portable.h>
+#include <arch/common/interrupt.h>
+#include <arch/x86/common/cpuid.h>
 #include <arch/x86/x64/gdt.h>
 #include <arch/x86/x64/vm.h>
 #include <kernel/mm/mem_layout.h>
 #include <kernel/mm/heap_mem.h>
 #include <kernel/mm/kheap_mem.h>
 #include <kernel/mm/page_mgr.h>
-#include <arch/x86/common/cpuid.h>
-#include <arch/common/interrupt.h>
 #include <kernel/mm/new.h>
 
 #include <stdlib.h>
+#include <stdio.h>
 
 KEVOS_NSS_4(arch,x86,x64,boot);
 
@@ -47,23 +48,30 @@ extern "C" void entry64()
 	__asm__("mov %%rax, %%cr3" : : "a"(__knPML4));
 
 	GDT::initialize();
-
-	PageManager pm;
-
-	uint64_t s=pm.allocate();
-
-	common::CPUInfo cpuInfo;
-
+	KernelHeap::initialize();
+	PageManager::initialize();
 	arch::common::InterruptManager::initialize();
 
-	KernelHeap::initialize();
+	common::CPUInfo cpuInfo=common::CPUInfo::instance();
+
+	int* b=new int;
+	delete b;
 
 	int* a=new int[5];
 	delete[]  a;
 
 	char buf[16];
-	itoa(s,buf,10);
+	itoa(PageManager::allocate(),buf,16);
 	print(0,buf);
+
+	itoa(PageManager::allocate(),buf,16);
+	print(30,buf);
+
+	size_t pnn=PageManager::allocate();
+	PageManager::deallocate(pnn);
+
+	VirtualMemory vm;
+	vm.mapPage(PageManager::allocate(),0,1);
 
 	confirmImAlive();
 	while(1);

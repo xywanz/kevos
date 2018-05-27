@@ -39,7 +39,21 @@ class CPUInfo
 {
 public:
 
-	CPUInfo();
+	static CPUInfo& instance()
+	{
+		if(!cpuInfo)
+		{
+			cpuInfo=new CPUInfo();
+		}
+		return *cpuInfo;
+	}
+
+	static void release()
+	{
+		if(cpuInfo)
+			delete cpuInfo;
+		cpuInfo=nullptr;
+	}
 
 	uint32_t maxTypeInfo()const
 	{
@@ -232,6 +246,9 @@ public:
 	}
 
 private:
+	CPUInfo();
+	static CPUInfo* cpuInfo;
+
 	uint32_t m_maxTypeInfo;
 	char 	 m_identification[13];
 

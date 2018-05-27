@@ -17,7 +17,11 @@ limitations under the License.
 
 KEVOS_NSS_2(kernel,mm);
 
-PageManager::PageManager()
+size_t PageManager::m_size=0;
+common::Bitmap<bitmapByteNeeded<unsigned int>(1024*1024*128),unsigned int> PageManager::m_bitmap;
+size_t PageManager::m_cache=0;
+
+void PageManager::initialize()
 {
 	m_size=m_bitmap.size();
 	size_t i;
@@ -35,7 +39,7 @@ size_t PageManager::allocate(size_t pageSize)
 		if(__likely__(!m_bitmap.get(m_cache)))
 		{
 			m_bitmap.set(m_cache);
-			return (m_cache++)*pageSize;
+			return m_cache++;
 		}
 	}
 	while(1)
@@ -45,7 +49,7 @@ size_t PageManager::allocate(size_t pageSize)
 			if(!m_bitmap.get(m_cache))
 			{
 				m_bitmap.set(m_cache);
-				return (m_cache++)*pageSize;
+				return m_cache++;
 			}
 		}
 	}

@@ -31,6 +31,8 @@ void CPUID::cpuid(uint32_t typeInfo)
 	);
 }
 
+CPUInfo* CPUInfo::cpuInfo=nullptr;
+
 CPUInfo::CPUInfo()
 {
 	CPUID id;
