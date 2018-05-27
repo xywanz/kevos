@@ -91,23 +91,28 @@ public:
 /**
  * @brief 将物理页面映射到虚拟页面
  *
- * @param vPagePPN 		虚拟页面号
- * @param pPagePPN 		物理页面号
+ * @param vpn 			虚拟页面号
+ * @param ppn 			物理页面号
  * @param userAccess	用户态可访问
  * @param pageSize 		页面大小
  * @return				是否成功映射		
  */
-	void mapPage(uint64_t vPagePPN,uint64_t pPagePPN,uint64_t userAccessable,uint64_t pageSize=__PAGE_SIZE);
+	void mapPage(uint64_t vpn,uint64_t ppn,uint64_t userAccessable,uint64_t pageSize=__PAGE_SIZE);
 
-	void fillPageFrame(uint64_t vPagePPN,uint64_t userAccessable,uint64_t pageSize=__PAGE_SIZE);
+	void fillPageFrame(uint64_t vpn,uint64_t userAccessable,uint64_t pageSize=__PAGE_SIZE);
 
 /**
  * @brief 将虚拟页面的映射取消
  *
- * @param vPagePPN 		虚拟页面号
+ * @param vpn 			虚拟页面号
  * @return				是否成功取消映射		
  */
-	void unmapPage(uint64_t vPagePPN);
+	void unmapPage(uint64_t vpn);
+
+	uint64_t getPML4PPN()const
+	{
+		return m_pml4PPN;
+	}
 
 /**
  * @brief 计算页面号为ppn的页面的地址，可以是虚拟页面号也可以是物理页面号
@@ -125,23 +130,32 @@ public:
  * @brief 该函数用于解析虚拟页面号在PML4下的映射信息，暂时只支持计算4KB页面
  *
  * @param pml4PPN 	虚拟页面所在的PML4的物理页面号
- * @param vPagePPN	虚拟页面的页面号
+ * @param vpn		虚拟页面的页面号
  * @return 			VMemMap结构，包含虚拟地址所在的页面结构表项地址、页面号、索引以及页面大小
  */
-	static VMemMap resolveMap(uint64_t pml4PPN,uint64_t vPagePPN);
+	static VMemMap resolveMap(uint64_t pml4PPN,uint64_t vpn);
 
 /**
  * @brief 该函数用于解析虚拟页面号在类实例中的PML4下的映射信息，暂时只支持计算4KB页面
  *
- * @param vPagePPN	虚拟页面的页面号
+ * @param vpn		虚拟页面的页面号
  * @return 			VMemMap结构，包含虚拟地址所在的页面结构表项地址、页面号、索引以及页面大小
  */
-	VMemMap resolveMap(uint64_t vPagePPN)
+	VMemMap resolveMap(uint64_t vpn)
 	{
-		return resolveMap(m_pml4PPN,vPagePPN);
+		return resolveMap(m_pml4PPN,vpn);
 	}
 
+	static void mapKernelPage(uint64_t vpn,uint64_t ppn);
+
+	static void unmapKernelPage(uint64_t vpn);
+
 private:
+
+	static void refreshPaging()
+	{
+		__asm__ __volatile__("movq %%cr3, %%rax; movq %%rax, %%cr3;" ::: "%rax");
+	}
 
 	template<class T>
 	static void setPagingEntry(T* entries,size_t index,size_t ppn,

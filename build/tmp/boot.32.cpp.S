@@ -15,7 +15,7 @@ _ZN4arch3x866commonL15multibootHeaderE:
 	.globl	entry32
 	.type	entry32, @function
 entry32:
-.LFB2:
+.LFB4:
 	.cfi_startproc
 	pushl	%ebp
 	.cfi_def_cfa_offset 8
@@ -75,11 +75,11 @@ mov %ax,%gs
 # 0 "" 2
 #NO_APP
 	.cfi_endproc
-.LFE2:
+.LFE4:
 	.size	entry32, .-entry32
 	.type	_ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh, @function
 _ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh:
-.LFB3:
+.LFB5:
 	.cfi_startproc
 	subl	$24, %esp
 	.cfi_def_cfa_offset 28
@@ -154,11 +154,11 @@ _ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh:
 	.cfi_def_cfa_offset 4
 	ret
 	.cfi_endproc
-.LFE3:
+.LFE5:
 	.size	_ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh, .-_ZN4arch3x863x644bootL19setSystemDescriptorEjjjjhh
 	.type	_ZN4arch3x863x644bootL5bzeroEPcj, @function
 _ZN4arch3x863x644bootL5bzeroEPcj:
-.LFB4:
+.LFB6:
 	.cfi_startproc
 	subl	$16, %esp
 	.cfi_def_cfa_offset 20
@@ -205,11 +205,11 @@ _ZN4arch3x863x644bootL5bzeroEPcj:
 	.cfi_def_cfa_offset 4
 	ret
 	.cfi_endproc
-.LFE4:
+.LFE6:
 	.size	_ZN4arch3x863x644bootL5bzeroEPcj, .-_ZN4arch3x863x644bootL5bzeroEPcj
 	.type	_ZN4arch3x863x644bootL16clearFrameBufferEv, @function
 _ZN4arch3x863x644bootL16clearFrameBufferEv:
-.LFB5:
+.LFB7:
 	.cfi_startproc
 	pushl	%ebp
 	.cfi_def_cfa_offset 8
@@ -226,11 +226,11 @@ _ZN4arch3x863x644bootL16clearFrameBufferEv:
 	.cfi_def_cfa 4, 4
 	ret
 	.cfi_endproc
-.LFE5:
+.LFE7:
 	.size	_ZN4arch3x863x644bootL16clearFrameBufferEv, .-_ZN4arch3x863x644bootL16clearFrameBufferEv
 	.type	_ZN4arch3x863x644bootL8clearBSSEv, @function
 _ZN4arch3x863x644bootL8clearBSSEv:
-.LFB6:
+.LFB8:
 	.cfi_startproc
 	pushl	%ebp
 	.cfi_def_cfa_offset 8
@@ -252,11 +252,11 @@ _ZN4arch3x863x644bootL8clearBSSEv:
 	.cfi_def_cfa 4, 4
 	ret
 	.cfi_endproc
-.LFE6:
+.LFE8:
 	.size	_ZN4arch3x863x644bootL8clearBSSEv, .-_ZN4arch3x863x644bootL8clearBSSEv
 	.type	_ZN4arch3x863x644bootL6setPAEEv, @function
 _ZN4arch3x863x644bootL6setPAEEv:
-.LFB7:
+.LFB9:
 	.cfi_startproc
 #APP
 # 149 "boot.32.cpp" 1
@@ -269,11 +269,11 @@ mov %eax,%cr4
 	nop
 	ret
 	.cfi_endproc
-.LFE7:
+.LFE9:
 	.size	_ZN4arch3x863x644bootL6setPAEEv, .-_ZN4arch3x863x644bootL6setPAEEv
 	.type	_ZN4arch3x863x644bootL15setupKernelPageEv, @function
 _ZN4arch3x863x644bootL15setupKernelPageEv:
-.LFB8:
+.LFB10:
 	.cfi_startproc
 	pushl	%ebp
 	.cfi_def_cfa_offset 8
@@ -373,11 +373,11 @@ _ZN4arch3x863x644bootL15setupKernelPageEv:
 	.cfi_def_cfa 4, 4
 	ret
 	.cfi_endproc
-.LFE8:
+.LFE10:
 	.size	_ZN4arch3x863x644bootL15setupKernelPageEv, .-_ZN4arch3x863x644bootL15setupKernelPageEv
 	.type	_ZN4arch3x863x644bootL14enableLongModeEv, @function
 _ZN4arch3x863x644bootL14enableLongModeEv:
-.LFB9:
+.LFB11:
 	.cfi_startproc
 #APP
 # 199 "boot.32.cpp" 1
@@ -391,11 +391,11 @@ wrmsr
 	nop
 	ret
 	.cfi_endproc
-.LFE9:
+.LFE11:
 	.size	_ZN4arch3x863x644bootL14enableLongModeEv, .-_ZN4arch3x863x644bootL14enableLongModeEv
 	.type	_ZN4arch3x863x644bootL8setupCR3Ev, @function
 _ZN4arch3x863x644bootL8setupCR3Ev:
-.LFB10:
+.LFB12:
 	.cfi_startproc
 	movl	$_ZN4arch3x863x648__knPML4E, %eax
 #APP
@@ -406,11 +406,11 @@ _ZN4arch3x863x644bootL8setupCR3Ev:
 	nop
 	ret
 	.cfi_endproc
-.LFE10:
+.LFE12:
 	.size	_ZN4arch3x863x644bootL8setupCR3Ev, .-_ZN4arch3x863x644bootL8setupCR3Ev
 	.type	_ZN4arch3x863x644bootL12enablePagingEv, @function
 _ZN4arch3x863x644bootL12enablePagingEv:
-.LFB11:
+.LFB13:
 	.cfi_startproc
 #APP
 # 213 "boot.32.cpp" 1
@@ -423,7 +423,7 @@ mov %eax,%cr0
 	nop
 	ret
 	.cfi_endproc
-.LFE11:
+.LFE13:
 	.size	_ZN4arch3x863x644bootL12enablePagingEv, .-_ZN4arch3x863x644bootL12enablePagingEv
 #APP
 	.code64

@@ -24,18 +24,18 @@ void GDT::setItem(size_t index,uint64_t base,
 {
     if(index>=gdtSize)
         return;
-    uint8_t* gdtHelper=(uint8_t*)(&items[index]);
-    *((uint16_t*)(&gdtHelper[0]))=limit&0xFFFF;
-    *((uint16_t*)(&gdtHelper[2]))=base&0xFFFF;
+    uint8_t* gdtHelper=reinterpret_cast<uint8_t*>(&items[index]);
+    *reinterpret_cast<uint16_t*>(&gdtHelper[0])=limit&0xFFFF;
+    *reinterpret_cast<uint16_t*>(&gdtHelper[2])=base&0xFFFF;
     gdtHelper[4]=(base>>16)&0xFF;
 
     gdtHelper[5]=(tss?0x89:0x92)|((dpl&0x3)<<5)|(code?0x8:0);
     gdtHelper[6]=((limit>>16)&0xF)|(code?0xA0:0xC0);
 
     gdtHelper[7]=(base>>24)&0xFF;
-    *((uint32_t*)(&gdtHelper[8]))=(base>>32)&0xFF;
+    *reinterpret_cast<uint32_t*>(&gdtHelper[8])=(base>>32)&0xFF;
 
-    *((uint32_t*)(&gdtHelper[12]))=0;
+    *reinterpret_cast<uint32_t*>(&gdtHelper[12])=0;
 }
 
 void GDT::initialize()

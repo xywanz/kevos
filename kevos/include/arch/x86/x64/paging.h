@@ -106,12 +106,6 @@ struct __packed__ PTE
 	uint64_t executionDisabled	:	1;
 };
 
-using PML4=PML4E[__PML4_SIZE];
-using PDPT=PDPTE[__PDPT_SIZE];
-using PDT=PDTE[__PDT_SIZE];
-using PT=PTE[__PT_SIZE];
-
-
 template<class T>
 struct type_traits
 {
@@ -139,7 +133,13 @@ template<>
 struct type_traits<PTE>
 {
 	static constexpr size_t size=512;
+	static constexpr size_t pageSize=4096;
 };
+
+using PML4=PML4E[type_traits<PML4E>::size];
+using PDPT=PDPTE[type_traits<PDPTE>::size];
+using PDT=PDTE[type_traits<PDTE>::size];
+using PT=PTE[type_traits<PTE>::size];
 
 KEVOS_NSE_3(x64,x86,arch);
 

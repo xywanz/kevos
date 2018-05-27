@@ -24,7 +24,7 @@ w
 EOF
 sudo losetup /dev/loop0 vd.img 1>/dev/null
 sudo kpartx -av /dev/loop0 1>/dev/null
-sudo mkfs.ext2 /dev/mapper/loop0p1 1>/dev/null
+sudo mkfs.ext4 /dev/mapper/loop0p1 1>/dev/null
 sudo mount /dev/mapper/loop0p1 /mnt/kevos
 sudo cp -r /mnt/shared/kevos/img/boot /mnt/kevos
 echo 'Install grub2 into image...'
@@ -32,7 +32,7 @@ sudo grub-install --no-floppy --root-directory=/mnt/kevos /dev/loop0 1>/dev/null
 sudo umount /mnt/kevos
 sudo kpartx -dv /dev/loop0 1>/dev/null
 sudo losetup -d /dev/loop0 1>/dev/null
-sudo cp ../vd.img /mnt/shared/kevos/build/
+sudo cp vd.img /mnt/shared/kevos/build/
 sudo rm -rf ~/kevos
 cd /mnt/shared/kevos/build/scripts
 fi

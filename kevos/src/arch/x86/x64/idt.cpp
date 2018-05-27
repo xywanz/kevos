@@ -22,34 +22,34 @@ GateDescriptor IDT::items[idtSize];
 
 void IDT::setItem(size_t index,void (*handler)())
 {
-	GateDescriptor* item=items+index;
-	uint64_t h=reinterpret_cast<uint64_t>(handler);
-	item->offsetLow=h&0xFFFF;
-	item->offsetMid=(h>>16)&0xFFFF;
-	item->offsetHigh=(h>>32)&0xFFFFFFFF;
-	item->codeSelector=__KERNEL_CS;
-	item->ist=0;
-	item->zero1=0;
-	item->zero2=0;
-	item->type=GATE_TYPE_INTERRUPT;
-	item->dpl=0;
-	item->present=1;
-	item->reserved=0;
+    GateDescriptor* item=items+index;
+    uint64_t h=reinterpret_cast<uint64_t>(handler);
+    item->offsetLow=h&0xFFFF;
+    item->offsetMid=(h>>16)&0xFFFF;
+    item->offsetHigh=(h>>32)&0xFFFFFFFF;
+    item->codeSelector=__KERNEL_CS;
+    item->ist=0;
+    item->zero1=0;
+    item->zero2=0;
+    item->type=GATE_TYPE_INTERRUPT;
+    item->dpl=0;
+    item->present=1;
+    item->reserved=0;
 }
 
 void IDT::initialize()
 {
 
 
-	struct
-	{
-		uint16_t limit;
-		uint64_t address;
-	}idtr={
-		sizeof(items)-1,
-		reinterpret_cast<uint64_t>(items)
-	};
-	__asm__ __volatile__("lidt %[idtr]" : : [idtr]"m"(idtr));
+    struct
+    {
+        uint16_t limit;
+        uint64_t address;
+    }idtr={
+        sizeof(items)-1,
+        reinterpret_cast<uint64_t>(items)
+    };
+    __asm__ __volatile__("lidt %[idtr]" : : [idtr]"m"(idtr));
 }
 
 
