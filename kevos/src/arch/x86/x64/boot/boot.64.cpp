@@ -43,6 +43,12 @@ void print(size_t pos,const char* buf)
 
 inline void confirmImAlive() {*((uint16_t*)(0xB8000+100))=0x7575;}
 
+void test()
+{
+	VirtualMemory vm;
+	vm.mapPage(0x1000000,PageManager::allocate(),1);
+}
+
 extern "C" void entry64()
 {
 	__asm__("mov %%rax, %%cr3" : : "a"(__knPML4));
@@ -71,7 +77,9 @@ extern "C" void entry64()
 	PageManager::deallocate(pnn);
 
 	VirtualMemory vm;
-	vm.mapPage(PageManager::allocate(),0,1);
+	vm.mapPage(0,PageManager::allocate(),1);
+
+	test();
 
 	confirmImAlive();
 	while(1);

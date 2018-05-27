@@ -97,7 +97,9 @@ public:
  * @param pageSize 		页面大小
  * @return				是否成功映射		
  */
-	bool mapPage(uint64_t vPagePPN,uint64_t pPagePPN,uint64_t userAccessable,uint64_t pageSize=__PAGE_SIZE);
+	void mapPage(uint64_t vPagePPN,uint64_t pPagePPN,uint64_t userAccessable,uint64_t pageSize=__PAGE_SIZE);
+
+	void fillPageFrame(uint64_t vPagePPN,uint64_t userAccessable,uint64_t pageSize=__PAGE_SIZE);
 
 /**
  * @brief 将虚拟页面的映射取消
@@ -105,7 +107,7 @@ public:
  * @param vPagePPN 		虚拟页面号
  * @return				是否成功取消映射		
  */
-	bool unmapPage(uint64_t vPagePPN);
+	void unmapPage(uint64_t vPagePPN);
 
 /**
  * @brief 计算页面号为ppn的页面的地址，可以是虚拟页面号也可以是物理页面号
@@ -144,6 +146,9 @@ private:
 	template<class T>
 	static void setPagingEntry(T* entries,size_t index,size_t ppn,
 			uint64_t isToClear,uint64_t userAccessable,uint64_t writable);
+
+	template<class T,class traits=type_traits<T>>
+	static bool isNullPagingEntry(T* entries);
 
 /**
  * @brief 管理PML4的物理页面号，代表了整个虚拟内存

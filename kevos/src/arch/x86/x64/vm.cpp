@@ -30,7 +30,44 @@ VirtualMemory::VirtualMemory()
 	memset((void*)getAddressFromPPN(m_pml4PPN),0,__PAGE_SIZE);
 }
 
-bool VirtualMemory::mapPage(uint64_t vPagePPN,uint64_t pPagePPN,uint64_t userAccessable,uint64_t pageSize)
+VirtualMemory::~VirtualMemory()
+{
+	PML4E* pml4=reinterpret_cast<PML4E*>(getAddressFromPPN(m_pml4PPN));
+	for(size_t pml4i=0;pml4i<__PML4_SIZE;++pml4i)
+	{
+		if(pml4[pml4i].present)
+		{
+			PDPTE* pdpt=reinterpret_cast<PDPTE*>(getAddressFromPPN(pml4[pml4i].physicalPageNum));
+			for(size_t pdpti=0;pdpti<__PDPT_SIZE;++pdpti)
+			{
+				if(pdpt[pdpti].present)
+				{
+					PDTE* pdt=reinterpret_cast<PDTE*>(getAddressFromPPN(pdpt[pdpti].physicalPageNum));
+					for(size_t pdti=0;pdti<__PDT_SIZE;++pdti)
+					{
+						if(pdt[pdti].present)
+						{
+							PTE* pt=reinterpret_cast<PTE*>(getAddressFromPPN(pdt[pdti].physicalPageNum));
+							for(size_t pti=0;pti<__PT_SIZE;++pti)
+							{
+								if(pt[pti].present)
+								{
+									kernel::mm::PageManager::deallocate(pt[pti].physicalPageNum);
+								}
+							}
+							kernel::mm::PageManager::deallocate(pdt[pdti].physicalPageNum);
+						}
+					}
+					kernel::mm::PageManager::deallocate(pdpt[pdpti].physicalPageNum);
+				}
+			}
+			kernel::mm::PageManager::deallocate(pml4[pml4i].physicalPageNum);
+		}
+	}
+	kernel::mm::PageManager::deallocate(m_pml4PPN);
+}
+
+void VirtualMemory::mapPage(uint64_t vPagePPN,uint64_t pPagePPN,uint64_t userAccessable,uint64_t pageSize)
 {
 	VMemMap vmm=resolveMap(vPagePPN);
 	if(!vmm.pml4[vmm.pml4Index].present)
@@ -54,9 +91,31 @@ bool VirtualMemory::mapPage(uint64_t vPagePPN,uint64_t pPagePPN,uint64_t userAcc
 	setPagingEntry(vmm.pt,vmm.ptIndex,pPagePPN,1,1,1);
 }
 
-bool VirtualMemory::unmapPage(uint64_t vPagePPN)
+void VirtualMemory::fillPageFrame(uint64_t vPagePPN,uint64_t userAccessable,uint64_t pageSize)
 {
-	return true;
+	mapPage(vPagePPN,kernel::mm::PageManager::allocate(),userAccessable,pageSize);
+}
+
+void VirtualMemory::unmapPage(uint64_t vPagePPN)
+{
+	VMemMap vmm=resolveMap(vPagePPN);
+	kernel::mm::PageManager::deallocate(vmm.pt[vmm.ptIndex].physicalPageNum);
+	*reinterpret_cast<uint64_t*>(vmm.pt+vmm.ptIndex)=0;
+	if(isNullPagingEntry(vmm.pt))
+	{
+		kernel::mm::PageManager::deallocate(vmm.pdt[vmm.pdtIndex].physicalPageNum);
+		*reinterpret_cast<uint64_t*>(vmm.pdt+vmm.pdtIndex)=0;
+		if(isNullPagingEntry(vmm.pdt))
+		{
+			kernel::mm::PageManager::deallocate(vmm.pdpt[vmm.pdptIndex].physicalPageNum);
+			*reinterpret_cast<uint64_t*>(vmm.pdpt+vmm.pdptIndex)=0;
+			if(isNullPagingEntry(vmm.pdpt))
+			{
+				kernel::mm::PageManager::deallocate(vmm.pml4[vmm.pml4Index].physicalPageNum);
+				*reinterpret_cast<uint64_t*>(vmm.pml4+vmm.pml4Index)=0;
+			}
+		}
+	}
 }
 
 VMemMap VirtualMemory::resolveMap(uint64_t pml4PPN,uint64_t vPagePPN)
@@ -114,6 +173,17 @@ void VirtualMemory::setPagingEntry(T* entries,size_t index,size_t ppn,
 	entries[index].userAccessable=userAccessable;
 	entries[index].writable=writable;
 	entries[index].present=1;
+}
+
+template<class T,class traits>
+bool VirtualMemory::isNullPagingEntry(T* entries)
+{
+	for(size_t i=0;i<traits::size;++i)
+	{
+		if(entries[i].present)
+			return false;
+	}
+	return true;
 }
 
 KEVOS_NSE_3(x64,x86,arch);

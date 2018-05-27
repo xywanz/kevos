@@ -111,6 +111,36 @@ using PDPT=PDPTE[__PDPT_SIZE];
 using PDT=PDTE[__PDT_SIZE];
 using PT=PTE[__PT_SIZE];
 
+
+template<class T>
+struct type_traits
+{
+};
+
+template<>
+struct type_traits<PML4E>
+{
+	static constexpr size_t size=512;
+};
+
+template<>
+struct type_traits<PDPTE>
+{
+	static constexpr size_t size=512;
+};
+
+template<>
+struct type_traits<PDTE>
+{
+	static constexpr size_t size=512;
+};
+
+template<>
+struct type_traits<PTE>
+{
+	static constexpr size_t size=512;
+};
+
 KEVOS_NSE_3(x64,x86,arch);
 
 #endif
