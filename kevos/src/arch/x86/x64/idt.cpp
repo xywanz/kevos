@@ -15,12 +15,15 @@ limitations under the License.
 
 #include <arch/x86/x64/idt.h>
 #include <arch/x86/x64/gdt.h>
+#include <arch/x86/x64/interrupt.h>
+
+#include <string.h>
 
 KEVOS_NSS_3(arch,x86,x64);
 
 GateDescriptor IDT::items[idtSize];
 
-void IDT::setItem(size_t index,void (*handler)())
+void IDT::setItem(size_t index,void (*handler)(),uint8_t dpl)
 {
     GateDescriptor* item=items+index;
     uint64_t h=reinterpret_cast<uint64_t>(handler);
@@ -32,16 +35,32 @@ void IDT::setItem(size_t index,void (*handler)())
     item->zero1=0;
     item->zero2=0;
     item->type=GATE_TYPE_INTERRUPT;
-    item->dpl=0;
+    item->dpl=dpl;
     item->present=1;
     item->reserved=0;
 }
 
 void IDT::initialize()
 {
+    memset(items,0,sizeof(items));
+    setItem(IRQ0+0,irqAsmHandler0,0);
+    setItem(IRQ0+1,irqAsmHandler1,0);
+    setItem(IRQ0+2,irqAsmHandler2,0);
+    setItem(IRQ0+3,irqAsmHandler3,0);
+    setItem(IRQ0+4,irqAsmHandler4,0);
+    setItem(IRQ0+5,irqAsmHandler5,0);
+    setItem(IRQ0+6,irqAsmHandler6,0);
+    setItem(IRQ0+7,irqAsmHandler7,0);
+    setItem(IRQ0+8,irqAsmHandler8,0);
+    setItem(IRQ0+9,irqAsmHandler9,0);
+    setItem(IRQ0+10,irqAsmHandler10,0);
+    setItem(IRQ0+11,irqAsmHandler11,0);
+    setItem(IRQ0+12,irqAsmHandler12,0);
+    setItem(IRQ0+13,irqAsmHandler13,0);
+    setItem(IRQ0+14,irqAsmHandler14,0);
+    setItem(IRQ0+15,irqAsmHandler15,0);
 
-
-    struct
+    struct __packed__
     {
         uint16_t limit;
         uint64_t address;

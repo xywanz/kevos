@@ -52,7 +52,7 @@ public:
 			outportb(I8259A_PIC1_DATA_PORT,mask&0xFF);
 	}
 
-	static void enableAllIRQ()
+	static void enableAllIRQs()
 	{
 		mask = 0;
 		outportb(I8259A_PIC1_DATA_PORT,0);
@@ -68,7 +68,7 @@ public:
 			outportb(I8259A_PIC1_DATA_PORT,mask&0xFF);	
 	}
 
-	static void disableAllIRQ()
+	static void disableAllIRQs()
 	{
 		mask = 0xFFFF;
 		outportb(I8259A_PIC1_DATA_PORT,0xFF);

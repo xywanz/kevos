@@ -15,20 +15,100 @@ limitations under the License.
 
 #include <arch/common/interrupt.h>
 #include <arch/x86/x64/interrupt.h>
+#include <arch/x86/x64/idt.h>
 #include <arch/x86/common/i8259a.h>
+
+#include <stdlib.h>
 
 KEVOS_NSS_3(arch,x86,x64);
 
 extern "C"
 {
+    void irqCppHandler(uint64_t irq)
+    {
+        if(irq==0)
+            irqCppHandler0();
+    }
+
     void irqCppHandler0()
     {
-        
+        *((unsigned short*)(0xB8000+300))=rand();
+        arch::common::InterruptManager::sendEndSignal(0);
     }
 
     void irqCppHandler1()
     {
+        arch::common::InterruptManager::sendEndSignal(1);
+    }
 
+    void irqCppHandler2()
+    {
+        arch::common::InterruptManager::sendEndSignal(2);
+    }
+
+    void irqCppHandler3()
+    {
+        arch::common::InterruptManager::sendEndSignal(3);
+    }
+
+    void irqCppHandler4()
+    {
+        arch::common::InterruptManager::sendEndSignal(4);
+    }
+
+    void irqCppHandler5()
+    {
+        arch::common::InterruptManager::sendEndSignal(5);
+    }
+
+    void irqCppHandler6()
+    {
+        arch::common::InterruptManager::sendEndSignal(6);
+    }
+
+    void irqCppHandler7()
+    {
+        arch::common::InterruptManager::sendEndSignal(7);
+    }
+
+    void irqCppHandler8()
+    {
+        arch::common::InterruptManager::sendEndSignal(8);
+    }
+
+    void irqCppHandler9()
+    {
+        arch::common::InterruptManager::sendEndSignal(9);
+    }
+
+    void irqCppHandler10()
+    {
+        arch::common::InterruptManager::sendEndSignal(10);
+    }
+
+    void irqCppHandler11()
+    {
+        arch::common::InterruptManager::sendEndSignal(11);
+    }
+
+    void irqCppHandler12()
+    {
+        arch::common::InterruptManager::sendEndSignal(12);
+    }
+
+    void irqCppHandler13()
+    {
+        arch::common::InterruptManager::sendEndSignal(13);
+    }
+
+    void irqCppHandler14()
+    {
+        arch::common::InterruptManager::sendEndSignal(14);
+    }
+
+    void irqCppHandler15()
+    {
+        arch::common::InterruptManager::sendEndSignal(15);
     }
 }
 
@@ -42,6 +122,7 @@ KEVOS_NSS_2(arch,common);
 void InterruptManager::initialize()
 {
     x86::common::I8259A::initialize();
+    x86::x64::IDT::initialize();
 }
 
 void InterruptManager::enableInterrupts()

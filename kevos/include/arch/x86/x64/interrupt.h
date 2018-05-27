@@ -42,6 +42,8 @@ extern "C"
 	void irqAsmHandler14();
 	void irqAsmHandler15();
 
+	void irqCppHandler(uint64_t irq);
+
 	void irqCppHandler0();
 	void irqCppHandler1();
 	void irqCppHandler2();

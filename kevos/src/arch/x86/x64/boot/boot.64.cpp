@@ -57,6 +57,9 @@ extern "C" void entry64()
 	KernelHeap::initialize();
 	PageManager::initialize();
 	arch::common::InterruptManager::initialize();
+	arch::common::InterruptManager::enableInterrupts();
+
+	arch::common::InterruptManager::enableTimer();
 
 	common::CPUInfo cpuInfo=common::CPUInfo::instance();
 

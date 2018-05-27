@@ -28,12 +28,14 @@ limitations under the License.
 
 #include <arch/x86/x64/descriptor.h>
 
+#define IRQ0    0x20
+
 KEVOS_NSS_3(arch,x86,x64);
 
 class IDT
 {
 public:
-	static void setItem(size_t index,void (*handler)());
+	static void setItem(size_t index,void (*handler)(),uint8_t dpl);
 	static void initialize();
 
 	static constexpr uint16_t idtSize=128;
