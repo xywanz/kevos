@@ -24,11 +24,23 @@ limitations under the License.
 #include <arch/common/interrupt.h>
 #include <kernel/mm/new.h>
 
+#include <stdlib.h>
+
 KEVOS_NSS_4(arch,x86,x64,boot);
 
 using namespace kernel::mm;
 
-inline void confirmImAlive() {*((uint16_t*)(0xB8000))=0x7575;}
+void print(size_t pos,const char* buf)
+{
+	auto addr=(unsigned char*)(0xB8000+pos*2);
+	for(size_t i=0;buf[i]!=0;++i)
+	{
+		addr[2*i]=buf[i];
+		addr[2*i+1]=0x75;
+	}
+}
+
+inline void confirmImAlive() {*((uint16_t*)(0xB8000+100))=0x7575;}
 
 extern "C" void entry64()
 {
@@ -38,6 +50,8 @@ extern "C" void entry64()
 
 	PageManager pm;
 
+	uint64_t s=pm.allocate();
+
 	common::CPUInfo cpuInfo;
 
 	arch::common::InterruptManager::initialize();
@@ -46,6 +60,10 @@ extern "C" void entry64()
 
 	int* a=new int[5];
 	delete[]  a;
+
+	char buf[16];
+	itoa(s,buf,10);
+	print(0,buf);
 
 	confirmImAlive();
 	while(1);

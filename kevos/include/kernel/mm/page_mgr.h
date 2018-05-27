@@ -31,6 +31,7 @@ limitations under the License.
 #include <arch/common/types.h>
 #include <arch/common/paging.h>
 #include <kernel/common/bitmap.h>
+#include <kernel/mm/mem_layout.h>
 
 KEVOS_NSS_2(kernel,mm);
 
@@ -51,7 +52,9 @@ public:
 	void deallocate(size_t pPagePPN,size_t pageSize=__PAGE_SIZE);
 
 private:
+	size_t m_size;
 	common::Bitmap<bitmapByteNeeded<unsigned int>(1024*1024*128),unsigned int> m_bitmap;
+	size_t m_cache;
 };
 
 KEVOS_NSE_2(mm,kernel);

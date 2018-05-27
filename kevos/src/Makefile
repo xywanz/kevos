@@ -37,10 +37,10 @@ all:
 	make -C kernel/mm
 	make -C kernel/net
 
-	make -C user/lib/stdlib
-	make -C user/lib/stdlib/stdio
-	make -C user/lib/stdlib/stdlib
-	make -C user/lib/stdlib/string
+	make -C user/lib/stdlib/src
+	make -C user/lib/stdlib/src/stdio
+	make -C user/lib/stdlib/src/stdlib
+	make -C user/lib/stdlib/src/string
 
 	make
 

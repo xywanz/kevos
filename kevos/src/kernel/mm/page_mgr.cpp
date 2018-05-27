@@ -19,17 +19,41 @@ KEVOS_NSS_2(kernel,mm);
 
 PageManager::PageManager()
 {
-	
+	m_size=m_bitmap.size();
+	size_t i;
+	for(i=0;i<kernel_end_ppn;++i)
+	{
+		m_bitmap.set(i);
+	}
+	m_cache=i;
 }
 
 size_t PageManager::allocate(size_t pageSize)
 {
-
+	for(;m_cache<m_size;++m_cache)
+	{
+		if(__likely__(!m_bitmap.get(m_cache)))
+		{
+			m_bitmap.set(m_cache);
+			return (m_cache++)*pageSize;
+		}
+	}
+	while(1)
+	{
+		for(m_cache=0;m_cache<m_size;++m_cache)
+		{
+			if(!m_bitmap.get(m_cache))
+			{
+				m_bitmap.set(m_cache);
+				return (m_cache++)*pageSize;
+			}
+		}
+	}
 }
 
 void PageManager::deallocate(size_t pPagePPN,size_t pageSize)
 {
-
+	m_bitmap.unset(pPagePPN);
 }
 
 KEVOS_NSE_2(mm,kernel);

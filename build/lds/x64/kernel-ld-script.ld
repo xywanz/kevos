@@ -36,6 +36,7 @@ SECTIONS
     *(.boot)
     *(.text)
     *(.text.*)
+    . = ALIGN(4096);
     text_end_address = .;
     *(.gnu.linkonce.r.*)
     ro_data_start_address = .;
@@ -48,7 +49,6 @@ SECTIONS
     data_start_address = .;
     *(.data)
     . = ALIGN(4096);
-    *(.gdt_stuff)
     data_end_address = .;
   }
 
@@ -61,7 +61,7 @@ SECTIONS
     bss_end_address = .;
   }
 
-  .kern ALIGN(4096) :
+  .reserve.kern ALIGN(4096) :
   {
     kheap_start_address = .;
     *(.heap.kern)

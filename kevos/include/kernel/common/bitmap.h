@@ -66,10 +66,16 @@ public:
 		return m_bitmap[byteIndexOf(index)]&(1<<bitIndexOf(index));
 	}
 
+	static size_t size()
+	{
+		return s_size;	
+	}
+
 private:
 	static constexpr size_t s_bitsPerByte=sizeof(ByteType)*8;
+	static constexpr size_t s_size=byteCount*s_bitsPerByte;
 	ByteType m_bitmap[byteCount];
-	size_t m_size;
+	
 
 	static constexpr size_t bitIndexOf(size_t bit)
 	{
