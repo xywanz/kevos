@@ -32,6 +32,12 @@ limitations under the License.
 
 KEVOS_NSS_3(arch,x86,x64);
 
+typedef void (*IRQHandler)();
+
+extern "C"{
+    extern IRQHandler irqHandlers[16];
+}
+
 class IDT
 {
 public:

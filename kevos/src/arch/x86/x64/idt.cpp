@@ -21,6 +21,8 @@ limitations under the License.
 
 KEVOS_NSS_3(arch,x86,x64);
 
+IRQHandler irqHandlers[16];
+
 GateDescriptor IDT::items[idtSize];
 
 void IDT::setItem(size_t index,void (*handler)(),uint8_t dpl)
@@ -59,6 +61,23 @@ void IDT::initialize()
     setItem(IRQ0+13,irqAsmHandler13,0);
     setItem(IRQ0+14,irqAsmHandler14,0);
     setItem(IRQ0+15,irqAsmHandler15,0);
+
+    irqHandlers[0]=irqCppHandler0;
+    irqHandlers[1]=irqCppHandler1;
+    irqHandlers[2]=irqCppHandler2;
+    irqHandlers[3]=irqCppHandler3;
+    irqHandlers[4]=irqCppHandler4;
+    irqHandlers[5]=irqCppHandler5;
+    irqHandlers[6]=irqCppHandler6;
+    irqHandlers[7]=irqCppHandler7;
+    irqHandlers[8]=irqCppHandler8;
+    irqHandlers[9]=irqCppHandler9;
+    irqHandlers[10]=irqCppHandler10;
+    irqHandlers[11]=irqCppHandler11;
+    irqHandlers[12]=irqCppHandler12;
+    irqHandlers[13]=irqCppHandler13;
+    irqHandlers[14]=irqCppHandler14;
+    irqHandlers[15]=irqCppHandler15;
 
     struct __packed__
     {

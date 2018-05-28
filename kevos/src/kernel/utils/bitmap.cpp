@@ -13,9 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <kernel/common/bitmap.h>
+#include <kernel/utils/bitmap.h>
 
-KEVOS_NSS_2(kernel,common);
+KEVOS_NSS_2(kernel,utils);
 
 template<class ByteType>
 Bitmap<DynamicBitmap,ByteType>::Bitmap(ByteType* bitmap,size_t size)
@@ -55,4 +55,4 @@ bool Bitmap<DynamicBitmap,ByteType>::get(size_t index)const
 	return m_bitmap[byteIndexOf(index)]&(1<<bitIndexOf(index));
 }
 
-KEVOS_NSE_2(common,kernel);
+KEVOS_NSE_2(utils,kernel);

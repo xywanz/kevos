@@ -31,7 +31,7 @@ all:
 	make -C arch/x86/x64/boot
 
 	make -C kernel
-	make -C kernel/common
+	make -C kernel/utils
 	make -C kernel/drivers
 	make -C kernel/fs
 	make -C kernel/mm

@@ -14,10 +14,22 @@ limitations under the License.
 ==============================================================================*/
 
 #include <arch/x86/x64/gdt.h>
+#include <kernel/mm/mem_layout.h>
 
 KEVOS_NSS_3(arch,x86,x64);
 
 SystemDescriptor GDT::items[gdtSize];
+
+struct __packed__
+{
+    uint32_t reserved1;
+    uint64_t rsp0;
+    uint64_t rsp1;
+    uint64_t rsp2;
+    uint64_t reserved2;
+    uint64_t ist0;
+    uint32_t reserved3[15];
+}__knTSS;
 
 void GDT::setItem(size_t index,uint64_t base,
                 uint32_t limit,uint8_t dpl,uint8_t code,uint8_t tss)
@@ -40,8 +52,12 @@ void GDT::setItem(size_t index,uint64_t base,
 
 void GDT::initialize()
 {
+    __knTSS.ist0=reinterpret_cast<uint64_t>(&kstack_start_address);
+    __knTSS.rsp0=(uint64_t)(&kstack_start_address);
+
     setItem(3, 0, 0, 3, 1, 0);
     setItem(4, 0, 0, 3, 0, 0);
+    setItem(5, reinterpret_cast<uint64_t>(&__knTSS), sizeof(__knTSS)-1, 0, 0, 1);
 
     struct __packed__ GDTPointer
     {
@@ -51,7 +67,8 @@ void GDT::initialize()
         sizeof(items)-1,
         reinterpret_cast<uint64_t>(items)
     };
-    __asm__ __volatile("lgdt %[gdtr]" : : [gdtr]"m"(gdtPtr));
+    __asm__ __volatile__("lgdt %[gdtr]" : : [gdtr]"m"(gdtPtr));
+    __asm__ __volatile__("ltr %%ax": : "a"(__KERNEL_TSS));
 }
 
 KEVOS_NSE_3(x64,x86,arch);

@@ -18,7 +18,7 @@ limitations under the License.
 KEVOS_NSS_2(kernel,mm);
 
 size_t PageManager::m_size=0;
-common::Bitmap<bitmapByteNeeded<unsigned int>(1024*1024*128),unsigned int> PageManager::m_bitmap;
+utils::Bitmap<bitmapByteNeeded<unsigned int>(1024*1024*128),unsigned int> PageManager::m_bitmap;
 size_t PageManager::m_cache=0;
 
 void PageManager::initialize()

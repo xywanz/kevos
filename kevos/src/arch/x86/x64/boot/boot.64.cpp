@@ -52,15 +52,12 @@ void test()
 extern "C" void entry64()
 {
 	__asm__("mov %%rax, %%cr3" : : "a"(__knPML4));
-
 	GDT::initialize();
 	KernelHeap::initialize();
 	PageManager::initialize();
 	arch::common::InterruptManager::initialize();
 	arch::common::InterruptManager::enableInterrupts();
-
 	arch::common::InterruptManager::enableTimer();
-
 	common::CPUInfo cpuInfo=common::CPUInfo::instance();
 
 	int* b=new int;

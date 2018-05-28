@@ -13,38 +13,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_KERNEL_MM_HEAPMEM_H_
-#define _KEVOS_KERNEL_MM_HEAPMEM_H_
+#ifndef _KEVOS_SYS_TYPES_H_
+#define _KEVOS_SYS_TYPES_H_
 
-#include <sys/types.h>
 
-KEVOS_NSS_2(kernel,mm);
+#include <arch/common/types.h>
 
-class HeapMemory
-{
-public:
-	HeapMemory(){}
-
-	HeapMemory(size_t vStartAddr,size_t vEndAddr);
-
-	void setup(size_t vStartAddr,size_t vEndAddr);
-
-	void* allocate(size_t size);
-
-	void deallocate(void* ptr);
-
-private:
-	struct MemoryHeader
-	{
-		MemoryHeader* next;
-		MemoryHeader* prev;
-		size_t used;
-	};
-
-	MemoryHeader* m_memStart;
-	MemoryHeader* m_memEnd;
-};
-
-KEVOS_NSE_2(mm,kernel);
 
 #endif

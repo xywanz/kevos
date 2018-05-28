@@ -20,16 +20,11 @@ limitations under the License.
 
 #include <stdlib.h>
 
+
 KEVOS_NSS_3(arch,x86,x64);
 
 extern "C"
 {
-    void irqCppHandler(uint64_t irq)
-    {
-        if(irq==0)
-            irqCppHandler0();
-    }
-
     void irqCppHandler0()
     {
         *((unsigned short*)(0xB8000+300))=rand();

@@ -24,13 +24,13 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_KERNEL_COMMON_BITMAP_H_
-#define _KEVOS_KERNEL_COMMON_BITMAP_H_
+#ifndef _KEVOS_KERNEL_UTILS_BITMAP_H_
+#define _KEVOS_KERNEL_UTILS_BITMAP_H_
 
 #include <sys/portable.h>
-#include <arch/common/types.h>
+#include <sys/types.h>
 
-KEVOS_NSS_2(kernel,common);
+KEVOS_NSS_2(kernel,utils);
 
 #define DynamicBitmap	0
 
@@ -117,6 +117,6 @@ private:
 	}
 };
 
-KEVOS_NSE_2(common,kernel);
+KEVOS_NSE_2(utils,kernel);
 
 #endif

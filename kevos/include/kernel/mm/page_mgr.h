@@ -28,9 +28,9 @@ limitations under the License.
 #define _KEVOS_KERNEL_MM_PAGEMGR_H_
 
 #include <sys/portable.h>
-#include <arch/common/types.h>
+#include <sys/types.h>
 #include <arch/common/paging.h>
-#include <kernel/common/bitmap.h>
+#include <kernel/utils/bitmap.h>
 #include <kernel/mm/mem_layout.h>
 
 KEVOS_NSS_2(kernel,mm);
@@ -53,7 +53,7 @@ public:
 
 private:
 	static size_t m_size;
-	static common::Bitmap<bitmapByteNeeded<unsigned int>(1024*1024*128),unsigned int> m_bitmap;
+	static utils::Bitmap<bitmapByteNeeded<unsigned int>(1024*1024*128),unsigned int> m_bitmap;
 	static size_t m_cache;
 };
 

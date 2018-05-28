@@ -13,38 +13,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_KERNEL_MM_HEAPMEM_H_
-#define _KEVOS_KERNEL_MM_HEAPMEM_H_
+#ifndef _KEVOS_ARCH_COMMON_ATADRIVER_H_
+#define _KEVOS_ARCH_COMMON_ATADRIVER_H_
 
-#include <sys/types.h>
+#include <arch/common/types.h>
 
-KEVOS_NSS_2(kernel,mm);
+KEVOS_NSS_3(arch,x86,common);
 
-class HeapMemory
+class ATADriver
 {
 public:
-	HeapMemory(){}
 
-	HeapMemory(size_t vStartAddr,size_t vEndAddr);
+    size_t readSectors(size_t start,size_t count,void* dst,size_t& readCount);
 
-	void setup(size_t vStartAddr,size_t vEndAddr);
+    size_t writeSectors(size_t start,size_t count,const void* src,size_t& writeCount);
 
-	void* allocate(size_t size);
-
-	void deallocate(void* ptr);
-
-private:
-	struct MemoryHeader
-	{
-		MemoryHeader* next;
-		MemoryHeader* prev;
-		size_t used;
-	};
-
-	MemoryHeader* m_memStart;
-	MemoryHeader* m_memEnd;
 };
 
-KEVOS_NSE_2(mm,kernel);
+KEVOS_NSE_3(common,x86,arch);
 
 #endif

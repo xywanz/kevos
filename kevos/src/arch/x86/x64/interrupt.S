@@ -66,15 +66,16 @@ limitations under the License.
 .endm
 
 
-.extern irqCppHandler
+.extern irqHandlers
 
 .macro irqAsmHandler number
 .global irqAsmHandler\number
-.extern irqCppHandler\number
 irqAsmHandler\number:
     save
     movq $\number,%rdi
-    callq irqCppHandler
+    mov $irqHandlers,%rax
+    mov $\number,%rbx
+    call *(%rax,%rbx,8)
     load
     iretq
 .endm
