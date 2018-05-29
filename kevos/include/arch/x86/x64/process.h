@@ -56,21 +56,32 @@ struct ProcessRegisters
 class Process
 {
 public:
-    ProcessRegisters* processRigisters()
+    Process();
+
+    ProcessRegisters* registers()
     {
-        return nullptr;
+        return m_regs;
     }
+
+private:
+    ProcessRegisters* m_regs;
 };
 
 class ProcessManager
 {
 public:
-    static ProcessRegisters* createKernelRegsInfo(void* entry,void* stack);
+    static void initialize();
 
-    static Process* currentProcess()
+    static ProcessRegisters* createKernelRegInfo(void* entry,void* stack);
+
+    static ProcessRegisters* createUserRegInfo(void* entry,void* stack,void* kstack);
+
+    static Process* current()
     {
-        return nullptr;
+        return s_cur;
     }
+private:
+    static Process* s_cur;
 };
 
 KEVOS_NSE_3(x64,x86,arch);

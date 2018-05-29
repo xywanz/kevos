@@ -18,6 +18,7 @@ limitations under the License.
 #include <arch/x86/common/cpuid.h>
 #include <arch/x86/x64/gdt.h>
 #include <arch/x86/x64/vm.h>
+#include <arch/x86/x64/process.h>
 #include <kernel/mm/mem_layout.h>
 #include <kernel/mm/heap_mem.h>
 #include <kernel/mm/kheap_mem.h>
@@ -59,6 +60,7 @@ extern "C" void entry64()
 	arch::common::InterruptManager::enableInterrupts();
 	arch::common::InterruptManager::enableTimer();
 	common::CPUInfo cpuInfo=common::CPUInfo::instance();
+	ProcessManager::initialize();
 
 	int* b=new int;
 	delete b;

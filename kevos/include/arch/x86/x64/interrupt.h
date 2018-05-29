@@ -23,6 +23,22 @@ KEVOS_NSS_3(arch,x86,x64);
 #define IRQ_TIMER		0
 #define IRQ_KEYBOARD	1
 
+/**
+ * @brief 中断服务的返回信息
+ *
+ *    中断会引起CPU的特权级变为0，能够使得CPU从用户态变为内核态，这时CPU需要保存返回用户态的信息，即堆栈的切换操
+ * 作。CPU首先从TSS取得内核栈选择子ss0及偏移rsp0，将堆栈切换到内核态，然后CPU将按ss、rsp、rflags、cs、rip的顺序
+ * 将用户态的上述寄存器压入内核栈内。
+ */
+struct HardwareSavedRegisters
+{
+	uint64_t rip;
+	uint64_t cs;
+	uint64_t rflags;
+	uint64_t rsp;
+	uint64_t ss;
+};
+
 struct SoftwareSavedRegisters
 {
     uint64_t es;
@@ -42,27 +58,13 @@ struct SoftwareSavedRegisters
     uint64_t rcx;
     uint64_t rbx;
     uint64_t rax;
-    uint64_t rsp;
-};
-
-/**
- * @brief 中断服务的返回信息
- *
- *    中断会引起CPU的特权级变为0，能够使得CPU从用户态变为内核态，这时CPU需要保存返回用户态的信息，即堆栈的切换操
- * 作。CPU首先从TSS取得内核栈选择子ss0及偏移rsp0，将堆栈切换到内核态，然后CPU将按ss、rsp、rflags、cs、rip的顺序
- * 将用户态的上述寄存器压入内核栈内。
- */
-struct HardwareSavedRegisters
-{
-	uint64_t rip;
-	uint64_t cs;
-	uint64_t rflags;
-	uint64_t rsp;
-	uint64_t ss;
 };
 
 extern "C"
 {
+
+void saveProcessRegisters(char* base);
+void switchToContext();
 
 void irqAsmHandler0();
 void irqAsmHandler1();

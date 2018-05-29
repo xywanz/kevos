@@ -28,7 +28,6 @@ limitations under the License.
 .endm
 
 .macro save
-    pushq %rsp
     pushq %rax
     pushq %rbx
     pushq %rcx
@@ -76,20 +75,24 @@ limitations under the License.
     popq %rcx
     popq %rbx
     popq %rax
-    popq %rsp
 .endm
 
 
 .extern irqHandlers
+.extern saveProcessRegisters
+.extern switchToContext
 
 .macro irqAsmHandler number
 .global irqAsmHandler\number
 irqAsmHandler\number:
     save
+    movq %rsp,%rdi
+    callq saveProcessRegisters
     movq $\number,%rdi
     mov $irqHandlers,%rax
     mov $\number,%rbx
-    call *(%rax,%rbx,8)
+    callq *(%rax,%rbx,8)
+    callq switchToContext
     load
     iretq
 .endm

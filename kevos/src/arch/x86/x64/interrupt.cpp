@@ -16,20 +16,17 @@ limitations under the License.
 #include <arch/common/interrupt.h>
 #include <arch/x86/x64/interrupt.h>
 #include <arch/x86/x64/process.h>
+#include <arch/x86/x64/gdt.h>
 #include <arch/x86/x64/idt.h>
 #include <arch/x86/common/i8259a.h>
 
 #include <stdlib.h>
 
-
 KEVOS_NSS_3(arch,x86,x64);
 
-extern "C"
+void saveProcessRegisters(char* base)
 {
-
-void saveProcessRegisters(uint64_t* base)
-{
-    auto regs=ProcessManager::currentProcess()->processRigisters();
+    auto regs=ProcessManager::current()->registers();
     auto ssregs=reinterpret_cast<SoftwareSavedRegisters*>(base);
     regs->rax=ssregs->rax;
     regs->rbx=ssregs->rbx;
@@ -48,12 +45,44 @@ void saveProcessRegisters(uint64_t* base)
     regs->r15=ssregs->r15;
     regs->ds=ssregs->ds;
     regs->es=ssregs->es;
-    auto hsregs=reinterpret_cast<HardwareSavedRegisters*>(base+sizeof(SoftwareSavedRegisters)/sizeof(uint64_t));
+    auto hsregs=reinterpret_cast<HardwareSavedRegisters*>(base+sizeof(SoftwareSavedRegisters));
     regs->rip=hsregs->rip;
     regs->cs=hsregs->cs;
     regs->rflags=hsregs->rflags;
     regs->rsp=hsregs->rsp;
     regs->ss=hsregs->ss;
+}
+
+void switchToContext()
+{
+    auto regs=ProcessManager::current()->registers();
+    // __knTSS.rsp0=regs->rsp0;
+    __asm__ __volatile__("movq %[cr3],%%cr3" : : [cr3]"r"(regs->cr3));
+    __asm__ __volatile__("pushq %[ss]" : : [ss]"m"(regs->ss));
+    __asm__ __volatile__("pushq %[rsp]" : : [rsp]"m"(regs->rsp));
+    __asm__ __volatile__("pushq %[rflags]" : : [rflags]"m"(regs->rflags));
+    __asm__ __volatile__("pushq %[cs]" : : [cs]"m"(regs->cs));
+    __asm__ __volatile__("pushq %[rip]" : : [rip]"m"(regs->rip));
+    __asm__ __volatile__("movw %[ds],%%ds" : : [ds]"r"(regs->ds));
+    __asm__ __volatile__("movw %[es],%%es" : : [es]"r"(regs->es));
+    __asm__ __volatile__("movw %[fs],%%fs" : : [fs]"r"(regs->fs));
+    __asm__ __volatile__("movw %[gs],%%gs" : : [gs]"r"(regs->gs));
+    __asm__ __volatile__("movq %[rax],%%rax" : : [rax]"m"(regs->rax));
+    __asm__ __volatile__("movq %[rbx],%%rbx" : : [rbx]"m"(regs->rbx));
+    __asm__ __volatile__("movq %[rcx],%%rcx" : : [rcx]"m"(regs->rcx));
+    __asm__ __volatile__("movq %[rdx],%%rdx" : : [rdx]"m"(regs->rdx));
+    __asm__ __volatile__("movq %[rsi],%%rsi" : : [rsi]"m"(regs->rsi));
+    __asm__ __volatile__("movq %[rdi],%%rdi" : : [rdi]"m"(regs->rdi));
+    __asm__ __volatile__("movq %[rbp],%%rbp" : : [rbp]"m"(regs->rbp));
+    __asm__ __volatile__("movq %[r8],%%r8" : : [r8]"m"(regs->r8));
+    __asm__ __volatile__("movq %[r9],%%r9" : : [r9]"m"(regs->r9));
+    __asm__ __volatile__("movq %[r10],%%r10" : : [r10]"m"(regs->r10));
+    __asm__ __volatile__("movq %[r11],%%r11" : : [r11]"m"(regs->r11));
+    __asm__ __volatile__("movq %[r12],%%r12" : : [r12]"m"(regs->r12));
+    __asm__ __volatile__("movq %[r13],%%r13" : : [r13]"m"(regs->r13));
+    __asm__ __volatile__("movq %[r14],%%r14" : : [r14]"m"(regs->r14));
+    __asm__ __volatile__("movq %[r15],%%r15" : : [r15]"m"(regs->r15));
+    __asm__ __volatile__("iretq");
 }
 
 void irqCppHandler0()
@@ -135,8 +164,6 @@ void irqCppHandler14()
 void irqCppHandler15()
 {
     arch::common::InterruptManager::sendEndSignal(15);
-}
-
 }
 
 KEVOS_NSE_3(x64,x86,arch);
