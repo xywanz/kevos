@@ -20,9 +20,9 @@ limitations under the License.
 
 KEVOS_NSS_3(arch,x86,x64);
 
-ProcessRegs* ProcessManager::createKernelRegsInfo(void* entry,void* stack)
+ProcessRegisters* ProcessManager::createKernelRegsInfo(void* entry,void* stack)
 {
-    ProcessRegs* regs=new ProcessRegs;
+    ProcessRegisters* regs=new ProcessRegisters;
     regs->cs=__KERNEL_CS;
     regs->ds=__KERNEL_DS;
     regs->es=__KERNEL_DS;

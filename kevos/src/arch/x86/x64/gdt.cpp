@@ -20,16 +20,7 @@ KEVOS_NSS_3(arch,x86,x64);
 
 SystemDescriptor GDT::items[gdtSize];
 
-struct __packed__
-{
-    uint32_t reserved1;
-    uint64_t rsp0;
-    uint64_t rsp1;
-    uint64_t rsp2;
-    uint64_t reserved2;
-    uint64_t ist0;
-    uint32_t reserved3[15];
-}__knTSS;
+TaskStructureSegment __knTSS;
 
 void GDT::setItem(size_t index,uint64_t base,
                 uint32_t limit,uint8_t dpl,uint8_t code,uint8_t tss)

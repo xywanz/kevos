@@ -16,10 +16,10 @@ limitations under the License.
 .code64
 .text
 
-.equ KERNEL_DS,0x20
+.equ __KERNEL_DS,0x20
 
 .macro setupSegment
-    movw $KERNEL_DS,%ax
+    movw $__KERNEL_DS,%ax
     movw %ax,%ds
     movw %ax,%ss
     movw %ax,%es
@@ -30,12 +30,12 @@ limitations under the License.
 .macro save
     pushq %rsp
     pushq %rax
+    pushq %rbx
     pushq %rcx
     pushq %rdx
-    pushq %rbx
-    pushq %rbp
     pushq %rsi
     pushq %rdi
+    pushq %rbp
     pushq %r8
     pushq %r9
     pushq %r10
@@ -44,9 +44,23 @@ limitations under the License.
     pushq %r13
     pushq %r14
     pushq %r15
+    movw %ds,%ax
+    pushq %ax
+    movw %es,%ax
+    pushq %ax
+    movw $__KERNEL_DS,%ax
+    movw %ax,%ds
+    movw %ax,%es
+    movw %ax,%ss
+    movw %ax,%fs
+    movw %ax,%gs
 .endm
 
 .macro load
+    popq %rax
+    movw %ax,%es
+    popq %rax
+    movw %ax,%ds
     popq %r15
     popq %r14
     popq %r13
@@ -55,12 +69,12 @@ limitations under the License.
     popq %r10
     popq %r9
     popq %r8
+    popq %rbp
     popq %rdi
     popq %rsi
-    popq %rbp
-    popq %rbx
     popq %rdx
     popq %rcx
+    popq %rbx
     popq %rax
     popq %rsp
 .endm

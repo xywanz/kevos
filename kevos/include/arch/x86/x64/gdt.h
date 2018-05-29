@@ -37,6 +37,8 @@ KEVOS_NSS_3(arch,x86,x64);
 #define __USER_DS				  0x40
 #define __KERNEL_TSS              0x50
 
+extern TaskStructureSegment __knTSS;
+
 class GDT
 {
 public:

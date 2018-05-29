@@ -133,6 +133,17 @@ struct __packed__ GateDescriptor
     uint32_t reserved;
 };
 
+struct __packed__ TaskStructureSegment
+{
+    uint32_t reserved1;
+    uint64_t rsp0;
+    uint64_t rsp1;
+    uint64_t rsp2;
+    uint64_t reserved2;
+    uint64_t ist0;
+    uint32_t reserved3[15];
+};
+
 KEVOS_NSE_3(x64,x86,arch);
 
 #endif
