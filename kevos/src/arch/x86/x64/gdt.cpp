@@ -14,13 +14,11 @@ limitations under the License.
 ==============================================================================*/
 
 #include <arch/x86/x64/gdt.h>
-#include <kernel/mm/mem_layout.h>
+#include <arch/x86/x64/tss.h>
 
 KEVOS_NSS_3(arch,x86,x64);
 
 SystemDescriptor GDT::items[gdtSize];
-
-TaskStructureSegment __knTSS;
 
 void GDT::setItem(size_t index,uint64_t base,
                 uint32_t limit,uint8_t dpl,uint8_t code,uint8_t tss)
@@ -43,12 +41,9 @@ void GDT::setItem(size_t index,uint64_t base,
 
 void GDT::initialize()
 {
-    __knTSS.ist0=reinterpret_cast<uint64_t>(&kstack_start_address);
-    __knTSS.rsp0=(uint64_t)(&kstack_start_address);
-
     setItem(3, 0, 0, 3, 1, 0);
     setItem(4, 0, 0, 3, 0, 0);
-    setItem(5, reinterpret_cast<uint64_t>(&__knTSS), sizeof(__knTSS)-1, 0, 0, 1);
+    setItem(5, reinterpret_cast<uint64_t>(&TSS::tss), sizeof(TSS::tss)-1, 0, 0, 1);
 
     struct __packed__ GDTPointer
     {

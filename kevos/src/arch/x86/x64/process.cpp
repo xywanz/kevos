@@ -50,7 +50,7 @@ ProcessRegisters* ProcessManager::createKernelRegInfo(void* entry,void* stack)
     regs->rsp=reinterpret_cast<uint64_t>(stack);
     regs->rbp=reinterpret_cast<uint64_t>(stack);
     regs->rip=reinterpret_cast<uint64_t>(entry);
-    regs->cr3=reinterpret_cast<uint64_t>(__knPML4);
+    regs->cr3=reinterpret_cast<uint64_t>(KernelPageFrame::pml4);
     return regs;
 }
 
@@ -70,7 +70,7 @@ ProcessRegisters* ProcessManager::createUserRegInfo(void* entry,void* stack,void
     regs->rbp=reinterpret_cast<uint64_t>(stack);
     regs->rsp0=reinterpret_cast<uint64_t>(kstack);
     regs->rip=reinterpret_cast<uint64_t>(entry);
-    regs->cr3=reinterpret_cast<uint64_t>(__knPML4);
+    regs->cr3=reinterpret_cast<uint64_t>(KernelPageFrame::pml4);
     return regs;
 }
 

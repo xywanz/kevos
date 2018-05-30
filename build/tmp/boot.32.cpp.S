@@ -282,25 +282,25 @@ _ZN4arch3x863x644bootL15setupKernelPageEv:
 	.cfi_def_cfa_register 5
 	subl	$48, %esp
 	pushl	$4096
-	pushl	$_ZN4arch3x863x648__knPML4E
+	pushl	$_ZN4arch3x863x6415KernelPageFrame4pml4E
 	call	_ZN4arch3x863x644bootL5bzeroEPcj
 	addl	$8, %esp
 	pushl	$4096
-	pushl	$_ZN4arch3x863x648__knPDPTE
+	pushl	$_ZN4arch3x863x6415KernelPageFrame4pdptE
 	call	_ZN4arch3x863x644bootL5bzeroEPcj
 	addl	$8, %esp
 	pushl	$2097152
-	pushl	$_ZN4arch3x863x647__knPDTE
+	pushl	$_ZN4arch3x863x6415KernelPageFrame3pdtE
 	call	_ZN4arch3x863x644bootL5bzeroEPcj
 	addl	$8, %esp
 	pushl	$67108864
-	pushl	$_ZN4arch3x863x646__knPTE
+	pushl	$_ZN4arch3x863x6415KernelPageFrame2ptE
 	call	_ZN4arch3x863x644bootL5bzeroEPcj
 	addl	$8, %esp
-	movl	$_ZN4arch3x863x648__knPML4E, -36(%ebp)
-	movl	$_ZN4arch3x863x648__knPDPTE, -40(%ebp)
-	movl	$_ZN4arch3x863x647__knPDTE, -44(%ebp)
-	movl	$_ZN4arch3x863x646__knPTE, -48(%ebp)
+	movl	$_ZN4arch3x863x6415KernelPageFrame4pml4E, -36(%ebp)
+	movl	$_ZN4arch3x863x6415KernelPageFrame4pdptE, -40(%ebp)
+	movl	$_ZN4arch3x863x6415KernelPageFrame3pdtE, -44(%ebp)
+	movl	$_ZN4arch3x863x6415KernelPageFrame2ptE, -48(%ebp)
 	movl	$0, -4(%ebp)
 	movl	-40(%ebp), %eax
 	addl	$3, %eax
@@ -397,7 +397,7 @@ wrmsr
 _ZN4arch3x863x644bootL8setupCR3Ev:
 .LFB12:
 	.cfi_startproc
-	movl	$_ZN4arch3x863x648__knPML4E, %eax
+	movl	$_ZN4arch3x863x6415KernelPageFrame4pml4E, %eax
 #APP
 # 204 "boot.32.cpp" 1
 	mov %eax,%cr3

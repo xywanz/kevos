@@ -62,7 +62,9 @@ limitations under the License.
 	这些定义可以组合使用，总之START和END所包含的命名空间数量要相等就行了
 */
 #define KEVOS_NSS(x);	namespace x {
+#define KEVOS_NSS_1(x);	namespace x {
 #define KEVOS_NSE(x);	}
+#define KEVOS_NSE_1(x);	}
 #define KEVOS_NSS_2(x1,x2); namespace x1 { namespace x2{
 #define KEVOS_NSE_2(x2,x1); }}
 #define KEVOS_NSS_3(x1,x2,x3); namespace x1 { namespace x2 { namespace x3 {

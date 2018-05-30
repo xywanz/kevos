@@ -151,14 +151,14 @@ static void setPAE()
 
 static void setupKernelPage()
 {
-    bzero(reinterpret_cast<char*>(__knPML4),sizeof(PML4E)*__KERNEL_PML4_SIZE);    //清空内核PML4表
-    bzero(reinterpret_cast<char*>(__knPDPT),sizeof(PDPTE)*__KERNEL_PDPT_SIZE);    //清空内核PML4表
-    bzero(reinterpret_cast<char*>(__knPDT),sizeof(PDT)*__KERNEL_PDT_SIZE);        //清空内核PML4表
-    bzero(reinterpret_cast<char*>(__knPT),sizeof(PT)*__KERNEL_PT_SIZE);           //清空内核PML4表
-    uint32_t* pml4=reinterpret_cast<uint32_t*>(__knPML4);
-    uint32_t* pdpt=reinterpret_cast<uint32_t*>(__knPDPT);
-    uint32_t* pdt=reinterpret_cast<uint32_t*>(__knPDT);
-    uint32_t* pt=reinterpret_cast<uint32_t*>(__knPT);
+    bzero(reinterpret_cast<char*>(KernelPageFrame::pml4),sizeof(PML4E)*__KERNEL_PML4_SIZE);    //清空内核PML4表
+    bzero(reinterpret_cast<char*>(KernelPageFrame::pdpt),sizeof(PDPTE)*__KERNEL_PDPT_SIZE);    //清空内核PML4表
+    bzero(reinterpret_cast<char*>(KernelPageFrame::pdt),sizeof(PDT)*__KERNEL_PDT_SIZE);        //清空内核PML4表
+    bzero(reinterpret_cast<char*>(KernelPageFrame::pt),sizeof(PT)*__KERNEL_PT_SIZE);           //清空内核PML4表
+    uint32_t* pml4=reinterpret_cast<uint32_t*>(KernelPageFrame::pml4);
+    uint32_t* pdpt=reinterpret_cast<uint32_t*>(KernelPageFrame::pdpt);
+    uint32_t* pdt=reinterpret_cast<uint32_t*>(KernelPageFrame::pdt);
+    uint32_t* pt=reinterpret_cast<uint32_t*>(KernelPageFrame::pt);
     for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pdpt)+0x3;
         i<__KERNEL_PDPT_NUM;
         ++i,addr+=__PAGE_SIZE)
@@ -201,7 +201,7 @@ static void enableLongMode()
 
 static void setupCR3()
 {
-    __asm__ __volatile__("mov %[pd],%%cr3" : : [pd]"r"(__knPML4));
+    __asm__ __volatile__("mov %[pd],%%cr3" : : [pd]"r"(KernelPageFrame::pml4));
 }
 
 static void enablePaging()

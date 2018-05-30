@@ -24,28 +24,20 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_x86_X64_GDT_H_
-#define _KEVOS_ARCH_x86_X64_GDT_H_
+#ifndef _KEVOS_ARCH_x86_X64_TSS_H_
+#define _KEVOS_ARCH_x86_X64_TSS_H_
 
 #include <arch/x86/x64/descriptor.h>
 
 KEVOS_NSS_3(arch,x86,x64);
 
-#define __KERNEL_CS               0x10
-#define __KERNEL_DS               0x20
-#define __USER_CS				  0x30
-#define __USER_DS				  0x40
-#define __KERNEL_TSS              0x50
-
-class GDT
+class TSS
 {
 public:
-	static void setItem(size_t index,uint64_t base,uint32_t limit,
-						uint8_t dpl,uint8_t code,uint8_t tss);
-	static void initialize();
 
-	static constexpr uint16_t gdtSize=6;
-	static SystemDescriptor items[gdtSize];
+    static void initialize();
+
+    static TaskStructureSegment tss;
 };
 
 KEVOS_NSE_3(x64,x86,arch);

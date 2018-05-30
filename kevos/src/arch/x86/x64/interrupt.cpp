@@ -56,7 +56,7 @@ void saveProcessRegisters(char* base)
 void switchToContext()
 {
     auto regs=ProcessManager::current()->registers();
-    // __knTSS.rsp0=regs->rsp0;
+    // TSS::tss.rsp0=regs->rsp0;
     __asm__ __volatile__("movq %[cr3],%%cr3" : : [cr3]"r"(regs->cr3));
     __asm__ __volatile__("pushq %[ss]" : : [ss]"m"(regs->ss));
     __asm__ __volatile__("pushq %[rsp]" : : [rsp]"m"(regs->rsp));

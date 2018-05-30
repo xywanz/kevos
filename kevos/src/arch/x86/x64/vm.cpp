@@ -19,10 +19,10 @@ limitations under the License.
 
 KEVOS_NSS_3(arch,x86,x64);
 
-PML4E   __knPML4[__KERNEL_PML4_SIZE]    __aligned__(0x1000);
-PDPTE   __knPDPT[__KERNEL_PDPT_SIZE]    __aligned__(0x1000);
-PDTE    __knPDT [__KERNEL_PDT_SIZE]     __aligned__(0x1000);
-PTE     __knPT  [__KERNEL_PT_SIZE]      __aligned__(0x1000);
+PML4E  KernelPageFrame::pml4[pml4Size] __aligned__(0x1000);
+PDPTE  KernelPageFrame::pdpt[pdptSize] __aligned__(0x1000);
+PDTE   KernelPageFrame::pdt[pdtSize]   __aligned__(0x1000);
+PTE    KernelPageFrame::pt[ptSize]     __aligned__(0x1000);
 
 VirtualMemory::VirtualMemory()
 {
@@ -165,7 +165,7 @@ VMemMap VirtualMemory::resolveMap(uint64_t pml4PPN,uint64_t vpn)
 
 void VirtualMemory::mapKernelPage(uint64_t vpn,uint64_t ppn)
 {
-    VMemMap vmm=resolveMap(reinterpret_cast<uint64_t>(__knPML4)/__PAGE_SIZE,vpn);
+    VMemMap vmm=resolveMap(reinterpret_cast<uint64_t>(KernelPageFrame::pml4)/__PAGE_SIZE,vpn);
     vmm.pt[vmm.ptIndex].physicalPageNum=ppn;
     vmm.pt[vmm.ptIndex].writable=1;
     vmm.pt[vmm.ptIndex].present=1;
@@ -174,7 +174,7 @@ void VirtualMemory::mapKernelPage(uint64_t vpn,uint64_t ppn)
 
 void VirtualMemory::unmapKernelPage(uint64_t vpn)
 {
-    VMemMap vmm=resolveMap(reinterpret_cast<uint64_t>(__knPML4)/__PAGE_SIZE,vpn);
+    VMemMap vmm=resolveMap(reinterpret_cast<uint64_t>(KernelPageFrame::pml4)/__PAGE_SIZE,vpn);
     *reinterpret_cast<uint64_t*>(vmm.pt+vmm.ptIndex)=0;
     refreshPaging();
 }

@@ -17,6 +17,7 @@ limitations under the License.
 #include <arch/common/interrupt.h>
 #include <arch/x86/common/cpuid.h>
 #include <arch/x86/x64/gdt.h>
+#include <arch/x86/x64/tss.h>
 #include <arch/x86/x64/vm.h>
 #include <arch/x86/x64/process.h>
 #include <kernel/mm/mem_layout.h>
@@ -52,7 +53,8 @@ void test()
 
 extern "C" void entry64()
 {
-	__asm__("mov %%rax, %%cr3" : : "a"(__knPML4));
+	__asm__("mov %%rax, %%cr3" : : "a"(KernelPageFrame::pml4));
+	TSS::initialize();
 	GDT::initialize();
 	KernelHeap::initialize();
 	PageManager::initialize();

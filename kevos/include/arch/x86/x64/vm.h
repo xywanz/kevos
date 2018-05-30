@@ -50,10 +50,20 @@ KEVOS_NSS_3(arch,x86,x64);
 /**
  * @brief 内核态的分页结构表
  */
-extern PML4E __knPML4[__KERNEL_PML4_SIZE];
-extern PDPTE __knPDPT[__KERNEL_PDPT_SIZE];
-extern PDTE  __knPDT [__KERNEL_PDT_SIZE];
-extern PTE   __knPT  [__KERNEL_PT_SIZE];
+
+class KernelPageFrame
+{
+public:
+	constexpr static size_t pml4Size = 512;
+	constexpr static size_t pdptSize = 512;
+	constexpr static size_t pdtSize = 512;
+	constexpr static size_t ptSize = 512*32;
+
+	static PML4E  pml4[];
+	static PDPTE  pdpt[];
+	static PDTE   pdt[];
+	static PTE    pt[];
+};
 
 /**
  * @brief 一个虚拟内存页的映射信息
