@@ -66,6 +66,76 @@ extern "C"
 void saveProcessRegisters(char* base);
 void switchToContext();
 
+
+
+void faultAsmHandler0();
+void faultAsmHandler1();
+void faultAsmHandler2();
+void faultAsmHandler3();
+void faultAsmHandler4();
+void faultAsmHandler5();
+void faultAsmHandler6();
+void faultAsmHandler7();
+void faultAsmHandler8();
+void faultAsmHandler9();
+void faultAsmHandler10();
+void faultAsmHandler11();
+void faultAsmHandler12();
+void faultAsmHandler13();
+void faultAsmHandler14();
+void faultAsmHandler15();
+void faultAsmHandler16();
+void faultAsmHandler17();
+void faultAsmHandler18();
+void faultAsmHandler19();
+void faultAsmHandler20();
+void faultAsmHandler21();
+void faultAsmHandler22();
+void faultAsmHandler23();
+void faultAsmHandler24();
+void faultAsmHandler25();
+void faultAsmHandler26();
+void faultAsmHandler27();
+void faultAsmHandler28();
+void faultAsmHandler29();
+void faultAsmHandler30();
+void faultAsmHandler31();
+
+void faultCppHandler0();
+void faultCppHandler1();
+void faultCppHandler2();
+void faultCppHandler3();
+void faultCppHandler4();
+void faultCppHandler5();
+void faultCppHandler6();
+void faultCppHandler7();
+void faultCppHandler8();
+void faultCppHandler9();
+void faultCppHandler10();
+void faultCppHandler11();
+void faultCppHandler12();
+void faultCppHandler13();
+void faultCppHandler14();
+void faultCppHandler15();
+void faultCppHandler16();
+void faultCppHandler17();
+void faultCppHandler18();
+void faultCppHandler19();
+void faultCppHandler20();
+void faultCppHandler21();
+void faultCppHandler22();
+void faultCppHandler23();
+void faultCppHandler24();
+void faultCppHandler25();
+void faultCppHandler26();
+void faultCppHandler27();
+void faultCppHandler28();
+void faultCppHandler29();
+void faultCppHandler30();
+void faultCppHandler31();
+
+
+
 void irqAsmHandler0();
 void irqAsmHandler1();
 void irqAsmHandler2();
@@ -83,8 +153,6 @@ void irqAsmHandler13();
 void irqAsmHandler14();
 void irqAsmHandler15();
 
-void irqCppHandler(uint64_t irq);
-
 void irqCppHandler0();
 void irqCppHandler1();
 void irqCppHandler2();
@@ -101,6 +169,26 @@ void irqCppHandler12();
 void irqCppHandler13();
 void irqCppHandler14();
 void irqCppHandler15();
+
+
+
+void syscallAsmHandler0();
+void syscallAsmHandler1();
+void syscallAsmHandler2();
+void syscallAsmHandler3();
+void syscallAsmHandler4();
+void syscallAsmHandler5();
+void syscallAsmHandler6();
+void syscallAsmHandler7();
+
+void syscallCppHandler0();
+void syscallCppHandler1();
+void syscallCppHandler2();
+void syscallCppHandler3();
+void syscallCppHandler4();
+void syscallCppHandler5();
+void syscallCppHandler6();
+void syscallCppHandler7();
 
 }
 

@@ -13,18 +13,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_KERNEL_PROCESS_H_
-#define _KEVOS_KERNEL_PROCESS_H_
+#ifndef _KEVOS_KERNEL_UTILS_LIST_H_
+#define _KEVOS_KERNEL_UTILS_LIST_H_
 
 #include <sys/types.h>
 
-KEVOS_NSS(kernel);
+KEVOS_NSS_2(kernel,utils);
 
-class Process
+template<class T>
+class List
 {
-    
+public:
+
+private:
+    struct Node
+    {
+
+    };    
 };
 
-KEVOS_NSE(kevos);
+KEVOS_NSE_2(utils,kernel);
 
 #endif

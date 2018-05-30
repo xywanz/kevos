@@ -26,9 +26,9 @@ physical = 0x100000;
 
 SECTIONS
 {
-  . = 0x100000;
+  . = physical;/* + virtual*/
 
-  .text :
+  .text : /*AT(ADDR(.text) - virtual)*/
   {
     PROVIDE(kernel_start_address = ABSOLUTE(.));
 
@@ -44,7 +44,7 @@ SECTIONS
     ro_data_end_address = .;
   }
 
-  .data ALIGN(4096) :
+  .data ALIGN(4096) :/* AT(ADDR(.data) - virtual)*/
   {
     data_start_address = .;
     *(.data)
@@ -52,7 +52,7 @@ SECTIONS
     data_end_address = .;
   }
 
-  .bss ALIGN(4096) :
+  .bss ALIGN(4096) :/* AT(ADDR(.bss) - virtual)*/
   {
     bss_start_address = .;
     *(.bss)
@@ -61,7 +61,7 @@ SECTIONS
     bss_end_address = .;
   }
 
-  .reserve.kern ALIGN(4096) :
+  .reserve.kern ALIGN(4096) :/* AT(ADDR(.reserve.kern) - virtual)*/
   {
     kheap_start_address = .;
     *(.heap.kern)

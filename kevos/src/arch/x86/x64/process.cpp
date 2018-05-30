@@ -22,9 +22,12 @@ limitations under the License.
 
 KEVOS_NSS_3(arch,x86,x64);
 
-Process::Process()
+Process::Process(void* entry,void* stack,uint64_t userProcess)
 {
-    m_regs=ProcessManager::createKernelRegInfo(0,0);
+    if(userProcess)
+        m_regs=ProcessManager::createUserRegInfo(entry,stack,0);
+    else
+        m_regs=ProcessManager::createKernelRegInfo(entry,stack);
 }
 
 
@@ -32,7 +35,7 @@ Process* ProcessManager::s_cur=nullptr;
 
 void ProcessManager::initialize()
 {
-    s_cur=new Process;
+    s_cur=new Process(0,0,0);
 }
 
 ProcessRegisters* ProcessManager::createKernelRegInfo(void* entry,void* stack)

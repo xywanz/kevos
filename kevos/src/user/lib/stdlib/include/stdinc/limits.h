@@ -18,7 +18,7 @@ limitations under the License.
 
 
 #ifndef _INTEGRAL_MAX_BITS
-#define _INTEGRAL_MAX_BITS 64
+#define _INTEGRAL_MAX_BITS 128
 #endif
 
 #define CHAR_BIT      8         /* number of bits in a char */

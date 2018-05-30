@@ -13,18 +13,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_KERNEL_PROCESS_H_
-#define _KEVOS_KERNEL_PROCESS_H_
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#include <sys/types.h>
+#ifndef _ERRNO_H_
+#define _ERRNO_H_
 
-KEVOS_NSS(kernel);
+extern int errno;
 
-class Process
-{
-    
-};
+#define EDOM        -1
+#define ERANGE      -2
 
-KEVOS_NSE(kevos);
+#endif
 
+#ifdef __cplusplus
+}
 #endif

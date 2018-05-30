@@ -78,10 +78,31 @@ limitations under the License.
 .endm
 
 
-.extern irqHandlers
+.extern interruptHandlers
 .extern saveProcessRegisters
 .extern switchToContext
 
+.equ FAULT0,0
+.macro faultAsmHandler number
+.global faultAsmHandler\number
+faultAsmHandler\number:
+    save
+    movq %rsp,%rdi
+    callq saveProcessRegisters
+    movq $\number,%rdi
+    mov $interruptHandlers,%rax
+    mov $\number+FAULT0,%rbx
+    callq *(%rax,%rbx,8)
+    load
+    iretq
+.endm
+
+.irp number,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31
+faultAsmHandler \number
+.endr
+
+
+.equ IRQ0,0x20
 .macro irqAsmHandler number
 .global irqAsmHandler\number
 irqAsmHandler\number:
@@ -89,14 +110,33 @@ irqAsmHandler\number:
     movq %rsp,%rdi
     callq saveProcessRegisters
     movq $\number,%rdi
-    mov $irqHandlers,%rax
-    mov $\number,%rbx
+    mov $interruptHandlers,%rax
+    mov $\number+IRQ0,%rbx
     callq *(%rax,%rbx,8)
-    callq switchToContext
     load
     iretq
 .endm
 
 .irp number,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 irqAsmHandler \number
+.endr
+
+
+.equ SYSCALL0,0x80
+.macro syscallAsmHandler number
+.global syscallAsmHandler\number
+syscallAsmHandler\number:
+    save
+    movq %rsp,%rdi
+    callq saveProcessRegisters
+    movq $\number,%rdi
+    mov $interruptHandlers,%rax
+    mov $\number+SYSCALL0,%rbx
+    callq *(%rax,%rbx,8)
+    load
+    iretq
+.endm
+
+.irp number,0,1,2,3,4,5,6,7
+syscallAsmHandler \number
 .endr

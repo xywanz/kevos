@@ -13,18 +13,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_KERNEL_PROCESS_H_
-#define _KEVOS_KERNEL_PROCESS_H_
+#include <kernel/utils/list.h>
 
-#include <sys/types.h>
 
-KEVOS_NSS(kernel);
-
-class Process
-{
-    
-};
-
-KEVOS_NSE(kevos);
-
-#endif

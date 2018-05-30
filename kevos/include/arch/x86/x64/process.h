@@ -56,7 +56,7 @@ struct ProcessRegisters
 class Process
 {
 public:
-    Process();
+    Process(void* entry,void* stack,uint64_t userProcess);
 
     ProcessRegisters* registers()
     {
@@ -66,6 +66,7 @@ public:
 private:
     ProcessRegisters* m_regs;
 };
+
 
 class ProcessManager
 {

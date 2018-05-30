@@ -28,14 +28,16 @@ limitations under the License.
 
 #include <arch/x86/x64/descriptor.h>
 
-#define IRQ0    0x20
+#define FAULT0      0x00
+#define IRQ0        0x20
+#define SYSCALL0    0x80
 
 KEVOS_NSS_3(arch,x86,x64);
 
-typedef void (*IRQHandler)();
+typedef void (*InterruptHandler)();
 
 extern "C"{
-    extern IRQHandler irqHandlers[16];
+    extern InterruptHandler interruptHandlers[];
 }
 
 class IDT
@@ -44,7 +46,7 @@ public:
 	static void setItem(size_t index,void (*handler)(),uint8_t dpl);
 	static void initialize();
 
-	static constexpr uint16_t idtSize=128;
+	static constexpr uint16_t idtSize=256;
 	static GateDescriptor items[idtSize];
 };
 

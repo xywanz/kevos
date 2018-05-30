@@ -85,10 +85,173 @@ void switchToContext()
     __asm__ __volatile__("iretq");
 }
 
+void faultCppHandler0()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler1()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler2()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler3()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler4()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler5()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler6()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler7()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler8()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler9()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler10()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler11()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler12()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler13()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler14()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler15()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler16()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler17()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler18()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler19()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler20()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler21()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler22()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler23()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler24()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler25()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler26()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler27()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler28()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler29()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler30()
+{
+    __asm__ __volatile__("hlt");
+}
+
+void faultCppHandler31()
+{
+    __asm__ __volatile__("hlt");
+}
+
+
+
 void irqCppHandler0()
 {
     *((unsigned short*)(0xB8000+300))=rand();
     arch::common::InterruptManager::sendEndSignal(0);
+    switchToContext();
 }
 
 void irqCppHandler1()
@@ -166,7 +329,51 @@ void irqCppHandler15()
     arch::common::InterruptManager::sendEndSignal(15);
 }
 
+
+
+void syscallCppHandler0()
+{
+    *((unsigned short*)0xB8000+1000)=0x7575;
+}
+
+void syscallCppHandler1()
+{
+
+}
+
+void syscallCppHandler2()
+{
+
+}
+
+void syscallCppHandler3()
+{
+
+}
+
+void syscallCppHandler4()
+{
+
+}
+
+void syscallCppHandler5()
+{
+
+}
+void syscallCppHandler6()
+{
+
+}
+
+void syscallCppHandler7()
+{
+
+}
+
 KEVOS_NSE_3(x64,x86,arch);
+
+
+
 
 
 

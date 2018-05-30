@@ -85,6 +85,8 @@ extern "C" void entry64()
 
 	test();
 
+	__asm__("int $0x80");
+
 	confirmImAlive();
 	while(1);
 }

@@ -42,7 +42,6 @@ __asm__(".align 4");
 
 KEVOS_NSS_4(arch,x86,x64,boot);
 
-
 static_assert(sizeof(uint8_t)==1,"In x86-64 achitecture, uint8_t must be 1 byte!");
 static_assert(sizeof(int8_t)==1,"In x86-64 achitecture, int8_t must be 1 bytes!");
 static_assert(sizeof(uint16_t)==2,"In x86-64 achitecture, uint16_t must be 2 bytes!");
@@ -51,6 +50,7 @@ static_assert(sizeof(uint32_t)==4,"In x86-64 achitecture, uint32_t must be 4 byt
 static_assert(sizeof(int32_t)==4,"In x86-64 achitecture, int32_t must be 4 bytes!");
 static_assert(sizeof(uint64_t)==8,"In x86-64 achitecture, uint64_t must be 8 bytes!");
 static_assert(sizeof(int64_t)==8,"In x86-64 achitecture, int64_t must be 8 bytes!");
+static_assert(sizeof(size_t)==8,"In x86-64 achitecture, size_t must be 8 bytes!");
 
 static void setSystemDescriptor(uint32_t index,uint32_t baseHigh,uint32_t baseLow,
             uint32_t limit,uint8_t dpl,uint8_t code);
