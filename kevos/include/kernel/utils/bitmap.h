@@ -117,6 +117,44 @@ private:
 	}
 };
 
+template<class ByteType>
+Bitmap<DynamicBitmap,ByteType>::Bitmap(ByteType* bitmap,size_t size)
+	:m_bitmap(bitmap),m_size(size)
+{
+	for(size_t i=0;i<size;++i)
+	{
+		bitmap[i]=0;
+	}
+}
+
+template<class ByteType>
+bool Bitmap<DynamicBitmap,ByteType>::set(size_t index)
+{
+	size_t bitOffset=bitIndexOf(index);
+	size_t byteOffset=byteIndexOf(index);
+	ByteType mask=1<<bitOffset;
+	bool retVal=m_bitmap[byteOffset]&mask;
+	m_bitmap[byteOffset]|=mask;
+	return retVal;
+}
+
+template<class ByteType>
+bool Bitmap<DynamicBitmap,ByteType>::unset(size_t index)
+{
+	size_t bitOffset=bitIndexOf(index);
+	size_t byteOffset=byteIndexOf(index);
+	ByteType mask=1<<bitOffset;
+	bool retVal=m_bitmap[byteOffset]&mask;
+	m_bitmap[byteOffset]&=(~mask);
+	return retVal;
+}
+
+template<class ByteType>
+bool Bitmap<DynamicBitmap,ByteType>::get(size_t index)const
+{
+	return m_bitmap[byteIndexOf(index)]&(1<<bitIndexOf(index));
+}
+
 KEVOS_NSE_2(utils,kernel);
 
 #endif

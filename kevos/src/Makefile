@@ -38,6 +38,8 @@ all:
 	make -C kernel/net
 
 	make -C user/lib/stdlib/src
+	make -C user/lib/stdlib/src/cmath
+	make -C user/lib/stdlib/src/math
 	make -C user/lib/stdlib/src/stdio
 	make -C user/lib/stdlib/src/stdlib
 	make -C user/lib/stdlib/src/string

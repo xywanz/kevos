@@ -29,6 +29,8 @@ limitations under the License.
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <cmath>
+
 KEVOS_NSS_4(arch,x86,x64,boot);
 
 using namespace kernel::mm;
@@ -61,6 +63,7 @@ extern "C" void entry64()
 	arch::common::InterruptManager::initialize();
 	arch::common::InterruptManager::enableInterrupts();
 	arch::common::InterruptManager::enableTimer();
+	arch::common::InterruptManager::setTimerFrequency(1);
 	common::CPUInfo cpuInfo=common::CPUInfo::instance();
 	ProcessManager::initialize();
 
@@ -83,9 +86,20 @@ extern "C" void entry64()
 	VirtualMemory vm;
 	vm.mapPage(0,PageManager::allocate(),1);
 
+	vm.unmapPage(0);
+
 	test();
 
-	__asm__("int $0x80");
+	// __asm__("int $0x80");
+	int z=0;
+	int dv=1/z;
+
+	// char *tt=(char*)0x100000000;
+	// *tt=1;
+
+	kernel::utils::Bitmap<DynamicBitmap,char> bm(new char[8],8);
+
+	double aaaaaa=std::sin(0.5);
 
 	confirmImAlive();
 	while(1);

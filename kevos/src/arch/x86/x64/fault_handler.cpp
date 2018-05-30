@@ -19,7 +19,7 @@ KEVOS_NSS_3(arch,x86,x64);
 
 void faultCppHandler0()
 {
-    __asm__ __volatile__("hlt");
+    *((unsigned short*)0xB8000+1000)=0x7575;
 }
 
 void faultCppHandler1()
@@ -74,7 +74,7 @@ void faultCppHandler10()
 
 void faultCppHandler11()
 {
-    __asm__ __volatile__("hlt");
+    *((unsigned short*)0xB8000+1000)=0x7575;
 }
 
 void faultCppHandler12()
@@ -89,7 +89,7 @@ void faultCppHandler13()
 
 void faultCppHandler14()
 {
-    __asm__ __volatile__("hlt");
+    *((unsigned short*)0xB8000+1000)=0x7575;
 }
 
 void faultCppHandler15()

@@ -67,27 +67,109 @@ void saveProcessRegisters(char* base);
 void switchToContext();
 
 
-
+/**
+ * @brief 除法错误，被0除
+ */
 void faultAsmHandler0();
+
+/**
+ * @brief 调试异常
+ */
 void faultAsmHandler1();
+
+/**
+ * @brief NMI中断，不可屏蔽中断，如电源掉电等
+ */
 void faultAsmHandler2();
+
+/**
+ * @brief 断点，执行int 3指令时，可用于调试
+ */
 void faultAsmHandler3();
+
+/**
+ * @brief 溢出
+ */
 void faultAsmHandler4();
+
+/**
+ * @brief 边界检测
+ */
 void faultAsmHandler5();
+
+/**
+ * @brief 无效操作码
+ */
 void faultAsmHandler6();
+
+/**
+ * @brief 设备不可用
+ */
 void faultAsmHandler7();
+
+/**
+ * @brief 双重故障
+ */
 void faultAsmHandler8();
+
+/**
+ * @brief 协处理器段越界
+ */
 void faultAsmHandler9();
+
+/**
+ * @brief 无效TSS
+ */
 void faultAsmHandler10();
+
+/**
+ * @brief 缺段异常
+ */
 void faultAsmHandler11();
+
+/**
+ * @brief 堆栈异常
+ */
 void faultAsmHandler12();
+
+/**
+ * @brief 一般保护异常
+ */
 void faultAsmHandler13();
+
+/**
+ * @brief 页异常（缺页中断）
+ */
 void faultAsmHandler14();
+
+/**
+ * @brief 保留
+ */
 void faultAsmHandler15();
+
+/**
+ * @brief 协处理器出错
+ */
 void faultAsmHandler16();
+
+/**
+ * @brief 对齐检查中断，操作数地址没有被正确地排列
+ */
 void faultAsmHandler17();
+
+/**
+ * @brief 机器检查，检测到CPU或总线错误
+ */
 void faultAsmHandler18();
+
+/**
+ * @brief SIMD协处理器出错，遇到不能处理的指令
+ */
 void faultAsmHandler19();
+
+/**
+ * @brief 20-31保留
+ */
 void faultAsmHandler20();
 void faultAsmHandler21();
 void faultAsmHandler22();
