@@ -22,8 +22,8 @@ limitations under the License.
 extern "C"{
 #endif
 
-int vsprintf(char *str,const char *fmt,va_list args);
-int sprintf(char *str,const char *fmt,...);
+int vsprintf(char* str,const char* fmt,va_list args);
+int sprintf(char* str,const char* fmt,...);
 
 #ifdef __cplusplus
 }

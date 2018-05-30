@@ -13,49 +13,40 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x86/x64/interrupt.h>
-
 #include <cstdlib>
 
-KEVOS_NSS_3(arch,x86,x64);
-
-void syscallCppHandler0()
-{
-    *((unsigned short*)0xB8000+1000)=0x7575;
-}
-
-void syscallCppHandler1()
+namespace std
 {
 
-}
-
-void syscallCppHandler2()
+char* itoa(int value,char* string,int radix)
 {
-
+    char *ret=string;
+    if(radix==16)
+    {
+        *string++='0';
+        *string++='x';
+    }
+    else if(radix==8)
+    {
+        *string++='0';
+    }
+    if(value<0)
+        *string++='-';
+    int tmp,i=0;
+    char c;
+    do
+    {
+        tmp=value%radix;
+        string[i++]=tmp<10?tmp+'0':tmp+'a'-10;
+    }while(value/=radix);
+    string[i--]=0;
+    for(int j=0;j<i;++j,--i)
+    {
+        c=string[j];
+        string[j]=string[i];
+        string[i]=c;
+    }
+    return ret;
 }
 
-void syscallCppHandler3()
-{
-
 }
-
-void syscallCppHandler4()
-{
-
-}
-
-void syscallCppHandler5()
-{
-
-}
-void syscallCppHandler6()
-{
-
-}
-
-void syscallCppHandler7()
-{
-
-}
-
-KEVOS_NSE_3(x64,x86,arch);

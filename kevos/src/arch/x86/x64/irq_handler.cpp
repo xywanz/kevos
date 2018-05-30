@@ -16,13 +16,13 @@ limitations under the License.
 #include <arch/common/interrupt.h>
 #include <arch/x86/x64/interrupt.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 KEVOS_NSS_3(arch,x86,x64);
 
 void irqCppHandler0()
 {
-    *((unsigned short*)(0xB8000+300))=rand();
+    *((unsigned short*)(0xB8000+300))=std::rand();
     arch::common::InterruptManager::sendEndSignal(0);
     switchToContext();
 }

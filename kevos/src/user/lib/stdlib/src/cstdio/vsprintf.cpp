@@ -13,10 +13,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
+namespace std
+{
 
 int vsprintf(char* str,const char* fmt,va_list args)
 {
@@ -69,4 +71,6 @@ int vsprintf(char* str,const char* fmt,va_list args)
     }
     *str=0;
     return strlen(ptr);
+}
+
 }

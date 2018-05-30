@@ -13,49 +13,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x86/x64/interrupt.h>
+#ifndef _STL_SECOND_ALLOCATOR_
+#define _STL_SECOND_ALLOCATOR_
 
-#include <cstdlib>
+#include <cstddef>
 
-KEVOS_NSS_3(arch,x86,x64);
-
-void syscallCppHandler0()
+namespace std
 {
-    *((unsigned short*)0xB8000+1000)=0x7575;
-}
-
-void syscallCppHandler1()
-{
+    
+    template<class T>
+    class second_allocator;
 
 }
 
-void syscallCppHandler2()
-{
 
-}
-
-void syscallCppHandler3()
-{
-
-}
-
-void syscallCppHandler4()
-{
-
-}
-
-void syscallCppHandler5()
-{
-
-}
-void syscallCppHandler6()
-{
-
-}
-
-void syscallCppHandler7()
-{
-
-}
-
-KEVOS_NSE_3(x64,x86,arch);
+#endif

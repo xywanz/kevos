@@ -15,13 +15,14 @@
 
 POBJ = ../../../build/tmp
 PINC = ../../include
-PSTDINC = ../../user/lib/stdlib/include/stdinc
-PSTDINCXX = ../../user/lib/stdlib/include/stdinc++
+PSTDINC = ../user/lib/stdlib/include/stdinc
+PSTDINCXX = ../user/lib/stdlib/include/stdinc++
+PSTLINC = ../user/lib/stl/include
 
 CC = gcc-7
 CCFLAGS = -std=c11 -m64 -fno-builtin -nostdinc -nostdlib -I$(PINC) -I$(PSTDINC) -O0 -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding -c -o $(POBJ)/$@ -c $<
 CXX = g++-7
-CXXFLAGS = -m64 -fno-builtin -nostdinc -nostdinc++ -nostdlib -I$(PINC) -I$(PSTDINCXX) -I$(PSTDINC) -std=c++14 -O0 -fno-rtti -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding -c -o $(POBJ)/$@ -c $<
+CXXFLAGS = -m64 -fno-builtin -nostdinc -nostdinc++ -nostdlib -I$(PINC) -I$(PSTDINCXX) -I$(PSTDINC) -I$(PSTLINC) -std=c++14 -O0 -fno-rtti -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding -c -o $(POBJ)/$@ -c $<
 ASM = g++-7
 ASMFLAGS = $(CXXFLAGS)
 

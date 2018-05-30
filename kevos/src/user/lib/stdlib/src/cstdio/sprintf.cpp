@@ -13,49 +13,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x86/x64/interrupt.h>
+#include <cstdio>
 
-#include <cstdlib>
-
-KEVOS_NSS_3(arch,x86,x64);
-
-void syscallCppHandler0()
-{
-    *((unsigned short*)0xB8000+1000)=0x7575;
-}
-
-void syscallCppHandler1()
+namespace std 
 {
 
-}
-
-void syscallCppHandler2()
+int sprintf(char *str,const char *fmt,...)
 {
-
+    va_list args;
+    va_start(args,fmt);
+    return vsprintf(str,fmt,args);
 }
 
-void syscallCppHandler3()
-{
-
 }
-
-void syscallCppHandler4()
-{
-
-}
-
-void syscallCppHandler5()
-{
-
-}
-void syscallCppHandler6()
-{
-
-}
-
-void syscallCppHandler7()
-{
-
-}
-
-KEVOS_NSE_3(x64,x86,arch);

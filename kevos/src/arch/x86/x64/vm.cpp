@@ -15,7 +15,8 @@ limitations under the License.
 
 #include <arch/x86/x64/vm.h>
 #include <kernel/mm/page_mgr.h>
-#include <string.h>
+
+#include <cstring>
 
 KEVOS_NSS_3(arch,x86,x64);
 
@@ -27,7 +28,7 @@ PTE    KernelPageFrame::pt[ptSize]     __aligned__(0x1000);
 VirtualMemory::VirtualMemory()
 {
     m_pml4PPN=kernel::mm::PageManager::allocate();
-    memset((void*)getAddressFromPPN(m_pml4PPN),0,__PAGE_SIZE);
+    std::memset((void*)getAddressFromPPN(m_pml4PPN),0,__PAGE_SIZE);
 }
 
 VirtualMemory::~VirtualMemory()
@@ -184,7 +185,7 @@ void VirtualMemory::setPagingEntry(T* entries,size_t index,size_t ppn,
         uint64_t isToClear,uint64_t userAccessable,uint64_t writable)
 {
     if(isToClear)
-        memset((void*)getAddressFromPPN(ppn),0,__PAGE_SIZE);
+        std::memset((void*)getAddressFromPPN(ppn),0,__PAGE_SIZE);
     entries[index].physicalPageNum=ppn;
     entries[index].userAccessable=userAccessable;
     entries[index].writable=writable;

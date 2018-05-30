@@ -13,3 +13,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
+#include <cstddef>
+#include <cstdlib>
+
+namespace std
+{
+
+static long seed = 1L;
+
+void srand(unsigned int _seed)
+{
+    seed = (long)_seed;
+}
+
+int rand()
+{
+    return (((seed=seed*214013L+2531011L)>>16)&0x7fff);
+}
+
+}

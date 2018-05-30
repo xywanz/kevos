@@ -18,7 +18,7 @@ limitations under the License.
 #include <arch/x86/x64/vm.h>
 #include <kernel/mm/new.h>
 
-#include <string.h>
+#include <cstring>
 
 KEVOS_NSS_3(arch,x86,x64);
 
@@ -41,7 +41,7 @@ void ProcessManager::initialize()
 ProcessRegisters* ProcessManager::createKernelRegInfo(void* entry,void* stack)
 {
     ProcessRegisters* regs=new ProcessRegisters;
-    memset(regs,0,sizeof(ProcessRegisters));
+    std::memset(regs,0,sizeof(ProcessRegisters));
     regs->cs=__KERNEL_CS;
     regs->ds=__KERNEL_DS;
     regs->es=__KERNEL_DS;
@@ -60,7 +60,7 @@ ProcessRegisters* ProcessManager::createKernelRegInfo(void* entry,void* stack)
 ProcessRegisters* ProcessManager::createUserRegInfo(void* entry,void* stack,void* kstack)
 {
     ProcessRegisters* regs=new ProcessRegisters;
-    memset(regs,0,sizeof(ProcessRegisters));
+    std::memset(regs,0,sizeof(ProcessRegisters));
     regs->cs=__USER_CS;
     regs->ds=__USER_DS;
     regs->es=__USER_DS;

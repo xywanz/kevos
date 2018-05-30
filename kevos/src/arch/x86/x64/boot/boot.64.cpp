@@ -26,10 +26,11 @@ limitations under the License.
 #include <kernel/mm/page_mgr.h>
 #include <kernel/mm/new.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 
 #include <cmath>
+
 
 KEVOS_NSS_4(arch,x86,x64,boot);
 
@@ -74,10 +75,10 @@ extern "C" void entry64()
 	delete[]  a;
 
 	char buf[16];
-	itoa(PageManager::allocate(),buf,16);
+	std::itoa(PageManager::allocate(),buf,16);
 	print(0,buf);
 
-	itoa(PageManager::allocate(),buf,16);
+	std::itoa(PageManager::allocate(),buf,16);
 	print(30,buf);
 
 	size_t pnn=PageManager::allocate();
@@ -100,6 +101,10 @@ extern "C" void entry64()
 	kernel::utils::Bitmap<DynamicBitmap,char> bm(new char[8],8);
 
 	double aaaaaa=std::sin(0.5);
+
+	std::sprintf(buf,"%d,%d,%d",1,2,20);
+
+	print(100,buf);
 
 	confirmImAlive();
 	while(1);

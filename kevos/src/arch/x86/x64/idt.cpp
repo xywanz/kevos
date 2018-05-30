@@ -17,7 +17,7 @@ limitations under the License.
 #include <arch/x86/x64/gdt.h>
 #include <arch/x86/x64/interrupt.h>
 
-#include <string.h>
+#include <cstring>
 
 KEVOS_NSS_3(arch,x86,x64);
 
@@ -44,7 +44,7 @@ void IDT::setItem(size_t index,void (*handler)(),uint8_t dpl)
 
 void IDT::initialize()
 {
-    memset(items,0,sizeof(items));
+    std::memset(items,0,sizeof(items));
 
     setItem(FAULT0+0,faultAsmHandler0,0);
     setItem(FAULT0+1,faultAsmHandler1,0);

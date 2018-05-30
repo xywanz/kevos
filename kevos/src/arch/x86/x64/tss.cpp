@@ -16,7 +16,7 @@ limitations under the License.
 #include <arch/x86/x64/tss.h>
 #include <kernel/mm/mem_layout.h>
 
-#include <string.h>
+#include <cstring>
 
 KEVOS_NSS_3(arch,x86,x64);
 
@@ -24,7 +24,7 @@ TaskStructureSegment TSS::tss;
 
 void TSS::initialize()
 {
-    memset(&tss,0,sizeof(TaskStructureSegment));
+    std::memset(&tss,0,sizeof(TaskStructureSegment));
     tss.ist0=reinterpret_cast<uint64_t>(&kstack_start_address);
     tss.rsp0=(uint64_t)(&kstack_start_address);
 }

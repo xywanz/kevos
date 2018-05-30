@@ -13,49 +13,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x86/x64/interrupt.h>
+#ifndef _CSTDDEF_
+#define _CSTDDEF_
 
-#include <cstdlib>
 
-KEVOS_NSS_3(arch,x86,x64);
+#ifndef _SIZE_T
+#define _SIZE_T
+using size_t = unsigned long;
+#endif
 
-void syscallCppHandler0()
-{
-    *((unsigned short*)0xB8000+1000)=0x7575;
-}
+#ifndef _PTRDIFF_T
+#define _PTRDIFF_T
+using ptrdiff_t = long;
+#endif
 
-void syscallCppHandler1()
-{
+#ifndef __cplusplus
+#ifndef _WCHAR_T
+#define _WCHAR_T
+using wchar_t = short;
+#endif
+#endif
 
-}
+#define NULL 0
 
-void syscallCppHandler2()
-{
+#define offsetof(type,member) ((size_t)&(((type*)0)->member))
 
-}
 
-void syscallCppHandler3()
-{
-
-}
-
-void syscallCppHandler4()
-{
-
-}
-
-void syscallCppHandler5()
-{
-
-}
-void syscallCppHandler6()
-{
-
-}
-
-void syscallCppHandler7()
-{
-
-}
-
-KEVOS_NSE_3(x64,x86,arch);
+#endif
