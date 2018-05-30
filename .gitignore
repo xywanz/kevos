@@ -36,6 +36,7 @@
 *.img
 *.vmdk
 *.vdi
-build/tmp/*.32.S
 build/tmp/*.txt
 build/tmp/bochsout.txt
+build/tmp/*.cpp.S
+build/tmp/*.*
