@@ -16,10 +16,20 @@ limitations under the License.
 #ifndef _STL_VECTOR_
 #define _STL_VECTOR_
 
+#include <stl_alloc.h>
 
 namespace std
 {
     
+template <class T,class Alloc=alloc>
+class vector
+{
+public:
+    
+protected:
+    using data_allocator=simple_alloc<T,Alloc>;
+};
+
 }
 
 
