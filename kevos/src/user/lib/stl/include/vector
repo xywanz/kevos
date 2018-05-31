@@ -13,16 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_LIST_
-#define _STL_LIST_
+#ifndef _STL_VECTOR_
+#define _STL_VECTOR_
 
-#include <stl_alloc.h>
-
-namespace std
-{
-
-
-
-}
+#include <stl_vector.h>
 
 #endif

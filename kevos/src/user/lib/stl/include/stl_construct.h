@@ -35,22 +35,28 @@ inline void destroy(T* p)
     p->~T();
 }
 
+template <class ForwardIterator,class T>
+inline void __destroy(ForwardIterator first,ForwardIterator last,T*)
+{
+    __destroy_template(first,last,typename type_traits<T>::has_trival_destructor());
+}
+
 template <class ForwardIterator>
-inline void __destroy(ForwardIterator first,ForwardIterator last,false_type)
+inline void __destroy_template(ForwardIterator first,ForwardIterator last,false_type)
 {
     for(;first<last;++first)
         destroy(&*first);
 }
 
 template <class ForwardIterator>
-inline void __destroy(ForwardIterator first,ForwardIterator last,true_type)
+inline void __destroy_template(ForwardIterator first,ForwardIterator last,true_type)
 {
 }
 
 template <class ForwardIterator>
 inline void destroy(ForwardIterator first,ForwardIterator last)
 {
-    __destroy(first,last,type_traits<typename ForwardIterator::value_type>::has_trival_destuctor());
+    __destroy(first,last,value_type(first));
 }
 
 inline void destroy(char*,char*){}

@@ -55,13 +55,13 @@ inline void uninitialized_fill_n(ForwardIterator first,size_t n,const T& x)
 inline char* uninitialized_copy(const char* first,const char* last,char* result)
 {
     memmove(result,first,last-first);
-    return result+last-first;
+    return result+(last-first);
 }
 
 inline wchar_t* uninitialized_copy(const wchar_t* first,const wchar_t* last,wchar_t* result)
 {
     memmove(result,first,(char*)last-(char*)first);
-    return result+last-first;
+    return result+(last-first);
 }
 
 }

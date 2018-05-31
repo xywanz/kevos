@@ -17,6 +17,7 @@ limitations under the License.
 #define _STL_STL_ALLOC_
 
 #include <stl_construct.h>
+
 #include <malloc.h>
 
 namespace std

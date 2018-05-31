@@ -31,7 +31,7 @@ limitations under the License.
 
 #include <cmath>
 
-#include <vector.h>
+#include <vector>
 
 
 KEVOS_NSS_4(arch,x86,x64,boot);
@@ -77,8 +77,8 @@ extern "C" void entry64()
 	std::itoa((long)std::alloc::allocate(10),buf,16);
 	print(30,buf);
 
-	std::itoa((long)kernel::mm::KernelHeap::allocate(10),buf,16);
-	print(40,buf);
+	// std::itoa((long)kernel::mm::KernelHeap::allocate(10),buf,16);
+	// print(40,buf);
 
 	size_t pnn=PageManager::allocate();
 	PageManager::deallocate(pnn);
@@ -90,22 +90,20 @@ extern "C" void entry64()
 	test();
 
 	// __asm__("int $0x80");
-	int z=0;
-	int dv=1/z;
+	// int z=0;
+	// int dv=1/z;
 
 	// char *tt=(char*)0x100000000;
 	// *tt=1;
 
 	kernel::utils::Bitmap<DynamicBitmap,char> bm(new char[8],8);
 
-	double aaaaaa=std::sin(0.5);
 
 	std::sprintf(buf,"%d,%d,%d",1,2,20);
 
-	print(100,buf);
-
-	std::itoa((long)kernel::mm::KernelHeap::allocate(1),buf,16);
-	print(100,buf);
+	std::vector<int> v(2,1234);
+	std::itoa(v[0],buf,10);
+	print(40,buf);
 
 	confirmImAlive();
 	while(1);

@@ -13,24 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_VECTOR_
-#define _STL_VECTOR_
+#ifndef _STL_ITERATOR_
+#define _STL_ITERATOR_
 
-#include <stl_alloc.h>
-
-namespace std
-{
-    
-template <class T,class Alloc=alloc>
-class vector
-{
-public:
-    
-protected:
-    using data_allocator=simple_alloc<T,Alloc>;
-};
-
-}
-
+#include <stl_iterator.h>
 
 #endif

@@ -16,7 +16,7 @@ limitations under the License.
 #ifndef _STL_TYPE_TRAITS_H_
 #define _STL_TYPE_TRAITS_H_
 
-#include <iterator.h>
+#include <stl_iterator.h>
 
 namespace std
 {
@@ -34,7 +34,7 @@ struct type_traits
     using is_POD_type=false_type;
 };
 
-template <T>
+template <class T>
 struct type_traits<T*>
 {
     using has_trival_default_constructor=true_type;
