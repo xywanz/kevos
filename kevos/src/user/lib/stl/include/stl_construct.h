@@ -16,16 +16,12 @@ limitations under the License.
 #ifndef _STL_STL_CONSTRUCT_
 #define _STL_STL_CONSTRUCT_
 
+#include <type_traits.h>
+
 #include <new>
 
 namespace std
 {
-
-struct true_type {};
-struct false_type {};
-
-template <class T>
-struct type_traits;
 
 template <class T1,class T2>
 inline void construct(T1* p,const T2& x)

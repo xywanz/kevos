@@ -108,6 +108,8 @@ extern "C" void entry64()
 
 	print(100,buf);
 
+	std::alloc::allocate(2);
+
 	confirmImAlive();
 	while(1);
 }

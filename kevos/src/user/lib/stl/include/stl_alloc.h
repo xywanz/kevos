@@ -188,7 +188,8 @@ void* __default_alloc_template<inst>::refill(size_t n)
         return chunk;
     obj* volatile* my_free_list=free_list+free_list_index(n);
     obj* ret=(obj*)chunk;
-    obj* current,next;
+    obj* current;
+    obj* next;
     *my_free_list=next=(obj*)(chunk+n);
     for(size_t i=1;;++i)
     {
