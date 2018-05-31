@@ -31,6 +31,8 @@ limitations under the License.
 
 #include <cmath>
 
+#include <vector.h>
+
 
 KEVOS_NSS_4(arch,x86,x64,boot);
 

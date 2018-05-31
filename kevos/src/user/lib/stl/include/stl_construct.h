@@ -21,14 +21,20 @@ limitations under the License.
 namespace std
 {
 
+struct true_type {};
+struct false_type {};
+
+template <class T>
+struct type_traits;
+
 template <class T1,class T2>
 inline void construct(T1* p,const T2& x)
 {
-    p=new(p) T(x);
+    p=new(p) T1(x);
 }
 
 template <class T>
-inline void destroy(T1* p)
+inline void destroy(T* p)
 {
     p->~T();
 }

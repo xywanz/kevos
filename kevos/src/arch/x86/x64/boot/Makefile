@@ -29,10 +29,10 @@ ASMFLAGS = $(CXXFLAGS)
 out: boot.32.cpp.S boot.32.cpp.S.o boot.64.cpp.o
 
 boot.32.cpp.S: boot.32.cpp
-	g++-7 -S -c -m32 -o $(POBJ)/boot.32.cpp.S -fno-builtin -nostdinc -nostdinc++ -nostdlib -I$(PINC) -I$(PSTDINCXX) -I$(PSTDINC) -std=c++14 -O0 -fno-rtti -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding boot.32.cpp
+	g++-7 -S -c -m32 -o $(POBJ)/boot.32.cpp.S -fno-builtin -nostdinc -nostdinc++ -nostdlib -I$(PINC) -I$(PSTDINCXX) -I$(PSTDINC) -I$(PSTLINC) -std=c++14 -O0 -fno-rtti -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding boot.32.cpp
 
 boot.32.cpp.S.o: boot.32.cpp.S
-	g++-7 -m64 -fno-builtin -nostdinc -nostdinc++ -nostdlib -I$(PINC) -I$(PSTDINCXX) -I$(PSTDINC) -std=c++14 -O0 -fno-rtti -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding -c -o $(POBJ)/boot.32.cpp.S.o $(POBJ)/boot.32.cpp.S
+	g++-7 -m64 -fno-builtin -nostdinc -nostdinc++ -nostdlib -I$(PINC) -I$(PSTDINCXX) -I$(PSTDINC) -I$(PSTLINC) -std=c++14 -O0 -fno-rtti -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding -c -o $(POBJ)/boot.32.cpp.S.o $(POBJ)/boot.32.cpp.S
 
-boot.64.cpp.o:
-	g++-7 -m64 -fno-builtin -nostdinc -nostdinc++ -nostdlib -I$(PINC) -I$(PSTDINCXX) -I$(PSTDINC) -std=c++14 -O0 -fno-rtti -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding -c -o $(POBJ)/boot.64.cpp.o boot.64.cpp
+boot.64.cpp.o: boot.64.cpp
+	g++-7 -m64 -fno-builtin -nostdinc -nostdinc++ -nostdlib -I$(PINC) -I$(PSTDINCXX) -I$(PSTDINC) -I$(PSTLINC) -std=c++14 -O0 -fno-rtti -fno-exceptions -fno-PIC -fno-stack-protector -mno-mmx -mno-sse2 -mno-sse3 -mno-3dnow -momit-leaf-frame-pointer -nostartfiles -nodefaultlibs -ffreestanding -c -o $(POBJ)/boot.64.cpp.o boot.64.cpp

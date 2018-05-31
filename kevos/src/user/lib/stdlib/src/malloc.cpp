@@ -13,40 +13,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_KERNEL_MM_NEW_H_
-#define _KEVOS_KERNEL_MM_NEW_H_
-
 #include <kernel/mm/kheap_mem.h>
 
-inline void* operator new(size_t size)
+#include <malloc.h>
+
+void* malloc(size_t n)
 {
-	return kernel::mm::KernelHeap::allocate(size);
+    return kernel::mm::KernelHeap::allocate(n);
 }
 
-inline void operator delete(void* ptr)
-{
-	kernel::mm::KernelHeap::deallocate(ptr);
-}
-
-inline void operator delete(void* ptr, size_t)
-{
-	kernel::mm::KernelHeap::deallocate(ptr);
-}
-
-
-inline void* operator new[](size_t size)
-{
-	return kernel::mm::KernelHeap::allocate(size);
-}
-
-inline void operator delete[](void* ptr)
-{
-	kernel::mm::KernelHeap::deallocate(ptr);
-}
-
-inline void* operator new(size_t,void* p)
+void* realloc(void* p,size_t n)
 {
     return p;
 }
 
-#endif
+void free(void* p)
+{
+    kernel::mm::KernelHeap::deallocate(p);
+}

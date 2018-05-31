@@ -16,10 +16,8 @@ limitations under the License.
 #ifndef _STL_STL_ALLOC_
 #define _STL_STL_ALLOC_
 
-#include <cstddef>
 #include <stl_construct.h>
-#include <cstdlib>
-#include <climits>
+#include <malloc.h>
 
 namespace std
 {
@@ -47,7 +45,7 @@ public:
         free(p);
     }
 
-    static void reallocate(void* p,size_t n)
+    static void* reallocate(void* p,size_t n)
     {
         void* ret=realloc(p,n);
         if(!ret)
@@ -64,7 +62,8 @@ public:
 };
 
 template <int inst>
-__handler __malloc_alloc_template<inst>::__malloc_alloc_oom_handler=0;
+typename __malloc_alloc_template<inst>::__handler 
+__malloc_alloc_template<inst>::__malloc_alloc_oom_handler=0;
 
 template <int inst>
 void* __malloc_alloc_template<inst>::oom_malloc(size_t n)
@@ -80,7 +79,7 @@ void* __malloc_alloc_template<inst>::oom_malloc(size_t n)
 }
 
 template <int inst>
-void __malloc_alloc_template<inst>::oom_realloc(void* p,size_t n)
+void* __malloc_alloc_template<inst>::oom_realloc(void* p,size_t n)
 {
     void* ret;
     while(1)
@@ -113,11 +112,11 @@ private:
     {
         union obj* next;
         char client_data[1];
-    }
+    };
 
     static obj* volatile free_list[__NFREELIST];
 
-    static free_list_index(size_t byte)
+    static size_t free_list_index(size_t bytes)
     {
         return (bytes+__ALIGN-1)/__ALIGN-1;
     }
@@ -135,9 +134,9 @@ public:
     {
         if(n>(size_t)__MAX_BYTES)
             return malloc_alloc::allocate(n);
-        obj* volatile *dst_free_list=free_list+free_list_index(n);
+        obj* volatile *my_free_list=free_list+free_list_index(n);
         obj* ret=*my_free_list;
-        if(!obj)
+        if(!ret)
         {
             void* r=refill(round_up(n));
             return r;
@@ -164,7 +163,7 @@ public:
 };
 
 template <int inst>
-__default_alloc_template<inst>::obj* volatile 
+typename __default_alloc_template<inst>::obj* volatile 
 __default_alloc_template<inst>::free_list[__NFREELIST]=
 {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
