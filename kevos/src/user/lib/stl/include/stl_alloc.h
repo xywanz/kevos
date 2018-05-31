@@ -132,7 +132,7 @@ private:
 public:
     static void* allocate(size_t n)
     {
-        if(n>(size_t)__MAX_BYTES)
+        if(n>static_cast<size_t>(__MAX_BYTES))
             return malloc_alloc::allocate(n);
         obj* volatile *my_free_list=free_list+free_list_index(n);
         obj* ret=*my_free_list;

@@ -70,20 +70,14 @@ extern "C" void entry64()
 	common::CPUInfo cpuInfo=common::CPUInfo::instance();
 	ProcessManager::initialize();
 
-	int* b=new int;
-	delete b;
-
-	int* a=new int[5];
-	delete[]  a;
-
 	char buf[16];
 	std::itoa(PageManager::allocate(),buf,16);
 	print(0,buf);
 
-	std::itoa((long)b,buf,16);
+	std::itoa((long)std::alloc::allocate(10),buf,16);
 	print(30,buf);
 
-	std::itoa((long)a,buf,16);
+	std::itoa((long)kernel::mm::KernelHeap::allocate(10),buf,16);
 	print(40,buf);
 
 	size_t pnn=PageManager::allocate();
@@ -91,7 +85,6 @@ extern "C" void entry64()
 
 	VirtualMemory vm;
 	vm.mapPage(0,PageManager::allocate(),1);
-
 	vm.unmapPage(0);
 
 	test();

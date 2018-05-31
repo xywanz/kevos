@@ -22,8 +22,9 @@ limitations under the License.
 extern "C"{
 #endif
 
-void *memcpy(void *dst,const void *src,size_t count);
-void *memset(void *s,int ch,size_t n);
+void* memcpy(void* dst,const void* src,size_t count);
+void* memset(void* s,int ch,size_t n);
+void* memmove(void* dst,const void* src,size_t count);
 
 size_t strlen(const char * str);
 int strcmp(const char *s1,const char *s2);

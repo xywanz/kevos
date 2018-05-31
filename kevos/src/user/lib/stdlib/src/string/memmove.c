@@ -13,16 +13,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_LIST_
-#define _STL_LIST_
+#include <string.h>
 
-#include <stl_alloc.h>
-
-namespace std
+void* memmove(void* dst,const void* src,size_t count)
 {
-
-
-
+    void* ret=dst;
+    if(dst<src)
+    {
+        while(count--)
+        {
+            *(char*)dst=*(char*)src;
+            dst=(char*)dst+1;
+            src=(char*)src+1;
+        }
+    }
+    else
+    {
+        dst=(char*)dst+count;
+        src=(char*)src+count;
+        while(count--)
+        {
+            *(char*)dst=*(char*)src;
+            dst=(char*)dst-1;
+            src=(char*)src-1;
+        }
+    }
+    return ret;
 }
-
-#endif

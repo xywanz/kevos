@@ -16,13 +16,13 @@
 
 POBJ = ../../build/tmp
 
-LD = ld
-LDFLAGS = -z max-page-size=0x1000 -T $(POBJ)/../lds/x64/kernel-ld-script.ld -o $(POBJ)/kernel.bin
-
 OBJ := $(wildcard $(POBJ)/*.o)
 
+LD = g++
+LDFLAGS = -Wl,-z -Wl,max-page-size=0x100 -Wl,-melf_x86_64 -Wl,-T -Wl,$(POBJ)/../lds/x64/kernel-ld-script.ld -o $(POBJ)/kernel.bin -m64 -nostdinc -nostdinc++ -nostdlib -mcmodel=kernel -Wl,--start-group $(OBJ) -Wl,--end-group
+
 kernel.bin:
-	$(LD) $(LDFLAGS) $(OBJ)
+	$(LD) $(LDFLAGS)
 
 all:
 	make -C arch/common

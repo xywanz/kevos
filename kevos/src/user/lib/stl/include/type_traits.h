@@ -16,6 +16,8 @@ limitations under the License.
 #ifndef _STL_TYPE_TRAITS_H_
 #define _STL_TYPE_TRAITS_H_
 
+#include <iterator.h>
+
 namespace std
 {
 
@@ -25,73 +27,161 @@ struct false_type {};
 template <class T>
 struct type_traits
 {
+    using has_trival_default_constructor=false_type;
+    using has_trival_copy_constructor=false_type;
+    using has_trival_assignment_operator=false_type;
+    using has_trival_destructor=false_type;
+    using is_POD_type=false_type;
+};
+
+template <T>
+struct type_traits<T*>
+{
+    using has_trival_default_constructor=true_type;
+    using has_trival_copy_constructor=true_type;
+    using has_trival_assignment_operator=true_type;
     using has_trival_destructor=true_type;
+    using is_POD_type=true_type;
 };
 
 template <>
 struct type_traits<char>
 {
-    using has_trival_destructor=false_type;
+    using has_trival_default_constructor=true_type;
+    using has_trival_copy_constructor=true_type;
+    using has_trival_assignment_operator=true_type;
+    using has_trival_destructor=true_type;
+    using is_POD_type=true_type;
 };
 
 template <>
 struct type_traits<unsigned char>
 {
-    using has_trival_destructor=false_type;
+    using has_trival_default_constructor=true_type;
+    using has_trival_copy_constructor=true_type;
+    using has_trival_assignment_operator=true_type;
+    using has_trival_destructor=true_type;
+    using is_POD_type=true_type;
 };
 
 template <>
 struct type_traits<short>
 {
-    using has_trival_destructor=false_type;
+    using has_trival_default_constructor=true_type;
+    using has_trival_copy_constructor=true_type;
+    using has_trival_assignment_operator=true_type;
+    using has_trival_destructor=true_type;
+    using is_POD_type=true_type;
 };
 
 template <>
 struct type_traits<unsigned short>
 {
-    using has_trival_destructor=false_type;
+    using has_trival_default_constructor=true_type;
+    using has_trival_copy_constructor=true_type;
+    using has_trival_assignment_operator=true_type;
+    using has_trival_destructor=true_type;
+    using is_POD_type=true_type;
 };
 
 template <>
 struct type_traits<int>
 {
-    using has_trival_destructor=false_type;
+    using has_trival_default_constructor=true_type;
+    using has_trival_copy_constructor=true_type;
+    using has_trival_assignment_operator=true_type;
+    using has_trival_destructor=true_type;
+    using is_POD_type=true_type;
 };
 
 template <>
 struct type_traits<unsigned int>
 {
-    using has_trival_destructor=false_type;
+    using has_trival_default_constructor=true_type;
+    using has_trival_copy_constructor=true_type;
+    using has_trival_assignment_operator=true_type;
+    using has_trival_destructor=true_type;
+    using is_POD_type=true_type;
 };
 
 template <>
 struct type_traits<long>
 {
-    using has_trival_destructor=false_type;
+    using has_trival_default_constructor=true_type;
+    using has_trival_copy_constructor=true_type;
+    using has_trival_assignment_operator=true_type;
+    using has_trival_destructor=true_type;
+    using is_POD_type=true_type;
 };
 
 template <>
 struct type_traits<unsigned long>
 {
-    using has_trival_destructor=false_type;
+    using has_trival_default_constructor=true_type;
+    using has_trival_copy_constructor=true_type;
+    using has_trival_assignment_operator=true_type;
+    using has_trival_destructor=true_type;
+    using is_POD_type=true_type;
+};
+
+template <>
+struct type_traits<long long>
+{
+    using has_trival_default_constructor=true_type;
+    using has_trival_copy_constructor=true_type;
+    using has_trival_assignment_operator=true_type;
+    using has_trival_destructor=true_type;
+    using is_POD_type=true_type;
+};
+
+template <>
+struct type_traits<unsigned long long>
+{
+    using has_trival_default_constructor=true_type;
+    using has_trival_copy_constructor=true_type;
+    using has_trival_assignment_operator=true_type;
+    using has_trival_destructor=true_type;
+    using is_POD_type=true_type;
 };
 
 template <>
 struct type_traits<float>
 {
-    using has_trival_destructor=false_type;
+    using has_trival_default_constructor=true_type;
+    using has_trival_copy_constructor=true_type;
+    using has_trival_assignment_operator=true_type;
+    using has_trival_destructor=true_type;
+    using is_POD_type=true_type;
 };
 
 template <>
 struct type_traits<double>
 {
-    using has_trival_destructor=false_type;
+    using has_trival_default_constructor=true_type;
+    using has_trival_copy_constructor=true_type;
+    using has_trival_assignment_operator=true_type;
+    using has_trival_destructor=true_type;
+    using is_POD_type=true_type;
+};
+
+template <>
+struct type_traits<long double>
+{
+    using has_trival_default_constructor=true_type;
+    using has_trival_copy_constructor=true_type;
+    using has_trival_assignment_operator=true_type;
+    using has_trival_destructor=true_type;
+    using is_POD_type=true_type;
 };
 
 template <>
 struct type_traits<bool>
 {
-    using has_trival_destructor=false_type;
+    using has_trival_default_constructor=true_type;
+    using has_trival_copy_constructor=true_type;
+    using has_trival_assignment_operator=true_type;
+    using has_trival_destructor=true_type;
+    using is_POD_type=true_type;
 };
 
 }

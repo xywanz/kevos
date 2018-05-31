@@ -24,11 +24,12 @@ ENTRY(entry32)
 virtual = 0x0000FFFF00000000;
 physical = 0x100000;
 
+
 SECTIONS
 {
-  . = physical;/* + virtual*/
+  . = physical;
 
-  .text : /*AT(ADDR(.text) - virtual)*/
+  .text :
   {
     PROVIDE(kernel_start_address = ABSOLUTE(.));
 
@@ -44,7 +45,7 @@ SECTIONS
     ro_data_end_address = .;
   }
 
-  .data ALIGN(4096) :/* AT(ADDR(.data) - virtual)*/
+  .data ALIGN(4096) :
   {
     data_start_address = .;
     *(.data)
@@ -52,16 +53,16 @@ SECTIONS
     data_end_address = .;
   }
 
-  .bss ALIGN(4096) :/* AT(ADDR(.bss) - virtual)*/
+  .bss ALIGN(4096) :
   {
     bss_start_address = .;
     *(.bss)
-    *(COMMON) /* common symbols, usually placed in .bss */
+    *(COMMON)
     . = ALIGN(4096);
     bss_end_address = .;
   }
 
-  .reserve.kern ALIGN(4096) :/* AT(ADDR(.reserve.kern) - virtual)*/
+  .reserve.kern ALIGN(4096) :
   {
     kheap_start_address = .;
     *(.heap.kern)
@@ -76,5 +77,59 @@ SECTIONS
     kstack_end_address = .;
     PROVIDE(kernel_end_address = .);
   }
-
 }
+
+
+/*SECTIONS
+{
+  . = physical + virtual;
+
+  .text : AT(ADDR(.text) - virtual)
+  {
+    PROVIDE(kernel_start_address = ABSOLUTE(.));
+
+    text_start_address = .;
+    *(.boot)
+    *(.text)
+    *(.text.*)
+    . = ALIGN(4096);
+    text_end_address = .;
+    *(.gnu.linkonce.r.*)
+    ro_data_start_address = .;
+    *(.rodata*)
+    ro_data_end_address = .;
+  }
+
+  .data ALIGN(4096) : AT(physical + data_start_address - text_start_address)
+  {
+    data_start_address = .;
+    *(.data)
+    . = ALIGN(4096);
+    data_end_address = .;
+  }
+
+  .bss ALIGN(4096) : AT(physical + bss_start_address - text_start_address)
+  {
+    bss_start_address = .;
+    *(.bss)
+    *(COMMON)
+    . = ALIGN(4096);
+    bss_end_address = .;
+  }
+
+  .reserve.kern ALIGN(4096) : AT(physical + kheap_start_address - text_start_address)
+  {
+    kheap_start_address = .;
+    *(.heap.kern)
+    . = kheap_start_address + 0x1000000;
+    . = ALIGN(4096);
+    kheap_end_address = .;
+
+    kstack_start_address = .;
+    *(.stack.kern)
+    . = kstack_start_address + 0x1000000;
+    . = ALIGN(4096);
+    kstack_end_address = .;
+    PROVIDE(kernel_end_address = .);
+  }
+}*/

@@ -15,6 +15,8 @@ limitations under the License.
 
 #include <kernel/mm/heap_mem.h>
 
+#include <cstring>
+
 KEVOS_NSS_2(kernel,mm);
 
 HeapMemory::HeapMemory(size_t vStartAddr,size_t vEndAddr)
@@ -46,7 +48,7 @@ void* HeapMemory::allocate(size_t size)
 	size_t nsize=size+sizeof(MemoryHeader);
 	for(auto block=m_memStart;block!=m_memEnd;block=block->next)
 	{
-		size_t blockSize=block->next-block;
+		size_t blockSize=reinterpret_cast<size_t>(block->next)-reinterpret_cast<size_t>(block);
 		if(block->used||blockSize<nsize)
 			continue;
 		block->used=1;
@@ -109,18 +111,11 @@ void* HeapMemory::reallocate(void* ptr,size_t newSize)
 	deallocate(ptr);
 	for(auto block=m_memStart;block!=m_memEnd;block=block->next)
 	{
-		size_t blockSize=block->next-block;
+		size_t blockSize=reinterpret_cast<size_t>(block->next)-reinterpret_cast<size_t>(block);
 		if(block->used||blockSize<total)
 			continue;
 		block->used=1;
-		if(reinterpret_cast<char*>(block+1)<reinterpret_cast<char*>(ptr))
-		{
-			for(size_t i=0;i<origin;++i)
-				*(reinterpret_cast<char*>(ptr)+i)=*(reinterpret_cast<char*>(block+1)+i);
-		}
-		else
-			for(size_t i=origin-1;i>=0;--i)
-				*(reinterpret_cast<char*>(ptr)+i)=*(reinterpret_cast<char*>(block+1)+i);
+		std::memmove(block+1,ptr,origin);
 		size_t rest=blockSize-total;
 		if(rest>sizeof(MemoryHeader))
 		{
