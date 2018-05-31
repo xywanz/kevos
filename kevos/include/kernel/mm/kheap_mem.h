@@ -35,6 +35,11 @@ public:
 		khm.deallocate(ptr);
 	}
 
+	static void* reallocate(void* ptr,size_t newSize)
+	{
+		khm.reallocate(ptr,newSize);
+	}
+
 private:
 	static HeapMemory khm;
 };

@@ -157,7 +157,7 @@ public:
 
     static void* reallocate(void* p,size_t old_sz,size_t new_sz)
     {
-
+        return realloc(p,new_sz);
     }
 
 };

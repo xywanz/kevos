@@ -80,8 +80,11 @@ extern "C" void entry64()
 	std::itoa(PageManager::allocate(),buf,16);
 	print(0,buf);
 
-	std::itoa(PageManager::allocate(),buf,16);
+	std::itoa((long)b,buf,16);
 	print(30,buf);
+
+	std::itoa((long)a,buf,16);
+	print(40,buf);
 
 	size_t pnn=PageManager::allocate();
 	PageManager::deallocate(pnn);
@@ -108,7 +111,8 @@ extern "C" void entry64()
 
 	print(100,buf);
 
-	std::alloc::allocate(2);
+	std::itoa((long)kernel::mm::KernelHeap::allocate(1),buf,16);
+	print(100,buf);
 
 	confirmImAlive();
 	while(1);

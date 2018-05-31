@@ -46,7 +46,7 @@ void* HeapMemory::allocate(size_t size)
 	size_t nsize=size+sizeof(MemoryHeader);
 	for(auto block=m_memStart;block!=m_memEnd;block=block->next)
 	{
-		size_t blockSize=reinterpret_cast<size_t>(block->next)-reinterpret_cast<size_t>(block);
+		size_t blockSize=block->next-block;
 		if(block->used||blockSize<nsize)
 			continue;
 		block->used=1;
@@ -78,6 +78,59 @@ void HeapMemory::deallocate(void* ptr)
 	{
 		rnode->next->next->prev=rnode;
 		rnode->next=rnode->next->next;
+	}
+}
+
+void* HeapMemory::reallocate(void* ptr,size_t newSize)
+{
+	auto hdr=reinterpret_cast<MemoryHeader*>(ptr)-1;
+	MemoryHeader* next=hdr->next;
+	size_t origin=reinterpret_cast<size_t>(hdr->next)-reinterpret_cast<size_t>(hdr)-sizeof(MemoryHeader);
+	size_t total=newSize+sizeof(MemoryHeader);
+	size_t max=next->next-hdr;
+	if(next-hdr>=total)
+	{
+		return ptr;	
+	}
+	if(!next->used&&max>=total)
+	{
+		if(max-total<=sizeof(MemoryHeader))
+		{
+			hdr->next=next->next;
+			hdr->next->prev=hdr;
+			return ptr;
+		}
+		MemoryHeader* nhdr=reinterpret_cast<MemoryHeader*>(reinterpret_cast<char*>(hdr)+total);
+		nhdr->next=hdr->next;
+		nhdr->prev=hdr;
+		hdr->next=nhdr;
+		return ptr;
+	}
+	deallocate(ptr);
+	for(auto block=m_memStart;block!=m_memEnd;block=block->next)
+	{
+		size_t blockSize=block->next-block;
+		if(block->used||blockSize<total)
+			continue;
+		block->used=1;
+		if(reinterpret_cast<char*>(block+1)<reinterpret_cast<char*>(ptr))
+		{
+			for(size_t i=0;i<origin;++i)
+				*(reinterpret_cast<char*>(ptr)+i)=*(reinterpret_cast<char*>(block+1)+i);
+		}
+		else
+			for(size_t i=origin-1;i>=0;--i)
+				*(reinterpret_cast<char*>(ptr)+i)=*(reinterpret_cast<char*>(block+1)+i);
+		size_t rest=blockSize-total;
+		if(rest>sizeof(MemoryHeader))
+		{
+			MemoryHeader* nnode=reinterpret_cast<MemoryHeader*>(reinterpret_cast<char*>(block)+total);
+			nnode->used=0;
+			nnode->next=block->next;
+			nnode->prev=block;
+			block->next=nnode;
+		}
+		return block+1;
 	}
 }
 

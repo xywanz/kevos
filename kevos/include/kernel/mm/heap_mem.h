@@ -33,6 +33,8 @@ public:
 
 	void deallocate(void* ptr);
 
+	void* reallocate(void* ptr,size_t newSize);
+
 private:
 	struct MemoryHeader
 	{
