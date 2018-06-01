@@ -17,6 +17,7 @@ limitations under the License.
 #define _STL_STL_UNINITIALIZED_H_
 
 #include <stl_construct.h>
+#include <stl_algorithm.h>
 
 #include <cstring>
 
@@ -26,12 +27,13 @@ namespace std
 template <class InputIterator,class ForwardIterator>
 inline ForwardIterator uninitialized_copy(InputIterator first,InputIterator last,ForwardIterator result)
 {
-    ForwardIterator i=result;
-    for(;first!=last;++first,++i)
-    {
-        construct(&*i,*first);
-    }
-    return i;
+    // ForwardIterator i=result;
+    // for(;first!=last;++first,++i)
+    // {
+    //     construct(&*i,*first);
+    // }
+    // return i;
+    return copy(first,last,result);
 }
 
 template <class ForwardIterator,class T>

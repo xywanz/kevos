@@ -33,6 +33,7 @@ limitations under the License.
 #include <cmath>
 
 #include <vector>
+#include <list>
 
 
 KEVOS_NSS_4(arch,x86,x64,boot);
@@ -42,7 +43,7 @@ using namespace kernel::mm;
 void print(size_t pos,const char* buf)
 {
 	auto addr=(unsigned char*)(0xB8000+pos*2);
-	for(size_t i=0;buf[i]!=0;++i)
+	for(size_t i=0;buf[i]!=0&&i<16;++i)
 	{
 		addr[2*i]=buf[i];
 		addr[2*i+1]=0x75;
@@ -97,15 +98,19 @@ extern "C" void entry64()
 	kernel::utils::Bitmap<DynamicBitmap,char> bm(new char[8],8);
 
 
-	std::vector<int> v(2,1234);
-	v.insert(v.begin(),234);
-	v.insert(v.begin(),456);
-
+	std::vector<int> v;
+	v.push_back(111);
+	v.push_back(222);
+	// v.insert(v.begin(),234);
+	// v.insert(v.begin(),888);
+	// v.insert(v.begin(),666);
+	auto ri=v.rbegin();
 	assert(v.capacity()==4);
-	assert(v[0]==1);
-	assert(v[1]==2);
 
 	std::itoa(v[0],buf,10);
+	print(40,buf);
+
+	std::list<int> l;
 
 	confirmImAlive();
 	while(1);

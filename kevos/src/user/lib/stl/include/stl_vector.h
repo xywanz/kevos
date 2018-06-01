@@ -24,6 +24,114 @@ limitations under the License.
 namespace std
 {
 
+template <class T,class Alloc>
+class vector;
+
+template <class T,class Pointer,class Reference,class Alloc=alloc>
+class __reverse_vector_iterator
+{
+protected:
+    using vec=vector<T,Alloc>;
+    using iterator=typename vec::iterator;
+    using reverse_iterator=__reverse_vector_iterator<T,T*,T&,Alloc>;
+    using self=__reverse_vector_iterator<T,Pointer,Reference,Alloc>;
+
+public:
+    using iterator_category=random_access_iterator_tag;
+    using value_type=T;
+    using pointer=Pointer;
+    using reference=Reference;
+    using size_type=size_t;
+    using difference_type=ptrdiff_t;
+
+    __reverse_vector_iterator()
+    {
+    }
+
+    __reverse_vector_iterator(iterator i):iter(i)
+    {
+    }
+
+    __reverse_vector_iterator(const __reverse_vector_iterator& other):iter(other.iter)
+    {
+    }
+
+    bool operator==(const __reverse_vector_iterator& other)const
+    {
+        return iter==other.iter;
+    }
+
+    bool operator!=(const __reverse_vector_iterator& other)const
+    {
+        return iter!=other.iter;
+    }
+
+    T& operator*()const
+    {
+        return *iter;
+    }
+
+    T* operator->()const
+    {
+        return &(operator*());
+    }
+
+    self& operator++()
+    {
+        --iter;
+        return *this;
+    }
+
+    self operator++(int)
+    {
+        self ret=*this;
+        --iter;
+        return ret;
+    }
+
+    self& operator--()
+    {
+        ++iter;
+        return *this;
+    }
+
+    self operator--(int)
+    {
+        self ret=*this;
+        ++iter;
+        return ret;
+    }
+
+    template <class NumericType>
+    self operator+(NumericType n)
+    {
+        return iter-n;
+    }
+
+    template <class NumericType>
+    self operator-(NumericType n)
+    {
+        return iter+n;
+    }
+
+    template <class NumericType>
+    self& operator+=(NumericType n)
+    {
+        iter-=n;
+        return *this;
+    }
+
+    template <class NumericType>
+    self& operator-=(NumericType n)
+    {
+        iter+=n;
+        return *this;
+    }
+
+private:
+    iterator iter;
+};
+
 /**
  * @brief 基本符合STL标准的vector，该版本暂时参考于SGI STL
  */
@@ -41,6 +149,7 @@ public:
     using size_type=size_t;
     using difference_type=ptrdiff_t;
     using iterator=value_type*;
+    using reverse_iterator=__reverse_vector_iterator<T,T*,T&,Alloc>;
 
 protected:
 
@@ -48,21 +157,6 @@ protected:
  * @brief 空间配置器，默认采用二级空间配置器  
  */
     using data_allocator=simple_alloc<T,Alloc>;
-
-/**
- * @brief 数据的起始位置     
- */
-    iterator _start;
-
-/**
- * @brief 数据末尾再后移一位
- */
-    iterator _end;
-
-/**
- * @brief 容器实际拥有的内存末端位置后移一位
- */
-    iterator _end_of_storage;
 
 /**
  * @brief 分配n个T的内存并将内存中所有元素初始化为一个值
@@ -123,6 +217,16 @@ public:
     iterator end()const
     {
         return _end;
+    }
+
+    reverse_iterator rbegin()const
+    {
+        return end()-1;
+    }
+
+    reverse_iterator rend()const
+    {
+        return begin()-1;
     }
 
 /**
@@ -295,8 +399,14 @@ public:
  */
     iterator insert(iterator pos,iterator __begin,iterator __end);
 
+/**
+ * @brief 为容器保留一定的空间
+ */
     void reserve();
 
+/**
+ * @brief 变更容器大小
+ */
     void resize(size_type n,const T& x)
     {
         if(n<size())
@@ -308,6 +418,23 @@ public:
 
         }
     }
+
+protected:
+
+/**
+ * @brief 数据的起始位置     
+ */
+    iterator _start;
+
+/**
+ * @brief 数据末尾再后移一位
+ */
+    iterator _end;
+
+/**
+ * @brief 容器实际拥有的内存末端位置后移一位
+ */
+    iterator _end_of_storage;
 
 };
 
@@ -330,9 +457,13 @@ void vector<T,Alloc>::alloc_and_insert(const T&x)
 template <class T,class Alloc>
 typename vector<T,Alloc>::iterator vector<T,Alloc>::insert(typename vector<T,Alloc>::iterator pos,const T&x)
 {
-    if(end()!=_end_of_storage)
+    if(_end!=_end_of_storage)
     {
         _end=uninitialized_copy(pos,end(),pos+1);
+        // for(auto i=end();i>pos;--i)
+        // {
+        //     construct(&*i,*(i-1));
+        // }
         construct(pos,x);
         return pos;
     }

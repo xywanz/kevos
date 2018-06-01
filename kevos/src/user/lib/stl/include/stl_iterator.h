@@ -57,15 +57,17 @@ struct iterator_traits<const T*>
     using reference=const T&;
 };
 
-
-template <class Category,class T,class Distance=ptrdiff_t,class Pointer=T*,class Reference=T&>
+// 迭代器标准，只是提供一个模板
+template <class Category,class T,class Pointer=T*,class Reference=T&,class Size=size_t,class Distance=ptrdiff_t>
 class iterator
 {
+public:
     using iterator_category=Category;
     using value_type=T;
-    using difference_type=ptrdiff_t;
     using pointer=Pointer;
     using reference=Reference;
+    using size_type=Size;
+    using difference_type=ptrdiff_t;
 };
 
 
