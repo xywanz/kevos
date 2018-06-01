@@ -15,6 +15,7 @@ limitations under the License.
 
 #include <sys/portable.h>
 #include <arch/common/interrupt.h>
+#include <arch/common/assert.h>
 #include <arch/x86/common/cpuid.h>
 #include <arch/x86/x64/gdt.h>
 #include <arch/x86/x64/tss.h>
@@ -71,11 +72,8 @@ extern "C" void entry64()
 	ProcessManager::initialize();
 
 	char buf[16];
-	std::itoa(PageManager::allocate(),buf,16);
-	print(0,buf);
 
 	std::itoa((long)std::alloc::allocate(10),buf,16);
-	print(30,buf);
 
 	// std::itoa((long)kernel::mm::KernelHeap::allocate(10),buf,16);
 	// print(40,buf);
@@ -99,11 +97,15 @@ extern "C" void entry64()
 	kernel::utils::Bitmap<DynamicBitmap,char> bm(new char[8],8);
 
 
-	std::sprintf(buf,"%d,%d,%d",1,2,20);
-
 	std::vector<int> v(2,1234);
+	v.insert(v.begin(),234);
+	v.insert(v.begin(),456);
+
+	assert(v.capacity()==4);
+	assert(v[0]==1);
+	assert(v[1]==2);
+
 	std::itoa(v[0],buf,10);
-	print(40,buf);
 
 	confirmImAlive();
 	while(1);

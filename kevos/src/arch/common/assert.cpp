@@ -15,4 +15,27 @@ limitations under the License.
 
 #include <arch/common/assert.h>
 
+#include <cstdlib>
 
+size_t print(size_t pos,const char* buf)
+{
+    auto addr=(unsigned char*)(0xB8000+pos*2);
+    size_t i;
+    for(i=0;buf[i]!=0;++i)
+    {
+        addr[2*i]=buf[i];
+        addr[2*i+1]=0x75;
+    }
+    return i;
+}
+
+void __assert(const char* cond,uint32_t line,const char* file)
+{
+    static size_t pos=0;
+    static char buffer[16];
+    size_t i=print(pos,cond);
+    size_t j=print(pos+i+2,file);
+    std::itoa(line,buffer,10);
+    print(pos+i+j+4,buffer);
+    pos+=160;
+}

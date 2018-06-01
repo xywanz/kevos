@@ -24,7 +24,7 @@ void* malloc(size_t n)
 
 void* realloc(void* p,size_t n)
 {
-    return p;
+    return kernel::mm::KernelHeap::reallocate(p,n);
 }
 
 void free(void* p)
