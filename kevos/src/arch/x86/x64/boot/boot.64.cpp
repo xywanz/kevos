@@ -34,6 +34,7 @@ limitations under the License.
 
 #include <vector>
 #include <list>
+#include <stack>
 
 
 KEVOS_NSS_4(arch,x86,x64,boot);
@@ -98,19 +99,22 @@ extern "C" void entry64()
 	kernel::utils::Bitmap<DynamicBitmap,char> bm(new char[8],8);
 
 
-	std::vector<int> v;
-	v.push_back(111);
-	v.push_back(222);
+	// std::vector<int> v;
+	// v.push_back(111);
+	// v.push_back(222);
 	// v.insert(v.begin(),234);
 	// v.insert(v.begin(),888);
 	// v.insert(v.begin(),666);
-	auto ri=v.rbegin();
-	assert(v.capacity()==4);
+	// auto ri=v.rbegin();
+	// assert(v.capacity()==4);
 
-	std::itoa(v[0],buf,10);
-	print(40,buf);
+	// std::itoa(*ri,buf,10);
+	// print(40,buf);
 
 	std::list<int> l;
+	l.push_back(1);
+	l.push_front(23);
+	assert(*l.begin()==23);
 
 	confirmImAlive();
 	while(1);

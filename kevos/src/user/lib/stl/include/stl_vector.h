@@ -28,13 +28,13 @@ template <class T,class Alloc>
 class vector;
 
 template <class T,class Pointer,class Reference,class Alloc=alloc>
-class __reverse_vector_iterator
+class __vector_reverse_iterator
 {
 protected:
     using vec=vector<T,Alloc>;
     using iterator=typename vec::iterator;
-    using reverse_iterator=__reverse_vector_iterator<T,T*,T&,Alloc>;
-    using self=__reverse_vector_iterator<T,Pointer,Reference,Alloc>;
+    using reverse_iterator=__vector_reverse_iterator<T,T*,T&,Alloc>;
+    using self=__vector_reverse_iterator<T,Pointer,Reference,Alloc>;
 
 public:
     using iterator_category=random_access_iterator_tag;
@@ -44,26 +44,46 @@ public:
     using size_type=size_t;
     using difference_type=ptrdiff_t;
 
-    __reverse_vector_iterator()
+    __vector_reverse_iterator()
     {
     }
 
-    __reverse_vector_iterator(iterator i):iter(i)
+    __vector_reverse_iterator(iterator i):iter(i)
     {
     }
 
-    __reverse_vector_iterator(const __reverse_vector_iterator& other):iter(other.iter)
+    __vector_reverse_iterator(const __vector_reverse_iterator& other):iter(other.iter)
     {
     }
 
-    bool operator==(const __reverse_vector_iterator& other)const
+    bool operator==(const __vector_reverse_iterator& other)const
     {
         return iter==other.iter;
     }
 
-    bool operator!=(const __reverse_vector_iterator& other)const
+    bool operator!=(const __vector_reverse_iterator& other)const
     {
         return iter!=other.iter;
+    }
+
+    bool operator<(const __vector_reverse_iterator& other)const
+    {
+        return iter<other.iter;
+    }
+
+    bool operator<=(const __vector_reverse_iterator& other)const
+    {
+        return iter<=other.iter;
+    }
+
+    bool operator>(const __vector_reverse_iterator& other)const
+    {
+        return iter>other.iter;
+    }
+
+    bool operator>=(const __vector_reverse_iterator& other)const
+    {
+        return iter>=other.iter;
     }
 
     T& operator*()const
@@ -132,6 +152,7 @@ private:
     iterator iter;
 };
 
+
 /**
  * @brief 基本符合STL标准的vector，该版本暂时参考于SGI STL
  */
@@ -149,7 +170,7 @@ public:
     using size_type=size_t;
     using difference_type=ptrdiff_t;
     using iterator=value_type*;
-    using reverse_iterator=__reverse_vector_iterator<T,T*,T&,Alloc>;
+    using reverse_iterator=__vector_reverse_iterator<T,T*,T&,Alloc>;
 
 protected:
 
@@ -202,6 +223,11 @@ protected:
     void alloc_and_insert(const T&x);
 
 public:
+
+    data_allocator get_allocator()const
+    {
+        return data_allocator();
+    }
 
 /**
  * @brief 起始位置的迭代器
@@ -288,10 +314,10 @@ public:
 /**
  * @brief 构造vector，初始值从指定范围拷贝
  */
-    vector(iterator __begin,iterator __end)
+    vector(iterator first,iterator last)
     {
-        _start=data_allocator::allocate(__end-__begin);
-        _end=uninitialized_copy(__begin,__end,begin());
+        _start=data_allocator::allocate(last-first);
+        _end=uninitialized_copy(first,last,begin());
     }
 
 /**
@@ -317,8 +343,16 @@ public:
  */
     ~vector()
     {
-        destroy(_start,_end);
+        destroy(begin(),end());
         deallocate();
+    }
+
+    vector& operator=(const vector& other)
+    {
+        destroy(begin(),end());
+        deallocate();
+        _start=data_allocator::allocate(other.size());
+        _end=uninitialized_copy(other.begin(),other.end(),begin());
     }
 
 /**
@@ -376,12 +410,12 @@ public:
 /**
  * @brief 删除[__begin,__end)的元素，返回下一个元素的位置
  */
-    iterator erase(iterator __begin,iterator __end)
+    iterator erase(iterator first,iterator last)
     {
-        iterator new_end=uninitialized_copy(__end,end(),__begin);
+        iterator new_end=uninitialized_copy(last,end(),first);
         destroy(new_end,end());
         _end=new_end;
-        return __begin;
+        return first;
     }
 
 /**
@@ -390,14 +424,14 @@ public:
     iterator insert(iterator pos,const T&x);
 
 /**
- * @brief 在pos位置插入n个元素，返回插入元素的首位置
+ * @brief 在pos位置插入n个元素
  */
-    iterator insert(iterator pos,size_type n,const T&x);
+    void insert(iterator pos,size_type n,const T&x);
 
 /**
- * @brief 在pos位置插入迭代器指向的某个范围的元素的拷贝，返回首位置
+ * @brief 在pos位置插入迭代器指向的某个范围的元素的拷贝
  */
-    iterator insert(iterator pos,iterator __begin,iterator __end);
+    void insert(iterator pos,iterator first,iterator last);
 
 /**
  * @brief 为容器保留一定的空间
@@ -418,6 +452,8 @@ public:
 
         }
     }
+
+    void clear();
 
 protected:
 
@@ -460,10 +496,6 @@ typename vector<T,Alloc>::iterator vector<T,Alloc>::insert(typename vector<T,All
     if(_end!=_end_of_storage)
     {
         _end=uninitialized_copy(pos,end(),pos+1);
-        // for(auto i=end();i>pos;--i)
-        // {
-        //     construct(&*i,*(i-1));
-        // }
         construct(pos,x);
         return pos;
     }
@@ -485,8 +517,7 @@ typename vector<T,Alloc>::iterator vector<T,Alloc>::insert(typename vector<T,All
 }
 
 template <class T,class Alloc>
-typename vector<T,Alloc>::iterator
-vector<T,Alloc>::insert(typename vector<T,Alloc>::iterator pos,size_type n,const T&x)
+void vector<T,Alloc>::insert(typename vector<T,Alloc>::iterator pos,size_type n,const T&x)
 {
     if(n>0)
     {
@@ -504,8 +535,7 @@ vector<T,Alloc>::insert(typename vector<T,Alloc>::iterator pos,size_type n,const
 }
 
 template <class T,class Alloc>
-typename vector<T,Alloc>::iterator 
-vector<T,Alloc>::insert
+void vector<T,Alloc>::insert
 (
     typename vector<T,Alloc>::iterator pos,
     typename vector<T,Alloc>::iterator __begin,
@@ -513,6 +543,14 @@ vector<T,Alloc>::insert
 )
 {
     return end();
+}
+
+template <class T,class Alloc>
+void vector<T,Alloc>::clear()
+{
+    destroy(begin(),end());
+    deallocate();
+    _start=_end=_end_of_storage=0;
 }
 
 }

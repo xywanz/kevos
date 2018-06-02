@@ -25,7 +25,7 @@ namespace std
 
 template <class InputIterator,class OutputIterator>
 OutputIterator __copy_template(InputIterator first,InputIterator last,OutputIterator result,
-                            random_access_iterator_tag,random_access_iterator_tag)
+                            random_access_iterator_tag input_iter_tag,random_access_iterator_tag output_iter_tag)
 {
     memmove(&*result,&*first,sizeof(typename iterator_traits<InputIterator>::value_type)*(last-first));
     return result+(last-first);

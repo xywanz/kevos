@@ -27,12 +27,6 @@ namespace std
 template <class InputIterator,class ForwardIterator>
 inline ForwardIterator uninitialized_copy(InputIterator first,InputIterator last,ForwardIterator result)
 {
-    // ForwardIterator i=result;
-    // for(;first!=last;++first,++i)
-    // {
-    //     construct(&*i,*first);
-    // }
-    // return i;
     return copy(first,last,result);
 }
 
