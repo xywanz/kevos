@@ -18,6 +18,7 @@ limitations under the License.
 
 #include <climits>
 #include <stdexcept>
+#include <initializer_list>
 
 #include <stl_alloc.h>
 #include <stl_uninitialized.h>
@@ -25,130 +26,8 @@ limitations under the License.
 namespace std
 {
 
-template <class T,class Alloc>
-class vector;
-
-template <class T,class Pointer,class Reference,class Alloc=alloc>
-class __vector_reverse_iterator
-{
-protected:
-    using vec=vector<T,Alloc>;
-    using iterator=typename vec::iterator;
-    using reverse_iterator=__vector_reverse_iterator<T,T*,T&,Alloc>;
-    using self=__vector_reverse_iterator<T,Pointer,Reference,Alloc>;
-
-public:
-    using iterator_category=random_access_iterator_tag;
-    using value_type=T;
-    using pointer=Pointer;
-    using reference=Reference;
-    using size_type=size_t;
-    using difference_type=ptrdiff_t;
-
-    __vector_reverse_iterator()
-    {
-    }
-
-    __vector_reverse_iterator(iterator i):iter(i)
-    {
-    }
-
-    __vector_reverse_iterator(const __vector_reverse_iterator& other):iter(other.iter)
-    {
-    }
-
-    bool operator==(const __vector_reverse_iterator& other)const
-    {
-        return iter==other.iter;
-    }
-
-    bool operator!=(const __vector_reverse_iterator& other)const
-    {
-        return iter!=other.iter;
-    }
-
-    bool operator<(const __vector_reverse_iterator& other)const
-    {
-        return iter<other.iter;
-    }
-
-    bool operator<=(const __vector_reverse_iterator& other)const
-    {
-        return iter<=other.iter;
-    }
-
-    bool operator>(const __vector_reverse_iterator& other)const
-    {
-        return iter>other.iter;
-    }
-
-    bool operator>=(const __vector_reverse_iterator& other)const
-    {
-        return iter>=other.iter;
-    }
-
-    T& operator*()const
-    {
-        return *iter;
-    }
-
-    T* operator->()const
-    {
-        return &(operator*());
-    }
-
-    self& operator++()
-    {
-        --iter;
-        return *this;
-    }
-
-    self operator++(int)
-    {
-        self ret=*this;
-        --iter;
-        return ret;
-    }
-
-    self& operator--()
-    {
-        ++iter;
-        return *this;
-    }
-
-    self operator--(int)
-    {
-        self ret=*this;
-        ++iter;
-        return ret;
-    }
-
-    self operator+(size_type n)
-    {
-        return iter-n;
-    }
-
-    self operator-(size_type n)
-    {
-        return iter+n;
-    }
-
-    self& operator+=(size_type n)
-    {
-        iter-=n;
-        return *this;
-    }
-
-    self& operator-=(size_type n)
-    {
-        iter+=n;
-        return *this;
-    }
-
-protected:
-    iterator iter;
-};
-
+template <class T,class Pointer,class Reference>
+class __vector_reverse_iterator;
 
 /**
  * @brief 基本符合STL标准的vector，该版本暂时参考于SGI STL
@@ -167,9 +46,9 @@ public:
     using size_type=size_t;
     using difference_type=ptrdiff_t;
     using iterator=value_type*;
-    using const_iterator=const iterator;
-    using reverse_iterator=__vector_reverse_iterator<T,T*,T&,Alloc>;
-    using const_reverse_iterator=const reverse_iterator;
+    using const_iterator=const T*;
+    using reverse_iterator=__vector_reverse_iterator<T,T*,T&>;
+    using const_reverse_iterator=__vector_reverse_iterator<T,const T*,const T&>;
 
 protected:
 
@@ -245,6 +124,7 @@ public:
     {
         _start=data_allocator::allocate(last-first);
         _end=uninitialized_copy(first,last,begin());
+        _end_of_storage=_end;
     }
 
 /**
@@ -255,13 +135,21 @@ public:
         fill_initialize(n,T());
     }
 
+    vector(const initializer_list<T>& _lst)
+    {
+        _start=data_allocator::allocate(_lst.size());
+        _end=uninitialized_copy(_lst.begin(),_lst.end(),begin());
+        _end_of_storage=_end;
+    }
+
 /**
  * @brief 复制构造函数
  */
     vector(const vector& other)
     {
         _start=data_allocator::allocate(other.size());
-        _end=uninitialized_copy(other.begin(),other.end(),begin());     
+        _end=uninitialized_copy(other.begin(),other.end(),begin());   
+        _end_of_storage=_end;  
     }
 
 /**
@@ -279,6 +167,7 @@ public:
         deallocate();
         _start=data_allocator::allocate(other.size());
         _end=uninitialized_copy(other.begin(),other.end(),begin());
+        _end_of_storage=_end;
     }
 
     data_allocator get_allocator()const
@@ -617,7 +506,131 @@ void vector<T,Alloc>::swap(vector<T,Alloc>& x)
 
 }
 
-}
 
+
+template <class T,class Pointer,class Reference>
+class __vector_reverse_iterator
+{
+public:
+    using iterator_category=random_access_iterator_tag;
+    using value_type=T;
+    using pointer=T*;
+    using reference=T&;
+    using iterator=__vector_reverse_iterator<T,T*,T&>;
+    using const_iterator=__vector_reverse_iterator<T,const T*,const T&>;
+    using size_type=size_t;
+    using difference_type=ptrdiff_t;
+
+    using self=__vector_reverse_iterator<T,T*,T&>;
+protected:
+    using forward_iterator=T*;
+    using const_forward_iterator=const T*;
+public:
+    __vector_reverse_iterator()
+    {
+    }
+
+    __vector_reverse_iterator(forward_iterator i):iter(i)
+    {
+    }
+
+    __vector_reverse_iterator(const __vector_reverse_iterator& other):iter(other.iter)
+    {
+    }
+
+    bool operator==(const __vector_reverse_iterator& other)const
+    {
+        return iter==other.iter;
+    }
+
+    bool operator!=(const __vector_reverse_iterator& other)const
+    {
+        return iter!=other.iter;
+    }
+
+    bool operator<(const __vector_reverse_iterator& other)const
+    {
+        return iter<other.iter;
+    }
+
+    bool operator<=(const __vector_reverse_iterator& other)const
+    {
+        return iter<=other.iter;
+    }
+
+    bool operator>(const __vector_reverse_iterator& other)const
+    {
+        return iter>other.iter;
+    }
+
+    bool operator>=(const __vector_reverse_iterator& other)const
+    {
+        return iter>=other.iter;
+    }
+
+    reference operator*()const
+    {
+        return *iter;
+    }
+
+    pointer operator->()const
+    {
+        return &(operator*());
+    }
+
+    self& operator++()
+    {
+        --iter;
+        return *this;
+    }
+
+    self operator++(int)
+    {
+        self ret=*this;
+        --iter;
+        return ret;
+    }
+
+    self& operator--()
+    {
+        ++iter;
+        return *this;
+    }
+
+    self operator--(int)
+    {
+        self ret=*this;
+        ++iter;
+        return ret;
+    }
+
+    self operator+(size_type n)
+    {
+        return iter-n;
+    }
+
+    self operator-(size_type n)
+    {
+        return iter+n;
+    }
+
+    self& operator+=(size_type n)
+    {
+        iter-=n;
+        return *this;
+    }
+
+    self& operator-=(size_type n)
+    {
+        iter+=n;
+        return *this;
+    }
+
+protected:
+    forward_iterator iter;
+};
+
+
+}
 
 #endif

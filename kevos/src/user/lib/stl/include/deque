@@ -13,22 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_STL_STACK_H_
-#define _STL_STL_STACK_H_
+#ifndef _STL_DEQUE_
+#define _STL_DEQUE_
 
-#include <stl_alloc.h>
-#include <deque>
-
-namespace std
-{
-
-template <class T,class Container=deque<T>>
-class stack
-{
-public:
-
-};
-
-}
+#include <stl_deque.h>
 
 #endif

@@ -49,6 +49,8 @@ all:
 	make -C user/lib/stdlib/src/stdlib
 	make -C user/lib/stdlib/src/string
 
+	make -C test
+
 	make
 
 .PHONY:clean

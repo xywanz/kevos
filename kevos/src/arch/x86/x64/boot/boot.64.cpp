@@ -37,6 +37,8 @@ limitations under the License.
 #include <list>
 #include <stack>
 
+void test_vector_main();
+void test_array_main();
 
 KEVOS_NSS_4(arch,x86,x64,boot);
 
@@ -54,12 +56,6 @@ void print(size_t pos,const char* buf)
 
 inline void confirmImAlive() {*((uint16_t*)(0xB8000+100))=0x7575;}
 
-void test()
-{
-	VirtualMemory vm;
-	vm.mapPage(0x1000000,PageManager::allocate(),1);
-}
-
 extern "C" void entry64()
 {
 	__asm__("mov %%rax, %%cr3" : : "a"(KernelPageFrame::pml4));
@@ -74,65 +70,8 @@ extern "C" void entry64()
 	common::CPUInfo cpuInfo=common::CPUInfo::instance();
 	ProcessManager::initialize();
 
-	char buf[16];
-
-	std::itoa((long)std::alloc::allocate(10),buf,16);
-
-	// std::itoa((long)kernel::mm::KernelHeap::allocate(10),buf,16);
-	// print(40,buf);
-
-	size_t pnn=PageManager::allocate();
-	PageManager::deallocate(pnn);
-
-	VirtualMemory vm;
-	vm.mapPage(0,PageManager::allocate(),1);
-	vm.unmapPage(0);
-
-	test();
-
-	// __asm__("int $0x80");
-	// int z=0;
-	// int dv=1/z;
-
-	// char *tt=(char*)0x100000000;
-	// *tt=1;
-
-	kernel::utils::Bitmap<DynamicBitmap,char> bm(new char[8],8);
-
-
-	std::vector<int> v;
-	v.push_back(111);
-	v.push_back(222);
-	v.insert(v.begin(),234);
-	v.insert(v.begin(),888);
-	v.insert(v.begin(),666);
-	v.reserve(100);
-	*v.data()=1;
-	// auto ri=v.rbegin();
-	// assert(v.capacity()==4);
-
-	// std::itoa(*ri,buf,10);
-	// print(40,buf);
-
-	std::list<int> l;
-	l.push_back(1);
-	l.push_front(23);
-	assert(*l.begin()==23);
-
-	std::array<int,3> arr({1,2,3});
-	arr.cend();
-	arr.cbegin();
-	arr.at(2);
-
-	arr.front();
-	arr.back();
-
-	const std::array<int,3> caar;
-	caar.cbegin();
-	caar.crbegin();
-	caar.cend();
-	caar.front();
-	caar.back();
+	test_vector_main();
+	test_array_main();
 
 	confirmImAlive();
 	while(1);

@@ -24,128 +24,9 @@ limitations under the License.
 namespace std
 {
 
-template <class T,size_t N>
-class array;
+template <class T,class Pointer,class Reference>
+class __array_reverse_iterator;
 
-template <class T,size_t N,class Pointer,class Reference>
-class __array_reverse_iterator
-{
-protected:
-    using iterator=typename array<T,N>::iterator;
-    using reverse_iterator=__array_reverse_iterator<T,N,T*,T&>;
-    using self=__array_reverse_iterator<T,N,Pointer,Reference>;
-
-public:
-    using iterator_category=random_access_iterator_tag;
-    using value_type=T;
-    using pointer=Pointer;
-    using reference=Reference;
-    using size_type=size_t;
-    using difference_type=ptrdiff_t;
-
-    __array_reverse_iterator()
-    {
-    }
-
-    __array_reverse_iterator(iterator i):iter(i)
-    {
-    }
-
-    __array_reverse_iterator(const __array_reverse_iterator& other):iter(other.iter)
-    {
-    }
-
-    bool operator==(const __array_reverse_iterator& other)const
-    {
-        return iter==other.iter;
-    }
-
-    bool operator!=(const __array_reverse_iterator& other)const
-    {
-        return iter!=other.iter;
-    }
-
-    bool operator<(const __array_reverse_iterator& other)const
-    {
-        return iter<other.iter;
-    }
-
-    bool operator<=(const __array_reverse_iterator& other)const
-    {
-        return iter<=other.iter;
-    }
-
-    bool operator>(const __array_reverse_iterator& other)const
-    {
-        return iter>other.iter;
-    }
-
-    bool operator>=(const __array_reverse_iterator& other)const
-    {
-        return iter>=other.iter;
-    }
-
-    T& operator*()const
-    {
-        return *iter;
-    }
-
-    T* operator->()const
-    {
-        return &(operator*());
-    }
-
-    self& operator++()
-    {
-        --iter;
-        return *this;
-    }
-
-    self operator++(int)
-    {
-        self ret=*this;
-        --iter;
-        return ret;
-    }
-
-    self& operator--()
-    {
-        ++iter;
-        return *this;
-    }
-
-    self operator--(int)
-    {
-        self ret=*this;
-        ++iter;
-        return ret;
-    }
-
-    self operator+(size_type n)
-    {
-        return iter-n;
-    }
-
-    self operator-(size_type n)
-    {
-        return iter+n;
-    }
-
-    self& operator+=(size_type n)
-    {
-        iter-=n;
-        return *this;
-    }
-
-    self& operator-=(size_type n)
-    {
-        iter+=n;
-        return *this;
-    }
-
-protected:
-    iterator iter;
-};
 
 template <class T,size_t N>
 class array
@@ -157,8 +38,8 @@ public:
     using reference=T&;
     using iterator=T*;
     using const_iterator=const T*;
-    using reverse_iterator=__array_reverse_iterator<T,N,T*,T&>;
-    using const_reverse_iterator=const reverse_iterator;
+    using reverse_iterator=__array_reverse_iterator<T,T*,T&>;
+    using const_reverse_iterator=__array_reverse_iterator<T,T*,T&>;
     using different_type=ptrdiff_t;
     using size_type=size_t;
 
@@ -167,9 +48,9 @@ public:
     {
     }
 
-    array(const initializer_list<T>& x):m_size(x.size())
+    array(const initializer_list<T>& _lst):m_size(_lst.size())
     {
-        uninitialized_copy(x.begin(),x.end(),m_arr);
+        uninitialized_copy(_lst.begin(),_lst.end(),m_arr);
     }
 
     bool empty()const
@@ -281,6 +162,7 @@ public:
 
     void fill(const T& x)
     {
+        destroy(begin(),end());
         uninitialized_fill_n(m_arr,size(),x);
     }
 
@@ -302,6 +184,129 @@ public:
     {
         return true;
     }
+};
+
+
+
+template <class T,class Pointer,class Reference>
+class __array_reverse_iterator
+{
+protected:
+    using forward_iterator=T*;
+public:
+    using iterator_category=random_access_iterator_tag;
+    using value_type=T;
+    using pointer=Pointer;
+    using reference=Reference;
+    using size_type=size_t;
+    using difference_type=ptrdiff_t;
+    using iterator=__array_reverse_iterator<T,T*,T&>;
+    using const_iterator=__array_reverse_iterator<T,const T*,const T&>;
+
+    using self=__array_reverse_iterator<T,Pointer,Reference>;
+
+    __array_reverse_iterator()
+    {
+    }
+
+    __array_reverse_iterator(forward_iterator i):iter(i)
+    {
+    }
+
+    __array_reverse_iterator(const __array_reverse_iterator& other):iter(other.iter)
+    {
+    }
+
+    bool operator==(const __array_reverse_iterator& other)const
+    {
+        return iter==other.iter;
+    }
+
+    bool operator!=(const __array_reverse_iterator& other)const
+    {
+        return iter!=other.iter;
+    }
+
+    bool operator<(const __array_reverse_iterator& other)const
+    {
+        return iter<other.iter;
+    }
+
+    bool operator<=(const __array_reverse_iterator& other)const
+    {
+        return iter<=other.iter;
+    }
+
+    bool operator>(const __array_reverse_iterator& other)const
+    {
+        return iter>other.iter;
+    }
+
+    bool operator>=(const __array_reverse_iterator& other)const
+    {
+        return iter>=other.iter;
+    }
+
+    reference operator*()const
+    {
+        return *iter;
+    }
+
+    pointer operator->()const
+    {
+        return &(operator*());
+    }
+
+    self& operator++()
+    {
+        --iter;
+        return *this;
+    }
+
+    self operator++(int)
+    {
+        self ret=*this;
+        --iter;
+        return ret;
+    }
+
+    self& operator--()
+    {
+        ++iter;
+        return *this;
+    }
+
+    self operator--(int)
+    {
+        self ret=*this;
+        ++iter;
+        return ret;
+    }
+
+    self operator+(size_type n)
+    {
+        return iter-n;
+    }
+
+    self operator-(size_type n)
+    {
+        return iter+n;
+    }
+
+    self& operator+=(size_type n)
+    {
+        iter-=n;
+        return *this;
+    }
+
+    self& operator-=(size_type n)
+    {
+        iter+=n;
+        return *this;
+    }
+
+protected:
+    forward_iterator iter;
 };
 
 }
