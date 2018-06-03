@@ -40,3 +40,5 @@ build/tmp/*.txt
 build/tmp/bochsout.txt
 build/tmp/*.cpp.S
 build/tmp/*.*
+
+kevos-build

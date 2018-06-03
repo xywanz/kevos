@@ -188,6 +188,27 @@ protected:
 
 
 
+template <class T,class Alloc>
+class list;
+
+template <class T,class Alloc>
+bool operator==(const list<T,Alloc>& lhs,const list<T,Alloc>& rhs);
+
+template <class T,class Alloc>
+bool operator<(const list<T,Alloc>& lhs,const list<T,Alloc>& rhs);
+
+template <class T,class Alloc>
+bool operator<=(const list<T,Alloc>& lhs,const list<T,Alloc>& rhs);
+
+template <class T,class Alloc>
+bool operator>(const list<T,Alloc>& lhs,const list<T,Alloc>& rhs);
+
+template <class T,class Alloc>
+bool operator>=(const list<T,Alloc>& lhs,const list<T,Alloc>& rhs);
+
+
+
+
 template <class T,class Alloc=alloc>
 class list
 {
@@ -270,6 +291,11 @@ public:
     reference back()
     {
         return *(end()-1);
+    }
+
+    size_type size()const
+    {
+        return 0;
     }
 
     size_type max_size()const
@@ -359,18 +385,72 @@ public:
 
     void remove(const T& x)
     {
+        iterator first=begin();
+        iterator last=end();
+        while(first!=last)
+        {
+            if(*first==x)
+            {
+                first=erase(first);
+            }
+        }
+    }
+
+    template <class PredicateFunction>
+    void remove_if(PredicateFunction pred)
+    {
 
     }
 
-    template <class Predicate>
-    void remove_if(Predicate pred)
+    void reverse()
     {
-        
+
+    }
+
+    void sort()
+    {
+
+    }
+
+    template <class CompareFunction>
+    void sort(CompareFunction comp)
+    {
+
+    }
+
+    void split(iterator pos,list& x)
+    {
+
+    }
+
+    void split(iterator pos,list& x,iterator i)
+    {
+
+    }
+
+    void split(iterator pos,list& x,iterator first,iterator last)
+    {
+
+    }
+
+    void swap(list& x)
+    {
+
+    }
+
+    void unique()
+    {
+
     }
 
 protected:
     link_type node;
 
+    friend bool operator== <T,Alloc>(const list<T,Alloc>& lhs,const list<T,Alloc>& rhs);
+    friend bool operator< <T,Alloc>(const list<T,Alloc>& lhs,const list<T,Alloc>& rhs);
+    friend bool operator<= <T,Alloc>(const list<T,Alloc>& lhs,const list<T,Alloc>& rhs);
+    friend bool operator> <T,Alloc>(const list<T,Alloc>& lhs,const list<T,Alloc>& rhs);
+    friend bool operator>= <T,Alloc>(const list<T,Alloc>& lhs,const list<T,Alloc>& rhs);
 };
 
 template <class T,class Alloc>

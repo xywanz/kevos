@@ -32,6 +32,7 @@ limitations under the License.
 
 #include <cmath>
 
+#include <array>
 #include <vector>
 #include <list>
 #include <stack>
@@ -99,12 +100,14 @@ extern "C" void entry64()
 	kernel::utils::Bitmap<DynamicBitmap,char> bm(new char[8],8);
 
 
-	// std::vector<int> v;
-	// v.push_back(111);
-	// v.push_back(222);
-	// v.insert(v.begin(),234);
-	// v.insert(v.begin(),888);
-	// v.insert(v.begin(),666);
+	std::vector<int> v;
+	v.push_back(111);
+	v.push_back(222);
+	v.insert(v.begin(),234);
+	v.insert(v.begin(),888);
+	v.insert(v.begin(),666);
+	v.reserve(100);
+	*v.data()=1;
 	// auto ri=v.rbegin();
 	// assert(v.capacity()==4);
 
@@ -115,6 +118,21 @@ extern "C" void entry64()
 	l.push_back(1);
 	l.push_front(23);
 	assert(*l.begin()==23);
+
+	std::array<int,3> arr({1,2,3});
+	arr.cend();
+	arr.cbegin();
+	arr.at(2);
+
+	arr.front();
+	arr.back();
+
+	const std::array<int,3> caar;
+	caar.cbegin();
+	caar.crbegin();
+	caar.cend();
+	caar.front();
+	caar.back();
 
 	confirmImAlive();
 	while(1);

@@ -13,30 +13,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STDLIB_CSTDDEF_
-#define _STDLIB_CSTDDEF_
+#ifndef _STDLIB_STDEXCEPT_
+#define _STDLIB_STDEXCEPT_
 
+namespace std
+{
 
-#ifndef _SIZE_T
-#define _SIZE_T
-using size_t = unsigned long;
-#endif
+class logic_error
+{
 
-#ifndef _PTRDIFF_T
-#define _PTRDIFF_T
-using ptrdiff_t = long;
-#endif
+};
 
-#ifndef __cplusplus
-#ifndef _WCHAR_T
-#define _WCHAR_T
-using wchar_t = short;
-#endif
-#endif
+class length_error: public logic_error
+{
 
-#define NULL 0
+};
 
-#define offsetof(type,member) ((size_t)&(((type*)0)->member))
-
+}
 
 #endif

@@ -17,6 +17,7 @@ limitations under the License.
 #define _STL_STL_VECTOR_H_
 
 #include <climits>
+#include <stdexcept>
 
 #include <stl_alloc.h>
 #include <stl_uninitialized.h>
@@ -122,33 +123,29 @@ public:
         return ret;
     }
 
-    template <class NumericType>
-    self operator+(NumericType n)
+    self operator+(size_type n)
     {
         return iter-n;
     }
 
-    template <class NumericType>
-    self operator-(NumericType n)
+    self operator-(size_type n)
     {
         return iter+n;
     }
 
-    template <class NumericType>
-    self& operator+=(NumericType n)
+    self& operator+=(size_type n)
     {
         iter-=n;
         return *this;
     }
 
-    template <class NumericType>
-    self& operator-=(NumericType n)
+    self& operator-=(size_type n)
     {
         iter+=n;
         return *this;
     }
 
-private:
+protected:
     iterator iter;
 };
 
@@ -170,7 +167,9 @@ public:
     using size_type=size_t;
     using difference_type=ptrdiff_t;
     using iterator=value_type*;
+    using const_iterator=const iterator;
     using reverse_iterator=__vector_reverse_iterator<T,T*,T&,Alloc>;
+    using const_reverse_iterator=const reverse_iterator;
 
 protected:
 
@@ -224,9 +223,77 @@ protected:
 
 public:
 
+    /**
+ * @brief 构造空的vector
+ */
+    vector():_start(0),_end(0),_end_of_storage(0)
+    {
+    }
+
+/**
+ * @brief 构造n个数量元素的vector，初始值为value 
+ */
+    vector(size_type n,const T& value)
+    {
+        fill_initialize(n,value);
+    }
+
+/**
+ * @brief 构造vector，初始值从指定范围拷贝
+ */
+    vector(iterator first,iterator last)
+    {
+        _start=data_allocator::allocate(last-first);
+        _end=uninitialized_copy(first,last,begin());
+    }
+
+/**
+ * @brief 构造n个元素的vector，用省缺构造函数构造元素
+ */
+    explicit vector(size_type n)
+    {
+        fill_initialize(n,T());
+    }
+
+/**
+ * @brief 复制构造函数
+ */
+    vector(const vector& other)
+    {
+        _start=data_allocator::allocate(other.size());
+        _end=uninitialized_copy(other.begin(),other.end(),begin());     
+    }
+
+/**
+ * @brief 析构函数
+ */
+    ~vector()
+    {
+        destroy(begin(),end());
+        deallocate();
+    }
+
+    vector& operator=(const vector& other)
+    {
+        destroy(begin(),end());
+        deallocate();
+        _start=data_allocator::allocate(other.size());
+        _end=uninitialized_copy(other.begin(),other.end(),begin());
+    }
+
     data_allocator get_allocator()const
     {
         return data_allocator();
+    }
+
+    pointer data()
+    {
+        return _start;
+    }
+
+    const pointer data()const
+    {
+        return _start;
     }
 
 /**
@@ -295,64 +362,23 @@ public:
         return *(begin()+n);
     }
 
-/**
- * @brief 构造空的vector
- */
-    vector():_start(0),_end(0),_end_of_storage(0)
+    const reference operator[](size_type n)const
     {
+        return *(begin()+n);
     }
 
-/**
- * @brief 构造n个数量元素的vector，初始值为value 
- */
-    template <class NumericType>
-    vector(NumericType n,const T& value)
+    reference at(size_type n)
     {
-        fill_initialize(n,value);
+        if(n<size())
+            return operator[](n);
+        // throw n;
     }
 
-/**
- * @brief 构造vector，初始值从指定范围拷贝
- */
-    vector(iterator first,iterator last)
+    const reference at(size_type n)const
     {
-        _start=data_allocator::allocate(last-first);
-        _end=uninitialized_copy(first,last,begin());
-    }
-
-/**
- * @brief 构造n个元素的vector，用省缺构造函数构造元素
- */
-    template<class NumericType>
-    explicit vector(NumericType n)
-    {
-        fill_initialize(n,T());
-    }
-
-/**
- * @brief 复制构造函数
- */
-    vector(const vector& other)
-    {
-        _start=data_allocator::allocate(other.size());
-        _end=uninitialized_copy(other.begin(),other.end(),begin());     
-    }
-
-/**
- * @brief 析构函数
- */
-    ~vector()
-    {
-        destroy(begin(),end());
-        deallocate();
-    }
-
-    vector& operator=(const vector& other)
-    {
-        destroy(begin(),end());
-        deallocate();
-        _start=data_allocator::allocate(other.size());
-        _end=uninitialized_copy(other.begin(),other.end(),begin());
+        if(n<size())
+            return operator[](n);
+        // throw n;
     }
 
 /**
@@ -433,10 +459,32 @@ public:
  */
     void insert(iterator pos,iterator first,iterator last);
 
+    template <class... Args>
+    void emplace_back(Args&&... args)
+    {
+    }
+
+    template <class... Args>
+    void emplace(iterator pos,Args&&... args)
+    {
+    }
+
 /**
  * @brief 为容器保留一定的空间
  */
-    void reserve();
+    void reserve(size_type n)
+    {
+        if(n>max_size())
+            // throw length_error();
+            return;
+        if(n>capacity())
+        {
+            iterator new_start=data_allocator::allocate(n);
+            _end=uninitialized_copy(begin(),end(),new_start);
+            _start=new_start;
+            _end_of_storage=_start+n;
+        }
+    }
 
 /**
  * @brief 变更容器大小
@@ -453,7 +501,17 @@ public:
         }
     }
 
+    void shrink_to_fit()
+    {
+        iterator new_start=data_allocator::allocate(size());
+        _end=uninitialized_copy(begin(),end(),new_start);
+        _start=new_start;
+        _end_of_storage=_end;
+    }
+
     void clear();
+
+    void swap(vector& x);
 
 protected:
 
@@ -551,6 +609,12 @@ void vector<T,Alloc>::clear()
     destroy(begin(),end());
     deallocate();
     _start=_end=_end_of_storage=0;
+}
+
+template <class T,class Alloc>
+void vector<T,Alloc>::swap(vector<T,Alloc>& x)
+{
+
 }
 
 }

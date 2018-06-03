@@ -1,0 +1,80 @@
+/* Copyright 2018 kevin Lau (http://github.com/stormycatcat)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+==============================================================================*/
+
+#ifndef _STDLIB_INITILIZER_LIST_
+#define _STDLIB_INITILIZER_LIST_
+
+#include <cstddef>
+
+namespace std
+{
+
+template <class E>
+class initializer_list
+{
+public:
+    using value_type=E;
+    using reference=const E&;
+    using const_reference=const E&;
+    using size_type=size_t;
+    using iterator=const E*;
+    using const_iterator=const E*;
+private:
+    iterator m_array;
+    size_type m_len;
+
+    constexpr initializer_list(const_iterator _a,size_type _l):
+        m_array(_a),m_len(_l)
+    {
+    }
+
+public:
+    constexpr initializer_list():m_array(0),m_len(0)
+    {
+    }
+
+    constexpr size_type size()const
+    {
+        return m_len;
+    }
+
+    constexpr const_iterator begin()const
+    {
+        return m_array;
+    }
+
+    constexpr const_iterator end()const
+    {
+        return m_array+m_len;
+    }
+};
+
+
+template <class T>
+constexpr const T* begin(initializer_list<T> _ils)
+{
+    return _ils.begin();
+}
+
+template <class T>
+constexpr const T* end(initializer_list<T> _ils)
+{
+    return _ils.end();
+}
+
+
+}
+
+#endif

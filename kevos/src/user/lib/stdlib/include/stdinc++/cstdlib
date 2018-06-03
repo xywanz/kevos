@@ -13,8 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _CSTDLIB_
-#define _CSTDLIB_
+#ifndef _STDLIB_CSTDLIB_
+#define _STDLIB_CSTDLIB_
 
 #define RAND_MAX    32767
 
