@@ -5,6 +5,11 @@
 
 using namespace std;
 
+class A
+{
+
+};
+
 void test_cxx_stdlib_template_main()
 {
     integral_constant<int,1> one;
@@ -14,4 +19,7 @@ void test_cxx_stdlib_template_main()
     is_integral<wchar_t> s;
 
     is_enum<int>::value;
+
+    assert(is_class<A>::value==true);
+    assert(is_class<int>::value==false);
 }

@@ -29,6 +29,11 @@ limitations under the License.
 
 #include <sys/types.h>
 
+#include <array>
+#include <algorithm>
+
+
+
 namespace kernel::utils
 {
 
@@ -41,8 +46,7 @@ class Bitmap
 public:
 	Bitmap()
 	{
-		for(size_t i=0;i<byteCount;++i)
-			m_bitmap[i]=0;
+		std::fill(m_bitmap.begin(),m_bitmap.end(),0);
 	}
 
 	bool set(size_t index)
@@ -74,7 +78,7 @@ public:
 private:
 	static constexpr size_t s_bitsPerByte=sizeof(ByteType)*8;
 	static constexpr size_t s_size=byteCount*s_bitsPerByte;
-	ByteType m_bitmap[byteCount];
+	std::array<ByteType,byteCount> m_bitmap;
 	
 
 	static constexpr size_t bitIndexOf(size_t bit)
@@ -121,10 +125,7 @@ template<class ByteType>
 Bitmap<DynamicBitmap,ByteType>::Bitmap(ByteType* bitmap,size_t size)
 	:m_bitmap(bitmap),m_size(size)
 {
-	for(size_t i=0;i<size;++i)
-	{
-		bitmap[i]=0;
-	}
+	std::fill(m_bitmap,m_bitmap+size,0);
 }
 
 template<class ByteType>

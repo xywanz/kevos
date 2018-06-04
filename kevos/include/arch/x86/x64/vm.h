@@ -27,44 +27,11 @@ limitations under the License.
 #ifndef _KEVOS_ARCH_x86_X64_VM_H_
 #define _KEVOS_ARCH_x86_X64_VM_H_
 
-#include <arch/x86/x64/paging.h>
+#include <arch/x86/x64/kernel_paging.h>
+
 
 namespace arch::x86::x64
 {
-
-/**
- * @brief 内核中各分页结构表的大小
- */
-#define __KERNEL_PML4_NUM			1
-#define __KERNEL_PDPT_NUM			1
-#define __KERNEL_PDT_NUM 			1
-#define __KERNEL_PT_NUM 			32
-
-/**
- * @brief 内核中各分页结构表项的数量
- */
-#define __KERNEL_PML4_SIZE			(__KERNEL_PML4_NUM*__PML4_SIZE)
-#define __KERNEL_PDPT_SIZE			(__KERNEL_PDPT_NUM*__PDPT_SIZE)
-#define __KERNEL_PDT_SIZE 			(__KERNEL_PDT_NUM*__PDT_SIZE)
-#define __KERNEL_PT_SIZE 			(__KERNEL_PT_NUM*__PT_SIZE)
-
-/**
- * @brief 内核态的分页结构表
- */
-
-class KernelPageFrame
-{
-public:
-	constexpr static size_t pml4Size = 512;
-	constexpr static size_t pdptSize = 512;
-	constexpr static size_t pdtSize = 512;
-	constexpr static size_t ptSize = 512*32;
-
-	static PML4E  pml4[];
-	static PDPTE  pdpt[];
-	static PDTE   pdt[];
-	static PTE    pt[];
-};
 
 /**
  * @brief 一个虚拟内存页的映射信息

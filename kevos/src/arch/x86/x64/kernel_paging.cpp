@@ -13,23 +13,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STDLIB_NEW_
-#define _STDLIB_NEW_
+#include <arch/x86/x64/kernel_paging.h>
 
-#include <cstddef>
+namespace arch::x86::x64
+{
 
+PML4E  KernelPageFrame::pml4[pml4Size] __aligned__(0x1000);
+PDPTE  KernelPageFrame::pdpt[pdptSize] __aligned__(0x1000);
+PDTE   KernelPageFrame::pdt[pdtSize]   __aligned__(0x1000);
+PTE    KernelPageFrame::pt[ptSize]     __aligned__(0x1000);
 
-void* operator new(size_t size);
-
-void operator delete(void* ptr);
-
-void operator delete(void* ptr, size_t);
-
-void* operator new[](size_t size);
-
-void operator delete[](void* ptr);
-
-void* operator new(size_t,void* p);
-
-
-#endif
+}

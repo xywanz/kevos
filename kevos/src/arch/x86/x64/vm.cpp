@@ -21,11 +21,6 @@ limitations under the License.
 namespace arch::x86::x64
 {
 
-PML4E  KernelPageFrame::pml4[pml4Size] __aligned__(0x1000);
-PDPTE  KernelPageFrame::pdpt[pdptSize] __aligned__(0x1000);
-PDTE   KernelPageFrame::pdt[pdtSize]   __aligned__(0x1000);
-PTE    KernelPageFrame::pt[ptSize]     __aligned__(0x1000);
-
 VirtualMemory::VirtualMemory()
 {
     m_pml4PPN=kernel::mm::PageManager::allocate();

@@ -225,7 +225,14 @@ ForwardIterator find_if_not(ExecutionPolicy&& policy,ForwardIterator first,Forwa
 template <class InputIterator, class UnaryPredicate>
 constexpr InputIterator find_if_not(InputIterator first,InputIterator last,UnaryPredicate q);
 
-
+template<class ForwardIterator,class T>
+constexpr void fill(ForwardIterator first,ForwardIterator last,const T& value)
+{
+    while(first!=last)
+    {
+        *first++=value;
+    }
+}
 
 
 }

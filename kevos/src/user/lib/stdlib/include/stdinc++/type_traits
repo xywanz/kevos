@@ -96,6 +96,9 @@ template<>
 struct is_integral<char> : public true_type {};
 
 template<>
+struct is_integral<unsigned char> : public true_type {};
+
+template<>
 struct is_integral<char16_t> : public true_type {};
 
 template<>
@@ -108,13 +111,25 @@ template<>
 struct is_integral<short> : public true_type {};
 
 template<>
+struct is_integral<unsigned short> : public true_type {};
+
+template<>
 struct is_integral<int> : public true_type {};
+
+template<>
+struct is_integral<unsigned int> : public true_type {};
 
 template<>
 struct is_integral<long> : public true_type {};
 
 template<>
+struct is_integral<unsigned long> : public true_type {};
+
+template<>
 struct is_integral<long long> : public true_type {};
+
+template<>
+struct is_integral<unsigned long long> : public true_type {};
 
 
 template<class T>
@@ -165,6 +180,127 @@ template<class T>
 struct is_union : public integral_constant<bool,__is_union(T)> {};
 #else
 #endif
+
+
+namespace detail
+{
+    template<class T> char test(int (T::*));
+    struct large {char d[2];};
+    template<class T> large test(...);
+}
+
+template<class T>
+struct is_class : public integral_constant<bool,sizeof(detail::test<T>(0))==sizeof(char)&&!is_union<T>::value> {};
+
+
+template<class>
+struct is_function : false_type {};
+
+template<class Ret, class... Args>
+struct is_function<Ret(Args...)> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......)> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) const> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) volatile> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) const volatile> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) const> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) volatile> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) const volatile> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) &> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) const &> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) volatile &> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) const volatile &> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) &> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) const &> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) volatile &> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) const volatile &> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) &&> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) const &&> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) volatile &&> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) const volatile &&> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) &&> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) const &&> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) volatile &&> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) const volatile &&> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) const noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) volatile noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) const volatile noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) const noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) volatile noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) const volatile noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) & noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) const & noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) volatile & noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) const volatile & noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) & noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) const & noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) volatile & noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) const volatile & noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) && noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) const && noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) volatile && noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args...) const volatile && noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) && noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) const && noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) volatile && noexcept> : true_type {};
+template<class Ret, class... Args>
+struct is_function<Ret(Args......) const volatile && noexcept> : true_type {};
+
+
+template<class T> struct is_lvalue_reference : false_type {};
+template<class T> struct is_lvalue_reference<T&> : true_type {};
+
+template<class T> struct is_rvalue_reference : false_type {};
+template<class T> struct is_rvalue_reference<T&&> : true_type {};
+
+
 
 
 #ifdef __GNUC__

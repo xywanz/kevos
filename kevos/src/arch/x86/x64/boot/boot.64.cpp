@@ -13,7 +13,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <sys/portable.h>
 #include <arch/common/interrupt.h>
 #include <arch/common/assert.h>
 #include <arch/x86/common/cpuid.h>

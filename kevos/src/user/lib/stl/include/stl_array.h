@@ -102,9 +102,9 @@ public:
         return m_arr;
     }
 
-    const pointer data()const
+    const T* data()const
     {
-        return m_arr;
+        return (const T*)m_arr;
     }
 
     reference front()
@@ -112,9 +112,9 @@ public:
         return m_arr[0];
     }
 
-    const reference front()const
+    const T& front()const
     {
-        return (const reference)m_arr[0];
+        return (const T&)m_arr[0];
     }
 
     reference back()
@@ -122,9 +122,9 @@ public:
         return m_arr[N-1];
     }
 
-    const reference back()const
+    const T& back()const
     {
-        return (const reference)m_arr[N-1];
+        return (const T&)m_arr[N-1];
     }
 
     reference at(size_type n)
@@ -133,10 +133,10 @@ public:
             return m_arr[n];
     }
 
-    const reference at(size_type n)const
+    const T& at(size_type n)const
     {
         if(n<size())
-            return m_arr[n];        
+            return (const T&)m_arr[n];        
     }
 
     reference operator[](size_type n)
@@ -144,9 +144,9 @@ public:
         return m_arr[n];
     }
 
-    const reference operator[](size_type n)const
+    const T& operator[](size_type n)const
     {
-        return m_arr[n];
+        return (const T&)m_arr[n];
     }
 
     size_type max_size()const

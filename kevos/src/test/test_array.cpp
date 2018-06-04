@@ -5,6 +5,14 @@
 
 using namespace std;
 
+struct SS
+{
+    unsigned long a : 32;
+    unsigned long b : 32;
+};
+
+array<SS,512> global_test;
+
 void test_array_main()
 {
     array<int,6> a{0,1,2,3,4,5};
@@ -31,4 +39,7 @@ void test_array_main()
     assert(a[0]==10);
 
     const array<int,10> ca={1,2,3,4};
+
+    array<SS,10> c;
+    &c;
 }
