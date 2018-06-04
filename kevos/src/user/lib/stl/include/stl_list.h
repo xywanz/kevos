@@ -19,8 +19,6 @@ limitations under the License.
 #include <stl_alloc.h>
 #include <stl_iterator.h>
 
-#include <climits>
-
 namespace std
 {
 
@@ -300,7 +298,7 @@ public:
 
     size_type max_size()const
     {
-        return UINT_MAX/sizeof(list_node);
+        return size_type(-1)/sizeof(list_node);
     }
 
     reverse_iterator rbegin()const

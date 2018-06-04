@@ -18,7 +18,6 @@ limitations under the License.
 
 #include <stl_uninitialized.h>
 
-#include <climits>
 #include <initializer_list>
 
 namespace std
@@ -152,7 +151,7 @@ public:
 
     size_type max_size()const
     {
-        return UINT_MAX/sizeof(T);
+        return size_type(-1)/sizeof(T);
     }
 
     size_type size()const
@@ -200,10 +199,10 @@ public:
     using reference=Reference;
     using size_type=size_t;
     using difference_type=ptrdiff_t;
-    using iterator=__array_reverse_iterator<T,T*,T&>;
+    using iterator=__array_reverse_iterator<T,Pointer,Reference>;
     using const_iterator=__array_reverse_iterator<T,const T*,const T&>;
 
-    using self=__array_reverse_iterator<T,Pointer,Reference>;
+    using self=__array_reverse_iterator;
 
     __array_reverse_iterator()
     {
@@ -283,23 +282,23 @@ public:
         return ret;
     }
 
-    self operator+(size_type n)
+    self operator+(difference_type n)
     {
         return iter-n;
     }
 
-    self operator-(size_type n)
+    self operator-(difference_type n)
     {
         return iter+n;
     }
 
-    self& operator+=(size_type n)
+    self& operator+=(difference_type n)
     {
         iter-=n;
         return *this;
     }
 
-    self& operator-=(size_type n)
+    self& operator-=(difference_type n)
     {
         iter+=n;
         return *this;

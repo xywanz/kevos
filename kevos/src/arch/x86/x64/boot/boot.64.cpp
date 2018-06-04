@@ -39,6 +39,7 @@ limitations under the License.
 
 void test_vector_main();
 void test_array_main();
+void test_deque_main();
 
 KEVOS_NSS_4(arch,x86,x64,boot);
 
@@ -72,6 +73,7 @@ extern "C" void entry64()
 
 	test_vector_main();
 	test_array_main();
+	test_deque_main();
 
 	confirmImAlive();
 	while(1);

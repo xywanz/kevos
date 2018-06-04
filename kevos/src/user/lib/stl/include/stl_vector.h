@@ -16,12 +16,11 @@ limitations under the License.
 #ifndef _STL_STL_VECTOR_H_
 #define _STL_STL_VECTOR_H_
 
-#include <climits>
-#include <stdexcept>
-#include <initializer_list>
-
 #include <stl_alloc.h>
 #include <stl_uninitialized.h>
+
+#include <stdexcept>
+#include <initializer_list>
 
 namespace std
 {
@@ -79,8 +78,8 @@ protected:
  */
     void fill_initialize(size_type n,const T& value)
     {
-        _start=allocate_and_fill(n,value);
-        _end=_start+n;
+        _begin=allocate_and_fill(n,value);
+        _end=_begin+n;
         _end_of_storage=_end;
     }
 
@@ -89,8 +88,8 @@ protected:
  */
     void deallocate()
     {
-        if(_start)
-            data_allocator::deallocate(_start);
+        if(_begin)
+            data_allocator::deallocate(_begin);
     }
 
 /**
@@ -105,7 +104,7 @@ public:
     /**
  * @brief 构造空的vector
  */
-    vector():_start(0),_end(0),_end_of_storage(0)
+    vector():_begin(0),_end(0),_end_of_storage(0)
     {
     }
 
@@ -122,7 +121,7 @@ public:
  */
     vector(iterator first,iterator last)
     {
-        _start=data_allocator::allocate(last-first);
+        _begin=data_allocator::allocate(last-first);
         _end=uninitialized_copy(first,last,begin());
         _end_of_storage=_end;
     }
@@ -137,7 +136,7 @@ public:
 
     vector(const initializer_list<T>& _lst)
     {
-        _start=data_allocator::allocate(_lst.size());
+        _begin=data_allocator::allocate(_lst.size());
         _end=uninitialized_copy(_lst.begin(),_lst.end(),begin());
         _end_of_storage=_end;
     }
@@ -147,7 +146,7 @@ public:
  */
     vector(const vector& other)
     {
-        _start=data_allocator::allocate(other.size());
+        _begin=data_allocator::allocate(other.size());
         _end=uninitialized_copy(other.begin(),other.end(),begin());   
         _end_of_storage=_end;  
     }
@@ -165,7 +164,7 @@ public:
     {
         destroy(begin(),end());
         deallocate();
-        _start=data_allocator::allocate(other.size());
+        _begin=data_allocator::allocate(other.size());
         _end=uninitialized_copy(other.begin(),other.end(),begin());
         _end_of_storage=_end;
     }
@@ -177,12 +176,12 @@ public:
 
     pointer data()
     {
-        return _start;
+        return _begin;
     }
 
     const pointer data()const
     {
-        return _start;
+        return _begin;
     }
 
 /**
@@ -190,7 +189,7 @@ public:
  */
     iterator begin()const
     {
-        return _start;
+        return _begin;
     }
 
 /**
@@ -224,7 +223,7 @@ public:
  */
     size_type max_size()const
     {
-        return UINT_MAX/sizeof(T);
+        return size_type(-1)/sizeof(T);
     }
 
 /**
@@ -368,10 +367,10 @@ public:
             return;
         if(n>capacity())
         {
-            iterator new_start=data_allocator::allocate(n);
-            _end=uninitialized_copy(begin(),end(),new_start);
-            _start=new_start;
-            _end_of_storage=_start+n;
+            iterator new_begin=data_allocator::allocate(n);
+            _end=uninitialized_copy(begin(),end(),new_begin);
+            _begin=new_begin;
+            _end_of_storage=_begin+n;
         }
     }
 
@@ -392,9 +391,9 @@ public:
 
     void shrink_to_fit()
     {
-        iterator new_start=data_allocator::allocate(size());
-        _end=uninitialized_copy(begin(),end(),new_start);
-        _start=new_start;
+        iterator new_begin=data_allocator::allocate(size());
+        _end=uninitialized_copy(begin(),end(),new_begin);
+        _begin=new_begin;
         _end_of_storage=_end;
     }
 
@@ -407,7 +406,7 @@ protected:
 /**
  * @brief 数据的起始位置     
  */
-    iterator _start;
+    iterator _begin;
 
 /**
  * @brief 数据末尾再后移一位
@@ -426,15 +425,15 @@ void vector<T,Alloc>::alloc_and_insert(const T&x)
 {
     size_type old_size=size();
     size_type len=old_size?2*old_size:1;
-    iterator new_start=data_allocator::allocate(len);
-    iterator new_end=uninitialized_copy(begin(),end(),new_start);
+    iterator new_begin=data_allocator::allocate(len);
+    iterator new_end=uninitialized_copy(begin(),end(),new_begin);
     construct(new_end,x);
     ++new_end;
     destroy(begin(),end());
     deallocate();
-    _start=new_start;
+    _begin=new_begin;
     _end=new_end;
-    _end_of_storage=new_start+len;
+    _end_of_storage=new_begin+len;
 }
 
 template <class T,class Alloc>
@@ -450,15 +449,15 @@ typename vector<T,Alloc>::iterator vector<T,Alloc>::insert(typename vector<T,All
     {
         size_type old_size=size();
         size_type len=old_size?2*old_size:1;
-        iterator new_start=data_allocator::allocate(len);
-        iterator new_end=uninitialized_copy(begin(),pos,new_start);
+        iterator new_begin=data_allocator::allocate(len);
+        iterator new_end=uninitialized_copy(begin(),pos,new_begin);
         construct(new_end,x);
         iterator __end=uninitialized_copy(pos,end(),new_end+1);
         destroy(begin(),end());
         deallocate();
-        _start=new_start;
+        _begin=new_begin;
         _end=__end;
-        _end_of_storage=new_start+len;
+        _end_of_storage=new_begin+len;
         return new_end;
     }
 }
@@ -497,7 +496,7 @@ void vector<T,Alloc>::clear()
 {
     destroy(begin(),end());
     deallocate();
-    _start=_end=_end_of_storage=0;
+    _begin=_end=_end_of_storage=0;
 }
 
 template <class T,class Alloc>
@@ -514,14 +513,14 @@ class __vector_reverse_iterator
 public:
     using iterator_category=random_access_iterator_tag;
     using value_type=T;
-    using pointer=T*;
-    using reference=T&;
-    using iterator=__vector_reverse_iterator<T,T*,T&>;
+    using pointer=Pointer;
+    using reference=Reference;
+    using iterator=__vector_reverse_iterator<T,Pointer,Reference>;
     using const_iterator=__vector_reverse_iterator<T,const T*,const T&>;
     using size_type=size_t;
     using difference_type=ptrdiff_t;
 
-    using self=__vector_reverse_iterator<T,T*,T&>;
+    using self=__vector_reverse_iterator;
 protected:
     using forward_iterator=T*;
     using const_forward_iterator=const T*;
@@ -573,6 +572,11 @@ public:
         return *iter;
     }
 
+    reference operator[](difference_type n)const
+    {
+        return *(*this+n);
+    }
+
     pointer operator->()const
     {
         return &(operator*());
@@ -604,23 +608,23 @@ public:
         return ret;
     }
 
-    self operator+(size_type n)
+    self operator+(difference_type n)const
     {
         return iter-n;
     }
 
-    self operator-(size_type n)
+    self operator-(difference_type n)const
     {
         return iter+n;
     }
 
-    self& operator+=(size_type n)
+    self& operator+=(difference_type n)
     {
         iter-=n;
         return *this;
     }
 
-    self& operator-=(size_type n)
+    self& operator-=(difference_type n)
     {
         iter+=n;
         return *this;
