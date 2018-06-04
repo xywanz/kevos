@@ -39,7 +39,8 @@ limitations under the License.
 #define SEGMENT_CODE_XRC        0xE
 
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 /**
  * @brief 段描述符
@@ -144,6 +145,6 @@ struct __packed__ TaskStructureSegment
     uint32_t reserved3[15];
 };
 
-KEVOS_NSE_3(x64,x86,arch);
+}   // end of namespace arch::x86::x64
 
 #endif

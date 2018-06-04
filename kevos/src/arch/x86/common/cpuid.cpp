@@ -15,7 +15,8 @@ limitations under the License.
 
 #include <arch/x86/common/cpuid.h>
 
-KEVOS_NSS_3(arch,x86,common);
+namespace arch::x86::common
+{
 
 void CPUID::cpuid(uint32_t typeInfo)
 {
@@ -91,4 +92,4 @@ CPUInfo::CPUInfo()
 	id.cpuid(2);
 }
 
-KEVOS_NSE_3(common,x86,arch);
+}	// end of namespace arch::x86::common

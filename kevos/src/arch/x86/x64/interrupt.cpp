@@ -19,7 +19,8 @@ limitations under the License.
 #include <arch/x86/x64/idt.h>
 #include <arch/x86/common/i8259a.h>
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 void saveProcessRegisters(char* base)
 {
@@ -82,14 +83,15 @@ void switchToContext()
     __asm__ __volatile__("iretq");
 }
 
-KEVOS_NSE_3(x64,x86,arch);
+}   // end of namespace arch::x86::x64
 
 
 
 
 
 
-KEVOS_NSS_2(arch,common);
+namespace arch::common
+{
 
 
 void InterruptManager::initialize()
@@ -146,4 +148,4 @@ void InterruptManager::disableKeyboard()
     x86::common::I8259A::disableIRQ(1);
 }
 
-KEVOS_NSE_2(common,arch);
+}   // end of namespace arch::common

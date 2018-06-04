@@ -37,11 +37,13 @@ limitations under the License.
 #include <list>
 #include <stack>
 
+void test_cxx_stdlib_template_main();
 void test_vector_main();
 void test_array_main();
 void test_deque_main();
 
-KEVOS_NSS_4(arch,x86,x64,boot);
+namespace arch::x86::x64::boot
+{
 
 using namespace kernel::mm;
 
@@ -71,6 +73,7 @@ extern "C" void entry64()
 	common::CPUInfo& cpuInfo=common::CPUInfo::instance();
 	ProcessManager::initialize();
 
+	test_cxx_stdlib_template_main();
 	test_vector_main();
 	test_array_main();
 	test_deque_main();
@@ -80,4 +83,4 @@ extern "C" void entry64()
 }
 
 
-KEVOS_NSE_4(boot,x64,x86,arch);
+}	// end of namespace arch::x86::x64::boot

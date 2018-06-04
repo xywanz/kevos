@@ -29,7 +29,8 @@ limitations under the License.
 
 #include <arch/common/types.h>
 
-KEVOS_NSS_3(arch,x86,common);
+namespace arch::x86::common
+{
 
 static inline uint8_t inportb(uint16_t port)
 {
@@ -134,6 +135,6 @@ static inline void outportld(uint16_t port,uint32_t value)
 	__asm__ __volatile__("nop\nnop");
 }
 
-KEVOS_NSE_3(common,x86,arch);
+}	// end of namespace arch::x86::common
 
 #endif

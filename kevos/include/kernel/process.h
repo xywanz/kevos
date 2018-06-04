@@ -18,13 +18,14 @@ limitations under the License.
 
 #include <sys/types.h>
 
-KEVOS_NSS(kernel);
+namespace kernel
+{
 
 class Process
 {
     
 };
 
-KEVOS_NSE(kevos);
+}   // end of namespace kernel
 
 #endif

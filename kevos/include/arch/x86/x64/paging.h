@@ -35,7 +35,8 @@ limitations under the License.
 #define __PT_SIZE 			512
 #define __PAGE_SIZE			4096
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 struct __packed__ PML4E
 {
@@ -141,6 +142,6 @@ using PDPT=PDPTE[type_traits<PDPTE>::size];
 using PDT=PDTE[type_traits<PDTE>::size];
 using PT=PTE[type_traits<PTE>::size];
 
-KEVOS_NSE_3(x64,x86,arch);
+}	//end of namespace arch::x86::x64
 
 #endif

@@ -18,7 +18,8 @@ limitations under the License.
 
 #include <cstring>
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 TaskStructureSegment TSS::tss;
 
@@ -29,4 +30,4 @@ void TSS::initialize()
     tss.rsp0=(uint64_t)(&kstack_start_address);
 }
 
-KEVOS_NSE_3(x64,x86,arch);
+}   // end of namespace arch::x86::x64

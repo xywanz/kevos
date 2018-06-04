@@ -18,7 +18,8 @@ limitations under the License.
 
 #include <arch/common/types.h>
 
-KEVOS_NSS_3(arch,x86,common);
+namespace arch::x86::common
+{
 
 class ATADriver
 {
@@ -30,6 +31,6 @@ public:
 
 };
 
-KEVOS_NSE_3(common,x86,arch);
+}   // end of namespace arch::x86::common
 
 #endif

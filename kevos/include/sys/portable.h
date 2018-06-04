@@ -56,10 +56,11 @@ limitations under the License.
 #endif
 
 
-/*
-	以下定义是为了简化对命名空间的操作，实际上可能不是很好看TvT。Just for fun！
-
-	这些定义可以组合使用，总之START和END所包含的命名空间数量要相等就行了
+/**
+ * @depreciated
+ * @biref 以下定义是为了简化对命名空间的操作，实际上可能不是很好看TvT。Just for fun！
+ *
+ * 这些定义可以组合使用，总之START和END所包含的命名空间数量要相等就行了
 */
 #define KEVOS_NSS(x);	namespace x {
 #define KEVOS_NSS_1(x);	namespace x {

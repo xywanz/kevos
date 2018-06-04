@@ -19,7 +19,8 @@ limitations under the License.
 
 #include <cstring>
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 InterruptHandler interruptHandlers[IDT::idtSize];
 
@@ -172,5 +173,4 @@ void IDT::initialize()
     __asm__ __volatile__("lidt %[idtr]" : : [idtr]"m"(idtr));
 }
 
-
-KEVOS_NSE_3(x64,x86,arch);
+}   // end of namespace arch::x86::x64

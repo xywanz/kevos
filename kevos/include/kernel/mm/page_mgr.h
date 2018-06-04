@@ -27,13 +27,13 @@ limitations under the License.
 #ifndef _KEVOS_KERNEL_MM_PAGEMGR_H_
 #define _KEVOS_KERNEL_MM_PAGEMGR_H_
 
-#include <sys/portable.h>
 #include <sys/types.h>
 #include <arch/common/paging.h>
 #include <kernel/utils/bitmap.h>
 #include <kernel/mm/mem_layout.h>
 
-KEVOS_NSS_2(kernel,mm);
+namespace kernel::mm
+{
 
 template<class ByteType>
 static constexpr size_t bitmapByteNeeded(size_t memorySize,size_t pageSize=__PAGE_SIZE)
@@ -57,6 +57,6 @@ private:
 	static size_t m_cache;
 };
 
-KEVOS_NSE_2(mm,kernel);
+}   // end of namespace kernel::mm
 
 #endif

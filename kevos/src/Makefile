@@ -37,17 +37,17 @@ all:
 	make -C kernel/mm
 	make -C kernel/net
 
-	make -C user/lib/stdlib/src
-	
-	make -C user/lib/stdlib/src/cmath
-	make -C user/lib/stdlib/src/cstdio
-	make -C user/lib/stdlib/src/cstdlib
-	make -C user/lib/stdlib/src/cstring
+	make -C user/lib/stdlib/src/cxx
+	make -C user/lib/stdlib/src/cxx/cmath
+	make -C user/lib/stdlib/src/cxx/cstdio
+	make -C user/lib/stdlib/src/cxx/cstdlib
+	make -C user/lib/stdlib/src/cxx/cstring
 
-	make -C user/lib/stdlib/src/math
-	make -C user/lib/stdlib/src/stdio
-	make -C user/lib/stdlib/src/stdlib
-	make -C user/lib/stdlib/src/string
+	make -C user/lib/stdlib/src/c
+	make -C user/lib/stdlib/src/c/math
+	make -C user/lib/stdlib/src/c/stdio
+	make -C user/lib/stdlib/src/c/stdlib
+	make -C user/lib/stdlib/src/c/string
 
 	make -C test
 

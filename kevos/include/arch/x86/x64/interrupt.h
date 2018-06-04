@@ -18,7 +18,8 @@ limitations under the License.
 
 #include <arch/common/types.h>
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 #define IRQ_TIMER		0
 #define IRQ_KEYBOARD	1
@@ -274,6 +275,6 @@ void syscallCppHandler7();
 
 }
 
-KEVOS_NSE_3(x64,x86,arch);
+}   // end of namespace arch::x86::x64
 
 #endif

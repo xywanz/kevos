@@ -16,7 +16,8 @@ limitations under the License.
 #include <arch/x86/x64/gdt.h>
 #include <arch/x86/x64/tss.h>
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 SystemDescriptor GDT::items[gdtSize];
 
@@ -57,4 +58,4 @@ void GDT::initialize()
     __asm__ __volatile__("ltr %%ax": : "a"(__KERNEL_TSS));
 }
 
-KEVOS_NSE_3(x64,x86,arch);
+}   // end of namespace arch::x86::x64

@@ -15,7 +15,8 @@ limitations under the License.
 
 #include <kernel/mm/page_mgr.h>
 
-KEVOS_NSS_2(kernel,mm);
+namespace kernel::mm
+{
 
 size_t PageManager::m_size=0;
 utils::Bitmap<bitmapByteNeeded<unsigned int>(1024*1024*128),unsigned int> PageManager::m_bitmap;
@@ -60,4 +61,4 @@ void PageManager::deallocate(size_t pPagePPN,size_t pageSize)
 	m_bitmap.unset(pPagePPN);
 }
 
-KEVOS_NSE_2(mm,kernel);
+}	// end of namespace kernel::mm

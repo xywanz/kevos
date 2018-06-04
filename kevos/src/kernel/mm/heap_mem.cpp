@@ -17,7 +17,8 @@ limitations under the License.
 
 #include <cstring>
 
-KEVOS_NSS_2(kernel,mm);
+namespace kernel::mm
+{
 
 HeapMemory::HeapMemory(size_t vStartAddr,size_t vEndAddr)
 	:m_memStart(reinterpret_cast<MemoryHeader*>(vStartAddr)),
@@ -129,4 +130,4 @@ void* HeapMemory::reallocate(void* ptr,size_t newSize)
 	}
 }
 
-KEVOS_NSE_2(mm,kernel);
+}	// end of namespace kernel::mm

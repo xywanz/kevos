@@ -18,7 +18,8 @@ limitations under the License.
 
 #include <kernel/mm/heap_mem.h>
 
-KEVOS_NSS_2(kernel,mm);
+namespace kernel::mm
+{
 
 class KernelHeap
 {
@@ -44,6 +45,6 @@ private:
 	static HeapMemory khm;
 };
 
-KEVOS_NSE_2(mm,kernel);
+}	//end of namespace kernel::mm
 
 #endif

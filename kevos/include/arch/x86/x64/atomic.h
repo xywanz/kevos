@@ -18,7 +18,8 @@ limitations under the License.
 
 #include <sys/types.h>
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 class AtomicOps
 {
@@ -34,6 +35,6 @@ public:
     
 };
 
-KEVOS_NSE_3(x64,x86,arch);
+}   // end of namespace arch::x86::x64
 
 #endif

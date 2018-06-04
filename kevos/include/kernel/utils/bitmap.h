@@ -27,10 +27,10 @@ limitations under the License.
 #ifndef _KEVOS_KERNEL_UTILS_BITMAP_H_
 #define _KEVOS_KERNEL_UTILS_BITMAP_H_
 
-#include <sys/portable.h>
 #include <sys/types.h>
 
-KEVOS_NSS_2(kernel,utils);
+namespace kernel::utils
+{
 
 #define DynamicBitmap	0
 
@@ -155,6 +155,6 @@ bool Bitmap<DynamicBitmap,ByteType>::get(size_t index)const
 	return m_bitmap[byteIndexOf(index)]&(1<<bitIndexOf(index));
 }
 
-KEVOS_NSE_2(utils,kernel);
+}	// end of namespace kernel::utils
 
 #endif

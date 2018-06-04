@@ -17,7 +17,8 @@ limitations under the License.
 
 #include <cstdlib>
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 void syscallCppHandler0()
 {
@@ -58,4 +59,4 @@ void syscallCppHandler7()
 
 }
 
-KEVOS_NSE_3(x64,x86,arch);
+}   // end of namespace arch::x86::x64

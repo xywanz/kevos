@@ -32,7 +32,8 @@ limitations under the License.
 #define IRQ0        0x20
 #define SYSCALL0    0x80
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 typedef void (*InterruptHandler)();
 
@@ -50,6 +51,6 @@ public:
 	static GateDescriptor items[idtSize];
 };
 
-KEVOS_NSE_3(x64,x86,arch);
+}   // end of namespace arch::x86::x64
 
 #endif

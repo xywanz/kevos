@@ -18,7 +18,8 @@ limitations under the License.
 
 #include <sys/types.h>
 
-KEVOS_NSS(kernel);
+namespace kernel
+{
 
 class Scheduler
 {
@@ -26,6 +27,6 @@ public:
     void schedule();
 };
 
-KEVOS_NSE(kernel);
+}   //end of namespace kernel
 
 #endif

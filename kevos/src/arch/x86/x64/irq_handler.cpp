@@ -18,7 +18,8 @@ limitations under the License.
 
 #include <cstdlib>
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 void irqCppHandler0()
 {
@@ -102,4 +103,4 @@ void irqCppHandler15()
     arch::common::InterruptManager::sendEndSignal(15);
 }
 
-KEVOS_NSE_3(x64,x86,arch);
+}   // end of namespace arch::x86::x64

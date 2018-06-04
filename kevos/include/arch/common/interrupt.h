@@ -18,7 +18,8 @@ limitations under the License.
 
 #include <arch/common/types.h>
 
-KEVOS_NSS_2(arch,common);
+namespace arch::common
+{
 
 class InterruptManager
 {
@@ -38,6 +39,6 @@ public:
 	static void disableKeyboard();
 };
 
-KEVOS_NSE_2(common,arch);
+}	// end of namespace arch::common
 
 #endif

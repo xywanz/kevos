@@ -40,7 +40,8 @@ __asm__(".align 4");
 #include <arch/x86/common/multiboot.h>
 #endif
 
-KEVOS_NSS_4(arch,x86,x64,boot);
+namespace arch::x86::x64::boot
+{
 
 static_assert(sizeof(uint8_t)==1,"In x86-64 achitecture, uint8_t must be 1 byte!");
 static_assert(sizeof(int8_t)==1,"In x86-64 achitecture, int8_t must be 1 bytes!");
@@ -214,7 +215,7 @@ static void enablePaging()
 }
 
 
-KEVOS_NSE_4(boot,x64,x86,arch);
+}   //end of namespace arch::x86::x64::boot
 
 __asm__(".code64");
 __asm__(".align 8");

@@ -30,7 +30,8 @@ limitations under the License.
 #include <arch/common/types.h>
 #include <arch/x86/common/port.h>
 
-KEVOS_NSS_3(arch,x86,common);
+namespace arch::x86::common
+{
 
 #define I8259A_PIC1_CONTROL_PORT	0x20
 #define I8259A_PIC2_CONTROL_PORT	0xA0
@@ -86,6 +87,6 @@ private:
 
 };
 
-KEVOS_NSE_3(common,x86,arch);
+}	// end of namespace arch::x86::common
 
 #endif

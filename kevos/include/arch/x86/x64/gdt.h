@@ -29,7 +29,8 @@ limitations under the License.
 
 #include <arch/x86/x64/descriptor.h>
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 #define __KERNEL_CS               0x10
 #define __KERNEL_DS               0x20
@@ -48,6 +49,6 @@ public:
 	static SystemDescriptor items[gdtSize];
 };
 
-KEVOS_NSE_3(x64,x86,arch);
+}   // end of namespace arch::x86::x64
 
 #endif

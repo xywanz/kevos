@@ -18,7 +18,8 @@ limitations under the License.
 
 #include <arch/common/types.h>
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 struct ProcessRegisters
 {
@@ -85,6 +86,6 @@ private:
     static Process* s_cur;
 };
 
-KEVOS_NSE_3(x64,x86,arch);
+}   // end of namespace arch::x86::x64
 
 #endif

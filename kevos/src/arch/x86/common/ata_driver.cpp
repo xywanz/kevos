@@ -13,25 +13,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_KERNEL_UTILS_LIST_H_
-#define _KEVOS_KERNEL_UTILS_LIST_H_
+#include <arch/x86/common/ata_driver.h>
 
-#include <sys/types.h>
-
-KEVOS_NSS_2(kernel,utils);
-
-template<class T>
-class List
+namespace arch::x86::common
 {
-public:
 
-private:
-    struct Node
-    {
 
-    };    
-};
 
-KEVOS_NSE_2(utils,kernel);
-
-#endif
+}   // end of namespace arch::x86::common

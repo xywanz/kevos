@@ -16,7 +16,8 @@ limitations under the License.
 #include <kernel/mm/kheap_mem.h>
 #include <kernel/mm/mem_layout.h>
 
-KEVOS_NSS_2(kernel,mm);
+namespace kernel::mm
+{
 
 HeapMemory KernelHeap::khm;
 
@@ -26,4 +27,4 @@ void KernelHeap::initialize()
 		reinterpret_cast<size_t>(&kheap_end_address));
 }
 
-KEVOS_NSE_2(mm,kernel);
+}   // end of namespace kernel::mm

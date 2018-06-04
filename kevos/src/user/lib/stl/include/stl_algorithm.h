@@ -45,11 +45,13 @@ OutputIterator copy(InputIterator first,InputIterator last,OutputIterator result
     );
 }
 
-
+/**
+ *@brief since c++17
+ */
 template <class FowardIterator>
-FowardIterator max_element(FowardIterator first,FowardIterator last)
+constexpr FowardIterator max_element(FowardIterator first,FowardIterator last)
 {
-    FowardIterator _max=first;
+    auto _max=first;
     ++first;
     while(first!=last)
     {
@@ -60,10 +62,13 @@ FowardIterator max_element(FowardIterator first,FowardIterator last)
     return _max;
 }
 
+/**
+ *@brief since c++17
+ */
 template <class FowardIterator,class Compare>
-FowardIterator max_element(FowardIterator first,FowardIterator last,Compare comp)
+constexpr FowardIterator max_element(FowardIterator first,FowardIterator last,Compare comp)
 {
-    FowardIterator _max=first;
+    auto _max=first;
     ++first;
     while(first!=last)
     {
@@ -74,10 +79,13 @@ FowardIterator max_element(FowardIterator first,FowardIterator last,Compare comp
     return _max;
 }
 
+/**
+ *@brief since c++17
+ */
 template <class FowardIterator>
 constexpr FowardIterator min_element(FowardIterator first,FowardIterator last)
 {
-    FowardIterator _min=first;
+    auto _min=first;
     ++first;
     while(first!=last)
     {
@@ -88,10 +96,13 @@ constexpr FowardIterator min_element(FowardIterator first,FowardIterator last)
     return _min;
 }
 
+/**
+ *@brief since c++17
+ */
 template <class FowardIterator,class Compare>
 constexpr FowardIterator min_element(FowardIterator first,FowardIterator last,Compare comp)
 {
-    FowardIterator _min=first;
+    auto _min=first;
     ++first;
     while(comp(first,last))
     {
@@ -102,39 +113,66 @@ constexpr FowardIterator min_element(FowardIterator first,FowardIterator last,Co
     return _min;
 }
 
+/**
+ *@brief since c++17
+ */
+template <class ExecutionPolicy,class ForwardIterator,class Compare>
+ForwardIterator max_element(ExecutionPolicy&& policy,ForwardIterator first,ForwardIterator last,Compare comp);
 
+/**
+ *@brief since c++17
+ */
+template <class ExecutionPolicy,class ForwardIterator,class Compare>
+ForwardIterator min_element(ExecutionPolicy&& policy,ForwardIterator first,ForwardIterator last,Compare comp);
+
+/**
+ *@brief since c++14
+ */
 template <class T>
 constexpr const T& max(const T& a,const T& b)
 {
     return a<b?b:a;
 }
 
+/**
+ *@brief since c++14
+ */
 template <class T,class Compare>
 constexpr const T& max(const T& a,const T& b,Compare comp)
 {
     return comp(a,b)?b:a;
 }
 
-
+/**
+ *@brief since c++14
+ */
 template <class T>
 constexpr const T& min(const T& a,const T& b)
 {
     return a<b?a:b;
 }
 
+/**
+ *@brief since c++14
+ */
 template <class T,class Compare>
 constexpr const T& min(const T& a,const T& b,Compare comp)
 {
     return comp(a,b)?a:b;
 }
 
-
+/**
+ *@brief since c++14
+ */
 template <class T>
 constexpr T max(initializer_list<T> ilist)
 {
     return *max_element(ilist.begin(),ilist.end());
 }
 
+/**
+ *@brief since c++14
+ */
 template <class T>
 constexpr T min(initializer_list<T> ilist)
 {
@@ -142,17 +180,52 @@ constexpr T min(initializer_list<T> ilist)
 }
 
 
-template <class ExecutionPolicy,class ForwardIt,class Compare>
-ForwardIt max_element(ExecutionPolicy&& policy,ForwardIt first,ForwardIt last,Compare comp)
+/**
+ *@brief since c++17
+ */
+template <class ExecutionPolicy,class ForwardIterator,class T>
+ForwardIterator find(ExecutionPolicy&& policy,ForwardIterator first,ForwardIterator last,const T& value);
+
+/**
+ *@brief since c++20
+ */
+template <class InputIterator,class T>
+constexpr InputIterator find(InputIterator first,InputIterator last,const T& value)
 {
-    return 0;
+    while(first!=last)
+    {
+        if(*first==value)
+            return first;
+        ++first;
+    }
+    return last;
 }
 
-template <class ExecutionPolicy,class ForwardIt,class Compare>
-ForwardIt min_element(ExecutionPolicy&& policy,ForwardIt first,ForwardIt last,Compare comp)
-{
-    return 0;
-}
+/**
+ *@brief since c++17
+ */
+template <class ExecutionPolicy,class ForwardIterator,class UnaryPredicate>
+ForwardIterator find_if(ExecutionPolicy&& policy,ForwardIterator first,ForwardIterator last,UnaryPredicate p);
+
+/**
+ *@brief since c++20
+ */
+template <class InputIterator, class UnaryPredicate>
+constexpr InputIterator find_if(InputIterator first,InputIterator last,UnaryPredicate p);
+
+/**
+ *@brief since c++17
+ */
+template <class ExecutionPolicy,class ForwardIterator, class UnaryPredicate>
+ForwardIterator find_if_not(ExecutionPolicy&& policy,ForwardIterator first,ForwardIterator last,UnaryPredicate q);
+
+/**
+ *@brief since c++20
+ */
+template <class InputIterator, class UnaryPredicate>
+constexpr InputIterator find_if_not(InputIterator first,InputIterator last,UnaryPredicate q);
+
+
 
 
 }

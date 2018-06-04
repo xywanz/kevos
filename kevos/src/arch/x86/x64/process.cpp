@@ -20,7 +20,8 @@ limitations under the License.
 
 #include <cstring>
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 Process::Process(void* entry,void* stack,uint64_t userProcess)
 {
@@ -77,4 +78,4 @@ ProcessRegisters* ProcessManager::createUserRegInfo(void* entry,void* stack,void
     return regs;
 }
 
-KEVOS_NSE_3(x64,x86,arch);
+}   // end of namespace arch::x86::x64

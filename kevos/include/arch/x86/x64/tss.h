@@ -29,7 +29,8 @@ limitations under the License.
 
 #include <arch/x86/x64/descriptor.h>
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 class TSS
 {
@@ -40,6 +41,6 @@ public:
     static TaskStructureSegment tss;
 };
 
-KEVOS_NSE_3(x64,x86,arch);
+}   //end of namespace arch::x86::x64
 
 #endif

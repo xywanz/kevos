@@ -27,7 +27,6 @@ limitations under the License.
 #ifndef _KEVOS_KERNEL_MM_MEMLAYOUT_H_
 #define _KEVOS_KERNEL_MM_MEMLAYOUT_H_
 
-#include <sys/portable.h>
 
 extern unsigned int text_start_address;
 extern unsigned int text_end_address;

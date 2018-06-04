@@ -15,7 +15,8 @@ limitations under the License.
 
 #include <arch/x86/x64/interrupt.h>
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 void faultCppHandler0()
 {
@@ -177,4 +178,4 @@ void faultCppHandler31()
     __asm__ __volatile__("hlt");
 }
 
-KEVOS_NSE_3(x64,x86,arch);
+}   // end of namespace arch::x86::x64

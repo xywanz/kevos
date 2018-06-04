@@ -29,7 +29,8 @@ limitations under the License.
 
 #include <arch/x86/x64/paging.h>
 
-KEVOS_NSS_3(arch,x86,x64);
+namespace arch::x86::x64
+{
 
 /**
  * @brief 内核中各分页结构表的大小
@@ -186,6 +187,6 @@ private:
 	
 };
 
-KEVOS_NSE_3(x64,x86,arch);
+}
 
 #endif

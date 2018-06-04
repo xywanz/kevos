@@ -13,10 +13,10 @@
 # limitations under the License.
 # ==============================================================================
 
-POBJ = ../../../../../../build/tmp
-PINC = ../../../../../include
-PSTDINC = ../include/stdinc
-PSTDINCXX = ../include/stdinc++
+POBJ = ../../../../../../../../build/tmp
+PINC = ../../../../../../../include
+PSTDINC = ../../../include/stdinc
+PSTDINCXX = ../../../include/stdinc++
 
-include ../../../../Makefile.compiler
-include ../../../../Makefile.target
+include ../../../../../../Makefile.compiler
+include ../../../../../../Makefile.target
