@@ -18,8 +18,8 @@ limitations under the License.
 
 #include <stl_alloc.h>
 #include <stl_uninitialized.h>
+#include <algorithm>
 
-#include <climits>
 #include <cstddef>
 
 
@@ -59,7 +59,21 @@ protected:
 
     using map_pointer=pointer*;
 
+    void fill_initialize(size_type n,const value_type& x);
+
+    void create_map_and_nodes(size_type n);
+
+    static size_type buffer_size()
+    {
+        return __deque_buffer_size(BufferSize,sizeof(T));
+    }
+
 public:
+
+    deque(size_type n,const value_type& x)
+    {
+        fill_initialize(n,x);
+    }
 
     data_allocator get_allocator()const
     {
@@ -132,6 +146,23 @@ protected:
     map_pointer map;
     size_type map_size;
 };
+
+template <class T,class Alloc,size_t BufferSize>
+void deque<T,Alloc,BufferSize>::fill_initialize(typename deque<T,Alloc,BufferSize>::size_type n,const T& x)
+{
+
+}
+
+template <class T,class Alloc,size_t BufferSize>
+void deque<T,Alloc,BufferSize>::create_map_and_nodes(typename deque<T,Alloc,BufferSize>::size_type n)
+{
+    size_type num_nodes=n/buffer_size()+1;
+    map_size=max(num_nodes+2,size_type(8));
+    map=map_allocator::allocate(map_size);
+
+}
+
+
 
 
 
@@ -312,15 +343,8 @@ public:
     using self=__deque_reverse_iterator;
 
 protected:
-    using forward_iterator=__deque_iterator<T,Pointer,Reference,BufferSize>;
+    using forward_iterator=__deque_iterator<T,T*,T&,BufferSize>;
     using const_forward_iterator=__deque_iterator<T,const T*,const T&,BufferSize>;
-
-    using map_pointer=pointer*;
-
-    static size_t buffer_size()
-    {
-        return __deque_buffer_size(BufferSize,sizeof(T));
-    }
 
 public:
 

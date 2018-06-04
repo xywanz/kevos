@@ -13,36 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STDLIB_CMATH_
-#define _STDLIB_CMATH_
+#ifndef _STL_ALGORITHM_
+#define _STL_ALGORITHM_
 
-namespace std 
-{
-
-template<class T>
-double sin(T x)
-{
-    double ret;
-    __asm__(
-        "fsin"
-        : "=t"(ret)
-        : "0"(static_cast<double>(x))
-    );
-    return ret;
-}
-
-template<class T>
-double cos(T x)
-{
-    double ret;
-    __asm__(
-        "fcos"
-        : "=t"(ret)
-        : "0"(static_cast<double>(x))
-    );
-    return ret;
-}
-
-}
+#include <stl_algorithm.h>
 
 #endif

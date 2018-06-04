@@ -59,7 +59,7 @@ inline void confirmImAlive() {*((uint16_t*)(0xB8000+100))=0x7575;}
 
 extern "C" void entry64()
 {
-	__asm__("mov %%rax, %%cr3" : : "a"(KernelPageFrame::pml4));
+	VirtualMemory::loadKernelPML4();
 	TSS::initialize();
 	GDT::initialize();
 	KernelHeap::initialize();
@@ -68,7 +68,7 @@ extern "C" void entry64()
 	arch::common::InterruptManager::enableInterrupts();
 	arch::common::InterruptManager::enableTimer();
 	arch::common::InterruptManager::setTimerFrequency(1);
-	common::CPUInfo cpuInfo=common::CPUInfo::instance();
+	common::CPUInfo& cpuInfo=common::CPUInfo::instance();
 	ProcessManager::initialize();
 
 	test_vector_main();

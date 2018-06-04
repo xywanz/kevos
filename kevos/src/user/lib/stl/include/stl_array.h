@@ -43,11 +43,11 @@ public:
     using size_type=size_t;
 
 
-    array():m_size(0)
+    array()
     {
     }
 
-    array(const initializer_list<T>& _lst):m_size(_lst.size())
+    array(const initializer_list<T>& _lst)
     {
         uninitialized_copy(_lst.begin(),_lst.end(),m_arr);
     }
@@ -69,12 +69,12 @@ public:
 
     iterator end()
     {
-        return m_arr+m_size;
+        return m_arr+N;
     }
 
     const_iterator cend()const
     {
-        return m_arr+m_size;
+        return m_arr+N;
     }
 
     reverse_iterator rbegin()
@@ -89,7 +89,7 @@ public:
 
     const_reverse_iterator crbegin()const
     {
-        return reverse_iterator((pointer)(m_arr+m_size-1));
+        return reverse_iterator((pointer)(m_arr+N-1));
     }
 
     const_reverse_iterator crend()const
@@ -119,12 +119,12 @@ public:
 
     reference back()
     {
-        return m_arr[m_size-1];
+        return m_arr[N-1];
     }
 
     const reference back()const
     {
-        return (const reference)m_arr[m_size-1];
+        return (const reference)m_arr[N-1];
     }
 
     reference at(size_type n)
@@ -156,7 +156,7 @@ public:
 
     size_type size()const
     {
-        return m_size;
+        return N;
     }
 
     void fill(const T& x)
@@ -172,7 +172,6 @@ public:
 
 protected:
     T m_arr[N];
-    size_type m_size;
 };
 
 template <class T>

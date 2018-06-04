@@ -160,6 +160,11 @@ public:
 
 	static void unmapKernelPage(uint64_t vpn);
 
+	static void loadKernelPML4()
+	{
+		__asm__ __volatile__("mov %%rax, %%cr3" : : "a"(KernelPageFrame::pml4));
+	}
+
 private:
 
 	static void refreshPaging()

@@ -17,7 +17,7 @@ limitations under the License.
 #define _STL_STL_UNINITIALIZED_H_
 
 #include <stl_construct.h>
-#include <stl_algorithm.h>
+#include <algorithm>
 
 #include <cstring>
 
