@@ -53,11 +53,10 @@ constexpr FowardIterator max_element(FowardIterator first,FowardIterator last)
 {
     auto _max=first;
     ++first;
-    while(first!=last)
+    for(;first!=last;++first)
     {
         if(*first>*_max)
             _max=first;
-        ++first;
     }
     return _max;
 }
@@ -70,11 +69,10 @@ constexpr FowardIterator max_element(FowardIterator first,FowardIterator last,Co
 {
     auto _max=first;
     ++first;
-    while(first!=last)
+    for(;first!=last;++first)
     {
         if(comp(*_max,*first))
             _max=first;
-        ++first;
     }
     return _max;
 }
@@ -87,11 +85,10 @@ constexpr FowardIterator min_element(FowardIterator first,FowardIterator last)
 {
     auto _min=first;
     ++first;
-    while(first!=last)
+    for(;first!=last;++first)
     {
         if(*first<*_min)
             _min=first;
-        ++first;
     }
     return _min;
 }
@@ -104,11 +101,10 @@ constexpr FowardIterator min_element(FowardIterator first,FowardIterator last,Co
 {
     auto _min=first;
     ++first;
-    while(comp(first,last))
+    for(;first!=last;++first)
     {
-        if(*first<*_min)
+        if(comp(*first,*_min))
             _min=first;
-        ++first;
     }
     return _min;
 }
@@ -192,11 +188,10 @@ ForwardIterator find(ExecutionPolicy&& policy,ForwardIterator first,ForwardItera
 template <class InputIterator,class T>
 constexpr InputIterator find(InputIterator first,InputIterator last,const T& value)
 {
-    while(first!=last)
+    for(;first!=last;++first)
     {
         if(*first==value)
             return first;
-        ++first;
     }
     return last;
 }
@@ -228,9 +223,9 @@ constexpr InputIterator find_if_not(InputIterator first,InputIterator last,Unary
 template<class ForwardIterator,class T>
 constexpr void fill(ForwardIterator first,ForwardIterator last,const T& value)
 {
-    while(first!=last)
+    for(;first!=last;++first)
     {
-        *first++=value;
+        *first=value;
     }
 }
 

@@ -18,7 +18,7 @@ limitations under the License.
 void *memset(void *s,int ch,size_t n)
 {
     char *p=(char *)s;
-    while(--n)
+    while(n--)
         *p++=ch;
     return s;
 }
