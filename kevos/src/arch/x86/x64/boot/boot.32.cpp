@@ -122,11 +122,11 @@ static void bzero(char* p,uint32_t size)
     uint32_t lwords=size/4;
     uint32_t rest=size%4;
     uint32_t *np=reinterpret_cast<uint32_t*>(p);
-    while(lwords--)
-        *np++=0;
+    for(;lwords!=0;--lwords,++np)
+        *np=0;
     p=reinterpret_cast<char*>(np);
-    while(rest--)
-        *np++=0;
+    for(;rest!=0;--rest,++np)
+        *np=0;
 }
 
 static void clearFrameBuffer()
