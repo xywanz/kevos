@@ -72,8 +72,19 @@ inline wchar_t* uninitialized_copy(const wchar_t* first,const wchar_t* last,wcha
 }
 
 
-template <class InputIterator,class T>
-inline void uninitialized_fill(InputIterator first,InputIterator last,const T& x)
+template<class RandomAccessIterator,class T,class Distance>
+inline void __uninitialized_fill_dispatch_d(RandomAccessIterator first,RandomAccessIterator last,
+                        const T& x,Distance*)
+{
+    for(Distance d=last-first;d>0;--d,++first)
+    {
+        construct(&*first,x);
+    }
+}
+
+template<class InputIterator,class T>
+inline void __uninitialized_fill_dispatch(InputIterator first,InputIterator last,
+                    const T& x,input_iterator_tag)
 {
     for(;first<last;++first)
     {
@@ -81,12 +92,26 @@ inline void uninitialized_fill(InputIterator first,InputIterator last,const T& x
     }
 }
 
+template<class RandomAccessIterator,class T>
+inline void __uninitialized_fill_dispatch(RandomAccessIterator first,RandomAccessIterator last,
+                    const T& x,random_access_iterator_tag)
+{
+    __uninitialized_fill_dispatch_d(first,last,x,difference_type(first));
+}
+
+template <class InputIterator,class T>
+inline void uninitialized_fill(InputIterator first,InputIterator last,const T& x)
+{
+    __uninitialized_fill_dispatch(first,last,x,category(first));
+}
+
+
 template <class InputIterator,class T>
 inline void uninitialized_fill_n(InputIterator first,size_t n,const T& x)
 {
-    while(n--)
+    for(;n>0;--n,++first)
     {
-        construct(&*(first++),x);
+        construct(&*first,x);
     }
 }
 

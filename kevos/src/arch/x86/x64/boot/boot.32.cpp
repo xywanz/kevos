@@ -124,10 +124,10 @@ static void bzero(char* p,uint32_t size)
     uint32_t lwords=size/4;
     uint32_t rest=size%4;
     uint32_t *np=reinterpret_cast<uint32_t*>(p);
-    for(;lwords!=0;--lwords,++np)
+    for(;lwords>0;--lwords,++np)
         *np=0;
     p=reinterpret_cast<char*>(np);
-    for(;rest!=0;--rest,++np)
+    for(;rest>0;--rest,++np)
         *np=0;
 }
 
