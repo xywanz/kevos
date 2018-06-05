@@ -160,6 +160,48 @@ inline BidirectionIterator2 copy_backward(BidirectionIterator1 first,Bidirection
 }
 
 
+
+template<class RandomAccessIterator,class OutputIterator,class UnaryPredicate,class Distance>
+inline OutputIterator __copy_if_d(RandomAccessIterator first,RandomAccessIterator last,
+                        OutputIterator result,UnaryPredicate p,Distance*)
+{
+    for(Distance d=last-first;d>0;++first)
+    {
+        if(p(first))
+            *result++=*first;
+    }
+    return result;
+}
+
+template<class InputIterator,class OutputIterator,class UnaryPredicate>
+inline OutputIterator __copy_if(InputIterator first,InputIterator last,
+                        OutputIterator result,UnaryPredicate p,input_iterator_tag)
+{
+    for(;first!=last;++first)
+    {
+        if(p(first))
+            *result++=*first;
+    }
+    return result;
+}
+
+template<class RandomAccessIterator,class OutputIterator,class UnaryPredicate>
+inline OutputIterator __copy_if(RandomAccessIterator first,RandomAccessIterator last,
+                        OutputIterator result,UnaryPredicate p,random_access_iterator_tag)
+{
+    return __copy_if_d(first,last,result,p,difference_type(first));
+}
+
+template<class InputIterator,class OutputIterator,class UnaryPredicate>
+inline OutputIterator copy_if(InputIterator first,InputIterator last,OutputIterator result,UnaryPredicate p)
+{
+    return __copy_if(first,last,result,p,category(first));
+}
+
+
+
+
+
 /**
  *@brief since c++17
  */
