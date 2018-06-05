@@ -31,6 +31,8 @@ limitations under the License.
 
 #include <cmath>
 
+#include <memory>
+
 #include <array>
 #include <vector>
 #include <list>
