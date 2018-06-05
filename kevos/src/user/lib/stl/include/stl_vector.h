@@ -327,9 +327,8 @@ public:
  */
     iterator erase(iterator pos)
     {
-        uninitialized_copy(pos+1,end(),pos);
-        --_end;
-        destroy(end());
+        destroy(pos);
+        _end=copy(pos+1,end(),pos);
         return pos;
     }
 
@@ -338,9 +337,8 @@ public:
  */
     iterator erase(iterator first,iterator last)
     {
-        iterator new_end=uninitialized_copy(last,end(),first);
-        destroy(new_end,end());
-        _end=new_end;
+        destroy(first,last);
+        _end=copy(last,end(),first);
         return first;
     }
 
@@ -380,7 +378,8 @@ public:
         if(n>capacity())
         {
             iterator new_begin=data_allocator::allocate(n);
-            _end=uninitialized_copy(begin(),end(),new_begin);
+            _end=copy(begin(),end(),new_begin);
+            deallocate();
             _begin=new_begin;
             _end_of_storage=_begin+n;
         }
@@ -404,7 +403,8 @@ public:
     void shrink_to_fit()
     {
         iterator new_begin=data_allocator::allocate(size());
-        _end=uninitialized_copy(begin(),end(),new_begin);
+        _end=copy(begin(),end(),new_begin);
+        deallocate();
         _begin=new_begin;
         _end_of_storage=_end;
     }
@@ -448,10 +448,9 @@ void vector<T,Alloc>::alloc_and_insert(const T&x)
     size_type old_size=size();
     size_type len=old_size?2*old_size:1;
     iterator new_begin=data_allocator::allocate(len);
-    iterator new_end=uninitialized_copy(begin(),end(),new_begin);
+    iterator new_end=copy(begin(),end(),new_begin);
     construct(new_end,x);
     ++new_end;
-    destroy(begin(),end());
     deallocate();
     _begin=new_begin;
     _end=new_end;
@@ -463,7 +462,7 @@ typename vector<T,Alloc>::iterator vector<T,Alloc>::insert(typename vector<T,All
 {
     if(_end!=_end_of_storage)
     {
-        _end=uninitialized_copy(pos,end(),pos+1);
+        _end=copy(pos,end(),pos+1);
         construct(pos,x);
         return pos;
     }
@@ -472,10 +471,9 @@ typename vector<T,Alloc>::iterator vector<T,Alloc>::insert(typename vector<T,All
         size_type old_size=size();
         size_type len=old_size?2*old_size:1;
         iterator new_begin=data_allocator::allocate(len);
-        iterator new_end=uninitialized_copy(begin(),pos,new_begin);
+        iterator new_end=copy(begin(),pos,new_begin);
         construct(new_end,x);
-        iterator __end=uninitialized_copy(pos,end(),new_end+1);
-        destroy(begin(),end());
+        iterator __end=copy(pos,end(),new_end+1);
         deallocate();
         _begin=new_begin;
         _end=__end;
@@ -492,7 +490,7 @@ void vector<T,Alloc>::insert(typename vector<T,Alloc>::iterator pos,size_type n,
         if(size_type(_end_of_storage-end())>=n)
         {
             size_type after=end()-pos;
-            uninitialized_copy(pos,end(),pos+n);
+            copy(pos,end(),pos+n);
         }
         else
         {

@@ -139,5 +139,7 @@ void test_vector_main()
     assert(v7[4]==5);
     assert(v7.size()==5);
     assert(v7.capacity()==5);
+
+    
 }
 
