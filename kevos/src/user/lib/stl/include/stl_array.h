@@ -47,7 +47,7 @@ public:
     {
     }
 
-    array(const initializer_list<T>& _lst)
+    array(initializer_list<T> _lst)
     {
         uninitialized_copy(_lst.begin(),_lst.end(),m_arr);
     }

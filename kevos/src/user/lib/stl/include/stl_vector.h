@@ -22,6 +22,7 @@ limitations under the License.
 #include <stdexcept>
 #include <initializer_list>
 
+
 namespace std
 {
 
@@ -134,7 +135,7 @@ public:
         fill_initialize(n,T());
     }
 
-    vector(const initializer_list<T>& _lst)
+    vector(initializer_list<T> _lst)
     {
         _begin=data_allocator::allocate(_lst.size());
         _end=uninitialized_copy(_lst.begin(),_lst.end(),begin());
@@ -148,7 +149,14 @@ public:
     {
         _begin=data_allocator::allocate(other.size());
         _end=uninitialized_copy(other.begin(),other.end(),begin());   
-        _end_of_storage=_end;  
+        _end_of_storage=_end;
+    }
+
+    vector(vector&& other)
+    {
+        std::swap(_begin,other._begin);
+        std::swap(_end,other._end);
+        std::swap(_end_of_storage,other._end_of_storage);
     }
 
 /**
@@ -167,6 +175,13 @@ public:
         _begin=data_allocator::allocate(other.size());
         _end=uninitialized_copy(other.begin(),other.end(),begin());
         _end_of_storage=_end;
+    }
+
+    vector& operator=(vector&& other)
+    {
+        std::swap(_begin,other._begin);
+        std::swap(_end,other._end);
+        std::swap(_end_of_storage,other._end_of_storage);
     }
 
     data_allocator get_allocator()const
@@ -399,7 +414,19 @@ public:
 
     void clear();
 
-    void swap(vector& x);
+    void swap(vector& x)
+    {
+        std::swap(_begin,x._begin);
+        std::swap(_end,x._end);
+        std::swap(_end_of_storage,x._end_of_storage);
+    }
+
+    void swap(vector&& x)
+    {
+        std::swap(_begin,x._begin);
+        std::swap(_end,x._end);
+        std::swap(_end_of_storage,x._end_of_storage);
+    }
 
 protected:
 
@@ -497,12 +524,6 @@ void vector<T,Alloc>::clear()
     destroy(begin(),end());
     deallocate();
     _begin=_end=_end_of_storage=0;
-}
-
-template <class T,class Alloc>
-void vector<T,Alloc>::swap(vector<T,Alloc>& x)
-{
-
 }
 
 

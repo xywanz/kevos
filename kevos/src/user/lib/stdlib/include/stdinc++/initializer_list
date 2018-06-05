@@ -18,6 +18,8 @@ limitations under the License.
 
 #include <cstddef>
 
+#pragma GCC visibility push(default)
+
 namespace std
 {
 
@@ -76,5 +78,7 @@ constexpr const T* end(initializer_list<T> _ils)
 
 
 }
+
+#pragma GCC visibility pop
 
 #endif

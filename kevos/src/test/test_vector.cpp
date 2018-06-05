@@ -118,5 +118,26 @@ void test_vector_main()
     assert(v7[4]==5);
     assert(v7.capacity()==5);
     assert(v7.size()==5);
+
+    v7.swap(vector<int>{6,7,8});
+    assert(v7[0]==6);
+    assert(v7[1]==7);
+    assert(v7[2]==8);
+    assert(v7.size()==3);
+    assert(v7.capacity()==3);
+
+    v7.swap(v2);
+    assert(v2[0]==6);
+    assert(v2[1]==7);
+    assert(v2[2]==8);
+    assert(v2.size()==3);
+    assert(v2.capacity()==3);
+    assert(v7[0]==12);
+    assert(v7[1]==14);
+    assert(v7[2]==11);
+    assert(v7[3]==13);
+    assert(v7[4]==5);
+    assert(v7.size()==5);
+    assert(v7.capacity()==5);
 }
 
