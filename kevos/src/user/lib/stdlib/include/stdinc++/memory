@@ -74,13 +74,107 @@ template<class T,class Deleter=default_delete<T>>
 class unique_ptr
 {
 public:
+    using pointer=T*;
+    using element_type=T;
+    using deleter_type=Deleter;
 
+    constexpr unique_ptr()noexcept :p(nullptr),d()
+    {
+    }
+
+    constexpr unique_ptr(nullptr_t np)noexcept :p(np),d()
+    {
+    }
+
+    explicit unique_ptr(pointer _p)noexcept :p(_p),d()
+    {
+    }
+
+    ~unique_ptr()noexcept
+    {
+        reset();
+    }
+
+    unique_ptr& operator=(unique_ptr& rhs) noexcept
+    {
+        reset(rhs.p);
+        rhs.reset();
+        return *this;
+    }
+
+    void release() noexcept
+    {
+        reset();
+    }
+
+    template<class U>
+    void reset(U new_ptr) noexcept
+    {
+        if(p)
+            get_deleter()(p);
+        p=new_ptr;
+    }
+
+    void reset(nullptr_t np=nullptr)noexcept
+    {
+        if(p)
+            get_deleter()(p);
+        p=np;
+    }
+
+    void swap(unique_ptr& other)noexcept
+    {
+        std::swap(p,other.p);
+        std::swap(d,other.d);
+    }
+
+    Deleter& get_deleter()noexcept
+    {
+        return d;
+    }
+
+    const Deleter& get_deleter()const noexcept
+    {
+        return (const Deleter&)d;
+    }
+
+    explicit operator bool()const noexcept
+    {
+        if(p)
+            return true;
+        return false;
+    }
+
+    T& operator*()
+    {
+        return *p;
+    }
+
+    const T& operator*()const noexcept
+    {
+        return (const T&)*p;
+    }
+
+    pointer operator->() noexcept
+    {
+        return p;
+    }
+
+    const T* operator->()const noexcept
+    {
+        return (const T*)p;
+    }
+
+protected:
+    pointer p;
+    Deleter d;
 };
 
 template<class T,class Deleter>
 class unique_ptr<T[],Deleter>
 {
-
+public:
+    
 };
 
 }
