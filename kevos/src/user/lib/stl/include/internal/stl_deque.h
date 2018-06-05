@@ -16,8 +16,9 @@ limitations under the License.
 #ifndef _STL_STL_DEQUE_H_
 #define _STL_STL_DEQUE_H_
 
-#include <stl_alloc.h>
-#include <stl_uninitialized.h>
+#include <internal/stl_alloc.h>
+#include <internal/stl_uninitialized.h>
+
 #include <algorithm>
 
 #include <cstddef>

@@ -1,4 +1,4 @@
-/* Copyright 2018 kevin Lau (http://github.com/stormycatcat)
+    /* Copyright 2018 kevin Lau (http://github.com/stormycatcat)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ limitations under the License.
 #ifndef _STL_STL_ALGORITHM_H_
 #define _STL_STL_ALGORITHM_H_
 
-#include <stl_iterator.h>
+#include <internal/stl_iterator.h>
 
 #include <cstring>
 #include <initializer_list>
@@ -25,25 +25,84 @@ limitations under the License.
 namespace std
 {
 
-template <class InputIterator,class OutputIterator>
-OutputIterator __copy_template(InputIterator first,InputIterator last,OutputIterator result,
-                            random_access_iterator_tag input_iter_tag,random_access_iterator_tag output_iter_tag)
+template<class T>
+T* __copy_t(const T* first,const T* last,T* result)
 {
-    memmove(&*result,&*first,sizeof(typename iterator_traits<InputIterator>::value_type)*(last-first));
+    memmove(result,first,reinterpret_cast<size_t>(last)-reinterpret_cast<size_t>(first));
     return result+(last-first);
 }
 
-template <class InputIterator,class OutputIterator>
-OutputIterator copy(InputIterator first,InputIterator last,OutputIterator result)
+template<class T>
+T* __copy(T* first,T* last,T* result)
 {
-    __copy_template
+    memmove(result,first,reinterpret_cast<size_t>(last)-reinterpret_cast<size_t>(first));
+    return result+(last-first);
+}
+
+template<class RandomAccessIterator,class OutputIterator,class Distance>
+inline OutputIterator __copy_d(RandomAccessIterator first,RandomAccessIterator last,
+                OutputIterator result,Distance*)
+{
+    for(Distance d=last-first;d>0;--d,++first,++result)
+    {
+        *result=*first;
+    }
+    return result;
+}
+
+template<class RandomAccessIterator,class OutputIterator>
+inline OutputIterator __copy(RandomAccessIterator first,RandomAccessIterator last,
+                OutputIterator result,random_access_iterator_tag)
+{
+    return __copy_d(first,last,result,difference_type(first));
+}
+
+template<class InputIterator,class OutputIterator>
+inline OutputIterator __copy(InputIterator first,InputIterator last,
+                OutputIterator result,input_iterator_tag)
+{
+    for(;first!=last;++first,++result)
+    {
+        *result=*first;
+    }
+    return result;
+}
+
+template <class InputIterator,class OutputIterator,class IteratorCategory>
+inline OutputIterator __copy_dispatch(InputIterator first,InputIterator last,OutputIterator result,
+                            IteratorCategory input_iter_tag)
+{
+    return __copy(first,last,result,input_iter_tag);
+}
+
+template<class T,class IteratorCategory>
+inline T* __copy_dispatch(const T* first,const T* last,T* result,random_access_iterator_tag)
+{
+    return __copy_t(first,last,result);
+}
+
+template <class InputIterator,class OutputIterator>
+inline OutputIterator copy(InputIterator first,InputIterator last,OutputIterator result)
+{
+    return __copy_dispatch
     (
         first,
         last,
         result,
-        typename iterator_traits<InputIterator>::iterator_category(),
-        typename iterator_traits<InputIterator>::iterator_category()
+        category(first)
     );
+}
+
+inline char* copy(const char* first,const char* last,char* result)
+{
+    memmove(result,first,last-first);
+    return result+(last-first);
+}
+
+inline wchar_t* copy(const wchar_t* first,const wchar_t* last,wchar_t* result)
+{
+    memmove(result,first,reinterpret_cast<size_t>(last)-reinterpret_cast<size_t>(first));
+    return result+(last-first);
 }
 
 /**

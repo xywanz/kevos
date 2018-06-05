@@ -16,7 +16,8 @@ limitations under the License.
 #ifndef _STL_STL_STACK_H_
 #define _STL_STL_STACK_H_
 
-#include <stl_alloc.h>
+#include <internal/stl_alloc.h>
+
 #include <deque>
 
 namespace std

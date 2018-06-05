@@ -16,7 +16,7 @@ limitations under the License.
 #ifndef _STL_STL_CONSTRUCT_
 #define _STL_STL_CONSTRUCT_
 
-#include <type_traits.h>
+#include <internal/type_traits.h>
 
 #include <new>
 

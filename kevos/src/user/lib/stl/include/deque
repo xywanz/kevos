@@ -16,6 +16,6 @@ limitations under the License.
 #ifndef _STL_DEQUE_
 #define _STL_DEQUE_
 
-#include <stl_deque.h>
+#include <internal/stl_deque.h>
 
 #endif

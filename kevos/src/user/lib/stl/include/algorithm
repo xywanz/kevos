@@ -16,6 +16,6 @@ limitations under the License.
 #ifndef _STL_ALGORITHM_
 #define _STL_ALGORITHM_
 
-#include <stl_algorithm.h>
+#include <internal/stl_algorithm.h>
 
 #endif

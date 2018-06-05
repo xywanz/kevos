@@ -16,7 +16,7 @@ limitations under the License.
 #ifndef _STL_STL_ARRAY_H_
 #define _STL_STL_ARRAY_H_
 
-#include <stl_uninitialized.h>
+#include <internal/stl_uninitialized.h>
 
 #include <initializer_list>
 

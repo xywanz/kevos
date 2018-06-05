@@ -16,6 +16,6 @@ limitations under the License.
 #ifndef _STL_VECTOR_
 #define _STL_VECTOR_
 
-#include <stl_vector.h>
+#include <internal/stl_vector.h>
 
 #endif

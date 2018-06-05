@@ -16,8 +16,8 @@ limitations under the License.
 #ifndef _STL_STL_LIST_H_
 #define _STL_STL_LIST_H_
 
-#include <stl_alloc.h>
-#include <stl_iterator.h>
+#include <internal/stl_alloc.h>
+#include <internal/stl_iterator.h>
 
 #include <utility>
 

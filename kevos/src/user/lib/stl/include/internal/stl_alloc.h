@@ -16,7 +16,7 @@ limitations under the License.
 #ifndef _STL_STL_ALLOC_
 #define _STL_STL_ALLOC_
 
-#include <stl_construct.h>
+#include <internal/stl_construct.h>
 
 #include <malloc.h>
 
