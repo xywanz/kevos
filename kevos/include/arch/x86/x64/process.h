@@ -16,7 +16,9 @@ limitations under the License.
 #ifndef _KEVOS_ARCH_X86_X64_PROCESS_H_
 #define _KEVOS_ARCH_X86_X64_PROCESS_H_
 
-#include <arch/common/types.h>
+#include <sys/types.h>
+
+#include <list>
 
 namespace arch::x86::x64
 {
@@ -84,6 +86,8 @@ public:
     }
 private:
     static Process* s_cur;
+
+    static std::list<Process> s_processes;
 };
 
 }   // end of namespace arch::x86::x64

@@ -19,6 +19,7 @@ limitations under the License.
 #include <internal/stl_alloc.h>
 #include <internal/stl_iterator.h>
 
+#include <initializer_list>
 #include <utility>
 
 namespace std
@@ -121,16 +122,45 @@ public:
     }
 
 public:
-    list()
+    list()noexcept
     {
         empty_initialize();
     }
 
-    list(const list& other)
+    list(size_type n)noexcept
     {
+        empty_initialize();
+        insert(end(),n,T());
     }
 
-    list(list&& other)
+    list(size_type n,const T& x)noexcept
+    {
+        empty_initialize();
+        insert(end(),n,x);
+    }
+
+    list(iterator first,iterator last)
+    {
+        empty_initialize();
+        insert(end(),first,last);
+    }
+
+    list(initializer_list<T> _lst)
+    {
+        empty_initialize();
+        for(const auto&& x:_lst)
+        {
+            push_back(x);
+        }
+    }
+
+    list(const list& other)noexcept
+    {
+        empty_initialize();
+        insert(end(),other.begin(),other.end());
+    }
+
+    list(list&& other)noexcept
     {
         empty_initialize();
         swap(other);
@@ -142,52 +172,52 @@ public:
         destroy_node(node);
     }
 
-    bool empty()const
+    bool empty()const noexcept
     {
         return begin()==end();
     }
 
-    iterator begin()const
+    iterator begin()const noexcept
     {
         return iterator(node->next);
     }
 
-    iterator end()const
+    iterator end()const noexcept
     {
         return iterator(node);
     }
 
-    reference front()
+    reference front()noexcept
     {
         return *begin();
     }
 
-    reference back()
+    reference back()noexcept
     {
         return *(end()-1);
     }
 
-    size_type size()const
+    size_type size()const noexcept
     {
         return 0;
     }
 
-    size_type max_size()const
+    size_type max_size()const noexcept
     {
         return size_type(-1)/sizeof(list_node);
     }
 
-    reverse_iterator rbegin()const
+    reverse_iterator rbegin()const noexcept
     {
         return reverse_iterator(node->prev);
     }
 
-    reverse_iterator rend()const
+    reverse_iterator rend()const noexcept
     {
         return reverse_iterator(node);
     }
 
-    iterator insert(iterator pos,const T& x)
+    iterator insert(iterator pos,const T& x) noexcept
     {
         link_type __node=pos.node;
         link_type p=create_node(x);
@@ -198,7 +228,7 @@ public:
         return iterator(p);
     }
 
-    void insert(iterator pos,size_type n,const T& x)
+    void insert(iterator pos,size_type n,const T& x) noexcept
     {
         while(n--)
         {
@@ -206,7 +236,7 @@ public:
         }  
     }
 
-    void insert(iterator pos,iterator first,iterator last)
+    void insert(iterator pos,iterator first,iterator last) noexcept
     {
         for(;first!=last;++first)
         {
@@ -214,17 +244,17 @@ public:
         }
     }
 
-    void push_back(const T& x)
+    void push_back(const T& x) noexcept
     {
         insert(end(),x);
     }
 
-    void push_front(const T& x)
+    void push_front(const T& x)noexcept
     {
         insert(begin(),x);
     }
 
-    void pop_back()
+    void pop_back()noexcept
     {
         if(!empty())
         {
@@ -232,7 +262,7 @@ public:
         }
     }
 
-    void pop_front()
+    void pop_front()noexcept
     {
         if(!empty())
         {
@@ -240,7 +270,7 @@ public:
         }
     }
 
-    iterator erase(iterator pos)
+    iterator erase(iterator pos)noexcept
     {
         link_type __next=pos.node->next;
         link_type __prev=pos.node->prev;
@@ -250,14 +280,14 @@ public:
         return iterator(__next);
     }
 
-    iterator erase(iterator first,iterator last)
+    iterator erase(iterator first,iterator last)noexcept
     {
         for(;first!=last;first=erase(first));
     }
 
-    void clear();
+    void clear()noexcept;
 
-    void remove(const T& x)
+    void remove(const T& x)noexcept
     {
         iterator first=begin();
         iterator last=end();
@@ -267,57 +297,73 @@ public:
             {
                 first=erase(first);
             }
+            else
+            {
+                ++first;
+            }
         }
     }
 
     template <class PredicateFunction>
-    void remove_if(PredicateFunction pred)
+    void remove_if(PredicateFunction pred)noexcept
     {
-
+        iterator first=begin();
+        iterator last=end();
+        while(first!=last)
+        {
+            if(p(*first))
+            {
+                first=erase(first);
+            }
+            else
+            {
+                ++first;
+            }
+        }
     }
 
-    void reverse()
+    void reverse()noexcept
     {
-
+        
     }
 
-    void sort()
+    void sort()noexcept
     {
 
     }
 
     template <class CompareFunction>
-    void sort(CompareFunction comp)
+    void sort(CompareFunction comp)noexcept
     {
 
     }
 
-    void split(iterator pos,list& x)
+    void split(iterator pos,list& x)noexcept
     {
 
     }
 
-    void split(iterator pos,list& x,iterator i)
+    void split(iterator pos,list& x,iterator i)noexcept
     {
 
     }
 
-    void split(iterator pos,list& x,iterator first,iterator last)
+    void split(iterator pos,list& x,iterator first,iterator last)noexcept
     {
 
     }
 
-    void swap(list& x)
+    void swap(list& x)noexcept
     {
         swap(std::move(x));
     }
 
-    void swap(list&& x)
+    void swap(list&& x)noexcept
     {
         std::swap(node,x.node);
     }
 
-    void unique()
+    void unique()noexcept
     {
 
     }
@@ -333,7 +379,7 @@ protected:
 };
 
 template <class T,class Alloc>
-void list<T,Alloc>::clear()
+void list<T,Alloc>::clear()noexcept
 {
     link_type current=node->next;
     link_type tmp;

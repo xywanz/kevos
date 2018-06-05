@@ -23,7 +23,6 @@ namespace kernel
 
 class Process
 {
-    
 };
 
 }   // end of namespace kernel
