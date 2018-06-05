@@ -199,7 +199,7 @@ public:
 /**
  * @brief 起始位置的迭代器
  */
-    iterator begin()const
+    iterator begin()const noexcept
     {
         return _begin;
     }
@@ -207,17 +207,17 @@ public:
 /**
  * @brief 内存末端后移一位的迭代器
  */
-    iterator end()const
+    iterator end()const noexcept
     {
         return _end;
     }
 
-    reverse_iterator rbegin()const
+    reverse_iterator rbegin()const noexcept
     {
         return end()-1;
     }
 
-    reverse_iterator rend()const
+    reverse_iterator rend()const noexcept
     {
         return begin()-1;
     }
@@ -647,6 +647,19 @@ public:
 protected:
     forward_iterator iter;
 };
+
+
+template<class T,class Alloc>
+constexpr typename vector<T,Alloc>::iterator begin(const vector<T,Alloc>& v)
+{
+    return v.begin();
+}
+
+template<class T,class Alloc>
+constexpr typename vector<T,Alloc>::iterator end(const vector<T,Alloc>& v)
+{
+    return v.end();
+}
 
 
 }

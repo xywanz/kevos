@@ -25,15 +25,9 @@ limitations under the License.
 namespace std
 {
 
-template<class T>
-T* __copy_t(const T* first,const T* last,T* result)
-{
-    memmove(result,first,reinterpret_cast<size_t>(last)-reinterpret_cast<size_t>(first));
-    return result+(last-first);
-}
 
 template<class T>
-T* __copy(T* first,T* last,T* result)
+inline T* __copy_t(const T* first,const T* last,T* result)
 {
     memmove(result,first,reinterpret_cast<size_t>(last)-reinterpret_cast<size_t>(first));
     return result+(last-first);
@@ -81,16 +75,16 @@ inline T* __copy_dispatch(const T* first,const T* last,T* result,random_access_i
     return __copy_t(first,last,result);
 }
 
+template<class T,class IteratorCategory>
+inline T* __copy_dispatch(T* first,T* last,T* result,random_access_iterator_tag)
+{
+    return __copy_t((const T*)first,(const T*)last,result);
+}
+
 template <class InputIterator,class OutputIterator>
 inline OutputIterator copy(InputIterator first,InputIterator last,OutputIterator result)
 {
-    return __copy_dispatch
-    (
-        first,
-        last,
-        result,
-        category(first)
-    );
+    return __copy_dispatch(first,last,result,category(first));
 }
 
 inline char* copy(const char* first,const char* last,char* result)
@@ -105,11 +99,72 @@ inline wchar_t* copy(const wchar_t* first,const wchar_t* last,wchar_t* result)
     return result+(last-first);
 }
 
+
+
+
+template<class T>
+inline T* __copy_backward_dispatch(const T* first,const T* last,T* result)
+{
+    return __copy_t(first,last,result);
+}
+
+template<class T>
+inline T* __copy_backward_dispatch(T* first,T* last,T* result)
+{
+    return __copy_t((const T*)first,(const T*)last,result);
+}
+
+template<class RandomAccessIterator,class BidirectionIterator2,class Distance>
+inline BidirectionIterator2 __copy_backward(RandomAccessIterator first,RandomAccessIterator last,
+                                        BidirectionIterator2 result,Distance*)
+{
+    --last;
+    for(Distance d=last-first;d>0;--d,--last,--result)
+    {
+        *result=*last;
+    }
+    return last;
+}
+
+template<class RandomAccessIterator,class BidirectionIterator2>
+inline BidirectionIterator2 __copy_backward(RandomAccessIterator first,RandomAccessIterator last,
+                                        BidirectionIterator2 result,random_access_iterator_tag)
+{
+    return __copy_backward_d(first,last,result,difference_type(first));
+}
+
+template<class BidirectionIterator1,class BidirectionIterator2>
+inline BidirectionIterator2 __copy_backward(BidirectionIterator1 first,BidirectionIterator1 last,
+                                        BidirectionIterator2 result,bidirection_iterator_tag)
+{
+    for(--last;last!=first;--last,--result)
+    {
+        *result=*last;
+    }
+    *result=*last;
+    return --result;
+}
+
+template<class BidirectionIterator1,class BidirectionIterator2>
+inline BidirectionIterator2 __copy_dispatch(BidirectionIterator1 first,BidirectionIterator1 last,
+                                            BidirectionIterator2 result)
+{
+    return __copy_backward(first,last,result,category(first));    
+}
+
+template<class BidirectionIterator1,class BidirectionIterator2>
+inline BidirectionIterator2 copy_backward(BidirectionIterator1 first,BidirectionIterator1 last,
+                                            BidirectionIterator2 result)
+{
+    return __copy_backward_dispatch(first,last,result);
+}
+
+
 /**
  *@brief since c++17
  */
-template <class FowardIterator>
-constexpr FowardIterator max_element(FowardIterator first,FowardIterator last)
+template <class ForwardIterator>
+constexpr ForwardIterator max_element(ForwardIterator first,ForwardIterator last)
 {
     auto _max=first;
     ++first;
@@ -124,8 +179,8 @@ constexpr FowardIterator max_element(FowardIterator first,FowardIterator last)
 /**
  *@brief since c++17
  */
-template <class FowardIterator,class Compare>
-constexpr FowardIterator max_element(FowardIterator first,FowardIterator last,Compare comp)
+template <class ForwardIterator,class Compare>
+constexpr ForwardIterator max_element(ForwardIterator first,ForwardIterator last,Compare comp)
 {
     auto _max=first;
     ++first;
@@ -140,8 +195,8 @@ constexpr FowardIterator max_element(FowardIterator first,FowardIterator last,Co
 /**
  *@brief since c++17
  */
-template <class FowardIterator>
-constexpr FowardIterator min_element(FowardIterator first,FowardIterator last)
+template <class ForwardIterator>
+constexpr ForwardIterator min_element(ForwardIterator first,ForwardIterator last)
 {
     auto _min=first;
     ++first;
@@ -156,8 +211,8 @@ constexpr FowardIterator min_element(FowardIterator first,FowardIterator last)
 /**
  *@brief since c++17
  */
-template <class FowardIterator,class Compare>
-constexpr FowardIterator min_element(FowardIterator first,FowardIterator last,Compare comp)
+template <class ForwardIterator,class Compare>
+constexpr ForwardIterator min_element(ForwardIterator first,ForwardIterator last,Compare comp)
 {
     auto _min=first;
     ++first;
@@ -266,7 +321,15 @@ ForwardIterator find_if(ExecutionPolicy&& policy,ForwardIterator first,ForwardIt
  *@brief since c++20
  */
 template <class InputIterator, class UnaryPredicate>
-constexpr InputIterator find_if(InputIterator first,InputIterator last,UnaryPredicate p);
+constexpr InputIterator find_if(InputIterator first,InputIterator last,UnaryPredicate p)
+{
+    for(;first!=last;++first)
+    {
+        if(p(first))
+            return first;
+    }
+    return last;
+}
 
 /**
  *@brief since c++17
@@ -278,7 +341,15 @@ ForwardIterator find_if_not(ExecutionPolicy&& policy,ForwardIterator first,Forwa
  *@brief since c++20
  */
 template <class InputIterator, class UnaryPredicate>
-constexpr InputIterator find_if_not(InputIterator first,InputIterator last,UnaryPredicate q);
+constexpr InputIterator find_if_not(InputIterator first,InputIterator last,UnaryPredicate q)
+{
+    for(;first!=last;++first)
+    {
+        if(!p(first))
+            return first;
+    }
+    return last;
+}
 
 template<class ForwardIterator,class T>
 constexpr void fill(ForwardIterator first,ForwardIterator last,const T& value)
@@ -288,6 +359,40 @@ constexpr void fill(ForwardIterator first,ForwardIterator last,const T& value)
         *first=value;
     }
 }
+
+template<class ForwardIterator,class T>
+constexpr void fill_n(ForwardIterator first,size_t n,const T& value)
+{
+    for(;n>0;--n,++first)
+    {
+        *first=value;
+    }
+}
+
+
+template<class ExecutionPolicy,class ForwardIterator,class UnaryFunction>
+constexpr void for_each(ExecutionPolicy&& policy,ForwardIterator first,ForwardIterator last,UnaryFunction f);
+
+template<class InputIterator,class UnaryFunction>
+constexpr UnaryFunction for_each(InputIterator first,InputIterator last,UnaryFunction f)
+{
+    for(;first!=last;++first)
+        f(*first);
+    return f;
+}
+
+
+template<class ExecutionPolicy,class ForwardIterator,class Size,class UnaryFunction>
+constexpr ForwardIterator for_each_n(ExecutionPolicy&& policy,ForwardIterator first,Size n,UnaryFunction f);
+
+template<class InputIterator,class Size,class UnaryFunction>
+constexpr InputIterator for_each_n(InputIterator first,Size n,UnaryFunction f)
+{
+    for(;n>0;--n,++first)
+        f(*first);
+    return first;
+}
+
 
 
 }
