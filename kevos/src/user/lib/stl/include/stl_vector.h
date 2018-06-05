@@ -152,11 +152,10 @@ public:
         _end_of_storage=_end;
     }
 
-    vector(vector&& other)
+    vector(vector&& other):
+        _begin(0),_end(0),_end_of_storage(0)
     {
-        std::swap(_begin,other._begin);
-        std::swap(_end,other._end);
-        std::swap(_end_of_storage,other._end_of_storage);
+        swap(other);
     }
 
 /**
@@ -179,9 +178,7 @@ public:
 
     vector& operator=(vector&& other)
     {
-        std::swap(_begin,other._begin);
-        std::swap(_end,other._end);
-        std::swap(_end_of_storage,other._end_of_storage);
+        swap(other);
     }
 
     data_allocator get_allocator()const
@@ -416,9 +413,7 @@ public:
 
     void swap(vector& x)
     {
-        std::swap(_begin,x._begin);
-        std::swap(_end,x._end);
-        std::swap(_end_of_storage,x._end_of_storage);
+        swap(std::move(x));
     }
 
     void swap(vector&& x)

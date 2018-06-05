@@ -19,6 +19,8 @@ limitations under the License.
 #include <stl_alloc.h>
 #include <stl_iterator.h>
 
+#include <utility>
+
 namespace std
 {
 
@@ -31,159 +33,12 @@ public:
     T data;
 };
 
-template <class T,class Pointer,class Reference>
-class __list_iterator
-{
-public:
-    using iterator_category=bidirection_iterator_tag;
-    using value_type=T;
-    using pointer=Pointer;
-    using reference=Reference;
-    using size_type=size_t;
-    using difference_type=ptrdiff_t;
-
-    using iterator=__list_iterator<T,T*,T&>;
-    using self=__list_iterator<T,Pointer,Reference>;
-    using link_type=__list_node<T>*;
-
-    __list_iterator()
-    {
-    }
-
-    __list_iterator(link_type x):node(x)
-    {
-    }
-
-    __list_iterator(const self& other):node(other.node)
-    {
-    }
-
-    bool operator==(const self& other)const
-    {
-        return other.node==node;
-    }
-
-    bool operator!=(const self& other)const
-    {
-        return other.node!=node;
-    }
-
-    reference operator*()const
-    {
-        return node->data;
-    }
-
-    pointer operator->()const
-    {
-        return &(operator*());
-    }
-
-    self& operator++()
-    {
-        node=node->next;
-        return *this;
-    }
-
-    self operator++(int)
-    {
-        self ret=*this;
-        node=node->next;
-        return ret;
-    }
-
-    self& operator--()
-    {
-        node=node->prev;
-        return *this;
-    }
-
-    self operator--(int)
-    {
-        self ret=*this;
-        node=node->next;
-        return ret;
-    }
-
-    link_type node;    
-};
 
 template <class T,class Pointer,class Reference>
-class __list_reverse_iterator
-{
-public:
-    using iterator_category=bidirection_iterator_tag;
-    using value_type=T;
-    using pointer=Pointer;
-    using reference=Reference;
-    using size_type=size_t;
-    using difference_type=ptrdiff_t;
+class __list_iterator;
 
-    using iterator=__list_reverse_iterator<T,T*,T&>;
-    using self=__list_reverse_iterator<T,Pointer,Reference>;
-    using link_type=__list_node<T>*;
-
-    __list_reverse_iterator()
-    {
-    }
-
-    __list_reverse_iterator(link_type x):node(x)
-    {
-    }
-
-    __list_reverse_iterator(const self& other):node(other.node)
-    {
-    }
-
-    bool operator==(const self& other)const
-    {
-        return other.node==node;
-    }
-
-    bool operator!=(const self& other)const
-    {
-        return other.node!=node;
-    }
-
-    reference operator*()const
-    {
-        return node->data;
-    }
-
-    pointer operator->()const
-    {
-        return &(operator*());
-    }
-
-    self& operator++()
-    {
-        node=node->prev;
-        return *this;
-    }
-
-    self operator++(int)
-    {
-        self ret=*this;
-        node=node->prev;
-        return ret;
-    }
-
-    self& operator--()
-    {
-        node=node->next;
-        return *this;
-    }
-
-    self operator--(int)
-    {
-        self ret=*this;
-        node=node->next;
-        return ret;
-    }
-
-protected:
-    link_type node;    
-};
-
+template <class T,class Pointer,class Reference>
+class __list_reverse_iterator;
 
 
 template <class T,class Alloc>
@@ -251,6 +106,13 @@ protected:
         dealloc_node(p);
     }
 
+    void empty_initialize()
+    {
+        node=alloc_node();
+        node->next=node;
+        node->prev=node;
+    }
+
 public:
 
     list_node_allocator get_allocator()const
@@ -261,9 +123,23 @@ public:
 public:
     list()
     {
-        node=alloc_node();
-        node->next=node;
-        node->prev=node;
+        empty_initialize();
+    }
+
+    list(const list& other)
+    {
+    }
+
+    list(list&& other)
+    {
+        empty_initialize();
+        swap(other);
+    }
+
+    ~list()
+    {
+        clear();
+        destroy_node(node);
     }
 
     bool empty()const
@@ -433,7 +309,12 @@ public:
 
     void swap(list& x)
     {
+        swap(std::move(x));
+    }
 
+    void swap(list&& x)
+    {
+        std::swap(node,x.node);
     }
 
     void unique()
@@ -465,6 +346,163 @@ void list<T,Alloc>::clear()
     node->next=node;
     node->prev=node;
 }
+
+
+
+
+template <class T,class Pointer,class Reference>
+class __list_iterator
+{
+public:
+    using iterator_category=bidirection_iterator_tag;
+    using value_type=T;
+    using pointer=Pointer;
+    using reference=Reference;
+    using size_type=size_t;
+    using difference_type=ptrdiff_t;
+
+    using iterator=__list_iterator<T,T*,T&>;
+    using self=__list_iterator<T,Pointer,Reference>;
+    using link_type=__list_node<T>*;
+
+    __list_iterator()
+    {
+    }
+
+    __list_iterator(link_type x):node(x)
+    {
+    }
+
+    __list_iterator(const self& other):node(other.node)
+    {
+    }
+
+    bool operator==(const self& other)const
+    {
+        return other.node==node;
+    }
+
+    bool operator!=(const self& other)const
+    {
+        return other.node!=node;
+    }
+
+    reference operator*()const
+    {
+        return node->data;
+    }
+
+    pointer operator->()const
+    {
+        return &(operator*());
+    }
+
+    self& operator++()
+    {
+        node=node->next;
+        return *this;
+    }
+
+    self operator++(int)
+    {
+        self ret=*this;
+        node=node->next;
+        return ret;
+    }
+
+    self& operator--()
+    {
+        node=node->prev;
+        return *this;
+    }
+
+    self operator--(int)
+    {
+        self ret=*this;
+        node=node->next;
+        return ret;
+    }
+
+    link_type node;    
+};
+
+
+template <class T,class Pointer,class Reference>
+class __list_reverse_iterator
+{
+public:
+    using iterator_category=bidirection_iterator_tag;
+    using value_type=T;
+    using pointer=Pointer;
+    using reference=Reference;
+    using size_type=size_t;
+    using difference_type=ptrdiff_t;
+
+    using iterator=__list_reverse_iterator<T,T*,T&>;
+    using self=__list_reverse_iterator<T,Pointer,Reference>;
+    using link_type=__list_node<T>*;
+
+    __list_reverse_iterator()
+    {
+    }
+
+    __list_reverse_iterator(link_type x):node(x)
+    {
+    }
+
+    __list_reverse_iterator(const self& other):node(other.node)
+    {
+    }
+
+    bool operator==(const self& other)const
+    {
+        return other.node==node;
+    }
+
+    bool operator!=(const self& other)const
+    {
+        return other.node!=node;
+    }
+
+    reference operator*()const
+    {
+        return node->data;
+    }
+
+    pointer operator->()const
+    {
+        return &(operator*());
+    }
+
+    self& operator++()
+    {
+        node=node->prev;
+        return *this;
+    }
+
+    self operator++(int)
+    {
+        self ret=*this;
+        node=node->prev;
+        return ret;
+    }
+
+    self& operator--()
+    {
+        node=node->next;
+        return *this;
+    }
+
+    self operator--(int)
+    {
+        self ret=*this;
+        node=node->next;
+        return ret;
+    }
+
+protected:
+    link_type node;    
+};
 
 
 }
