@@ -17,7 +17,7 @@ limitations under the License.
 #include <new>
 
 
-void* operator new(size_t size)
+void* operator new(std::size_t size)
 {
     return kernel::mm::KernelHeap::allocate(size);
 }
@@ -27,13 +27,13 @@ void operator delete(void* ptr)
     kernel::mm::KernelHeap::deallocate(ptr);
 }
 
-void operator delete(void* ptr, size_t)
+void operator delete(void* ptr, std::size_t)
 {
     kernel::mm::KernelHeap::deallocate(ptr);
 }
 
 
-void* operator new[](size_t size)
+void* operator new[](std::size_t size)
 {
     return kernel::mm::KernelHeap::allocate(size);
 }
@@ -43,7 +43,7 @@ void operator delete[](void* ptr)
     kernel::mm::KernelHeap::deallocate(ptr);
 }
 
-void* operator new(size_t,void* p)
+void* operator new(std::size_t,void* p)
 {
     return p;
 }

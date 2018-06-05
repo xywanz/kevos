@@ -26,7 +26,7 @@ class KernelHeap
 public:
 	static void initialize();
 
-	static void* allocate(size_t size)
+	static void* allocate(std::size_t size)
 	{
 		return khm.allocate(size);
 	}
@@ -36,7 +36,7 @@ public:
 		khm.deallocate(ptr);
 	}
 
-	static void* reallocate(void* ptr,size_t newSize)
+	static void* reallocate(void* ptr,std::size_t newSize)
 	{
 		khm.reallocate(ptr,newSize);
 	}

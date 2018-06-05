@@ -20,7 +20,7 @@ limitations under the License.
 namespace kernel::mm
 {
 
-HeapMemory::HeapMemory(size_t vStartAddr,size_t vEndAddr)
+HeapMemory::HeapMemory(std::size_t vStartAddr,std::size_t vEndAddr)
 	:m_memStart(reinterpret_cast<MemoryHeader*>(vStartAddr)),
 	 m_memEnd(reinterpret_cast<MemoryHeader*>(vEndAddr)-1)
 {
@@ -32,7 +32,7 @@ HeapMemory::HeapMemory(size_t vStartAddr,size_t vEndAddr)
 	m_memStart->used=0;
 }
 
-void HeapMemory::setup(size_t vStartAddr,size_t vEndAddr)
+void HeapMemory::setup(std::size_t vStartAddr,std::size_t vEndAddr)
 {
 	m_memStart=reinterpret_cast<MemoryHeader*>(vStartAddr),
 	m_memEnd=reinterpret_cast<MemoryHeader*>(vEndAddr)-1;
@@ -44,16 +44,16 @@ void HeapMemory::setup(size_t vStartAddr,size_t vEndAddr)
 	m_memStart->used=0;
 }
 
-void* HeapMemory::allocate(size_t size)
+void* HeapMemory::allocate(std::size_t size)
 {
-	size_t nsize=size+sizeof(MemoryHeader);
+	std::size_t nsize=size+sizeof(MemoryHeader);
 	for(auto block=m_memStart;block!=m_memEnd;block=block->next)
 	{
-		size_t blockSize=reinterpret_cast<size_t>(block->next)-reinterpret_cast<size_t>(block);
+		std::size_t blockSize=reinterpret_cast<std::size_t>(block->next)-reinterpret_cast<std::size_t>(block);
 		if(block->used||blockSize<nsize)
 			continue;
 		block->used=1;
-		size_t rest=blockSize-nsize;
+		std::size_t rest=blockSize-nsize;
 		if(rest>sizeof(MemoryHeader))
 		{
 			MemoryHeader* nnode=reinterpret_cast<MemoryHeader*>(reinterpret_cast<char*>(block)+nsize);
@@ -84,13 +84,13 @@ void HeapMemory::deallocate(void* ptr)
 	}
 }
 
-void* HeapMemory::reallocate(void* ptr,size_t newSize)
+void* HeapMemory::reallocate(void* ptr,std::size_t newSize)
 {
 	auto hdr=reinterpret_cast<MemoryHeader*>(ptr)-1;
 	MemoryHeader* next=hdr->next;
-	size_t origin=reinterpret_cast<size_t>(hdr->next)-reinterpret_cast<size_t>(hdr)-sizeof(MemoryHeader);
-	size_t total=newSize+sizeof(MemoryHeader);
-	size_t max=next->next-hdr;
+	std::size_t origin=reinterpret_cast<std::size_t>(hdr->next)-reinterpret_cast<std::size_t>(hdr)-sizeof(MemoryHeader);
+	std::size_t total=newSize+sizeof(MemoryHeader);
+	std::size_t max=next->next-hdr;
 	if(next-hdr>=total)
 	{
 		return ptr;	
@@ -112,12 +112,12 @@ void* HeapMemory::reallocate(void* ptr,size_t newSize)
 	deallocate(ptr);
 	for(auto block=m_memStart;block!=m_memEnd;block=block->next)
 	{
-		size_t blockSize=reinterpret_cast<size_t>(block->next)-reinterpret_cast<size_t>(block);
+		std::size_t blockSize=reinterpret_cast<std::size_t>(block->next)-reinterpret_cast<std::size_t>(block);
 		if(block->used||blockSize<total)
 			continue;
 		block->used=1;
 		std::memmove(block+1,ptr,origin);
-		size_t rest=blockSize-total;
+		std::size_t rest=blockSize-total;
 		if(rest>sizeof(MemoryHeader))
 		{
 			MemoryHeader* nnode=reinterpret_cast<MemoryHeader*>(reinterpret_cast<char*>(block)+total);

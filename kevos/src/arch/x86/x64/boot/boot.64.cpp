@@ -48,10 +48,10 @@ namespace arch::x86::x64::boot
 
 using namespace kernel::mm;
 
-void print(size_t pos,const char* buf)
+void print(std::size_t pos,const char* buf)
 {
 	auto addr=(unsigned char*)(0xB8000+pos*2);
-	for(size_t i=0;buf[i]!=0&&i<16;++i)
+	for(std::size_t i=0;buf[i]!=0&&i<16;++i)
 	{
 		addr[2*i]=buf[i];
 		addr[2*i+1]=0x75;

@@ -21,7 +21,7 @@ namespace arch::x86::x64
 
 SystemDescriptor GDT::items[gdtSize];
 
-void GDT::setItem(size_t index,uint64_t base,
+void GDT::setItem(std::size_t index,uint64_t base,
                 uint32_t limit,uint8_t dpl,uint8_t code,uint8_t tss)
 {
     if(index>=gdtSize)

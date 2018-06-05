@@ -18,7 +18,7 @@ limitations under the License.
 
 #include <kernel/mm/kheap_mem.h>
 
-inline void* operator new(size_t size)
+inline void* operator new(std::size_t size)
 {
 	return kernel::mm::KernelHeap::allocate(size);
 }
@@ -28,13 +28,13 @@ inline void operator delete(void* ptr)
 	kernel::mm::KernelHeap::deallocate(ptr);
 }
 
-inline void operator delete(void* ptr, size_t)
+inline void operator delete(void* ptr, std::size_t)
 {
 	kernel::mm::KernelHeap::deallocate(ptr);
 }
 
 
-inline void* operator new[](size_t size)
+inline void* operator new[](std::size_t size)
 {
 	return kernel::mm::KernelHeap::allocate(size);
 }
@@ -44,7 +44,7 @@ inline void operator delete[](void* ptr)
 	kernel::mm::KernelHeap::deallocate(ptr);
 }
 
-inline void* operator new(size_t,void* p)
+inline void* operator new(std::size_t,void* p)
 {
     return p;
 }

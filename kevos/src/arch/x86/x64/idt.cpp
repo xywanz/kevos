@@ -26,7 +26,7 @@ InterruptHandler interruptHandlers[IDT::idtSize];
 
 GateDescriptor IDT::items[idtSize];
 
-void IDT::setItem(size_t index,void (*handler)(),uint8_t dpl)
+void IDT::setItem(std::size_t index,void (*handler)(),uint8_t dpl)
 {
     GateDescriptor* item=items+index;
     uint64_t h=reinterpret_cast<uint64_t>(handler);

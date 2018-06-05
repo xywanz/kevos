@@ -18,14 +18,14 @@ limitations under the License.
 namespace kernel::mm
 {
 
-size_t PageManager::m_size=0;
+std::size_t PageManager::m_size=0;
 utils::Bitmap<bitmapByteNeeded<unsigned int>(1024*1024*128),unsigned int> PageManager::m_bitmap;
-size_t PageManager::m_cache=0;
+std::size_t PageManager::m_cache=0;
 
 void PageManager::initialize()
 {
 	m_size=m_bitmap.size();
-	size_t i;
+	std::size_t i;
 	for(i=0;i<kernel_end_ppn;++i)
 	{
 		m_bitmap.set(i);
@@ -33,7 +33,7 @@ void PageManager::initialize()
 	m_cache=i;
 }
 
-size_t PageManager::allocate(size_t pageSize)
+std::size_t PageManager::allocate(std::size_t pageSize)
 {
 	for(;m_cache<m_size;++m_cache)
 	{
@@ -56,7 +56,7 @@ size_t PageManager::allocate(size_t pageSize)
 	}
 }
 
-void PageManager::deallocate(size_t pPagePPN,size_t pageSize)
+void PageManager::deallocate(std::size_t pPagePPN,std::size_t pageSize)
 {
 	m_bitmap.unset(pPagePPN);
 }

@@ -36,7 +36,7 @@ namespace kernel::mm
 {
 
 template<class ByteType>
-static constexpr size_t bitmapByteNeeded(size_t memorySize,size_t pageSize=__PAGE_SIZE)
+static constexpr std::size_t bitmapByteNeeded(std::size_t memorySize,std::size_t pageSize=__PAGE_SIZE)
 {
 	return memorySize/(pageSize*sizeof(ByteType));
 }
@@ -47,14 +47,14 @@ public:
 
 	static void initialize();
 
-	static size_t allocate(size_t pageSize=__PAGE_SIZE);
+	static std::size_t allocate(std::size_t pageSize=__PAGE_SIZE);
 
-	static void deallocate(size_t pPagePPN,size_t pageSize=__PAGE_SIZE);
+	static void deallocate(std::size_t pPagePPN,std::size_t pageSize=__PAGE_SIZE);
 
 private:
-	static size_t m_size;
+	static std::size_t m_size;
 	static utils::Bitmap<bitmapByteNeeded<unsigned int>(1024*1024*128),unsigned int> m_bitmap;
-	static size_t m_cache;
+	static std::size_t m_cache;
 };
 
 }   // end of namespace kernel::mm

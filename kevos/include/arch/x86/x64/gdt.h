@@ -29,6 +29,8 @@ limitations under the License.
 
 #include <arch/x86/x64/descriptor.h>
 
+#include <cstddef>
+
 namespace arch::x86::x64
 {
 
@@ -41,7 +43,7 @@ namespace arch::x86::x64
 class GDT
 {
 public:
-	static void setItem(size_t index,uint64_t base,uint32_t limit,
+	static void setItem(std::size_t index,uint64_t base,uint32_t limit,
 						uint8_t dpl,uint8_t code,uint8_t tss);
 	static void initialize();
 

@@ -30,22 +30,22 @@ VirtualMemory::VirtualMemory()
 VirtualMemory::~VirtualMemory()
 {
     PML4E* pml4=reinterpret_cast<PML4E*>(getAddressFromPPN(m_pml4PPN));
-    for(size_t pml4i=0;pml4i<__PML4_SIZE;++pml4i)
+    for(std::size_t pml4i=0;pml4i<__PML4_SIZE;++pml4i)
     {
         if(pml4[pml4i].present)
         {
             PDPTE* pdpt=reinterpret_cast<PDPTE*>(getAddressFromPPN(pml4[pml4i].physicalPageNum));
-            for(size_t pdpti=0;pdpti<__PDPT_SIZE;++pdpti)
+            for(std::size_t pdpti=0;pdpti<__PDPT_SIZE;++pdpti)
             {
                 if(pdpt[pdpti].present)
                 {
                     PDTE* pdt=reinterpret_cast<PDTE*>(getAddressFromPPN(pdpt[pdpti].physicalPageNum));
-                    for(size_t pdti=0;pdti<__PDT_SIZE;++pdti)
+                    for(std::size_t pdti=0;pdti<__PDT_SIZE;++pdti)
                     {
                         if(pdt[pdti].present)
                         {
                             PTE* pt=reinterpret_cast<PTE*>(getAddressFromPPN(pdt[pdti].physicalPageNum));
-                            for(size_t pti=0;pti<__PT_SIZE;++pti)
+                            for(std::size_t pti=0;pti<__PT_SIZE;++pti)
                             {
                                 if(pt[pti].present)
                                 {
@@ -177,7 +177,7 @@ void VirtualMemory::unmapKernelPage(uint64_t vpn)
 }
 
 template<class T>
-void VirtualMemory::setPagingEntry(T* entries,size_t index,size_t ppn,
+void VirtualMemory::setPagingEntry(T* entries,std::size_t index,std::size_t ppn,
         uint64_t isToClear,uint64_t userAccessable,uint64_t writable)
 {
     if(isToClear)
@@ -191,7 +191,7 @@ void VirtualMemory::setPagingEntry(T* entries,size_t index,size_t ppn,
 template<class T,class traits>
 bool VirtualMemory::isNullPagingEntry(T* entries)
 {
-    for(size_t i=0;i<traits::size;++i)
+    for(std::size_t i=0;i<traits::size;++i)
     {
         if(entries[i].present)
             return false;

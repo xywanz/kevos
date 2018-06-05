@@ -18,6 +18,8 @@ limitations under the License.
 
 #include <arch/common/types.h>
 
+#include <cstddef>
+
 namespace arch::x86::common
 {
 
@@ -25,9 +27,9 @@ class ATADriver
 {
 public:
 
-    size_t readSectors(size_t start,size_t count,void* dst,size_t& readCount);
+    std::size_t readSectors(std::size_t start,std::size_t count,void* dst,std::size_t& readCount);
 
-    size_t writeSectors(size_t start,size_t count,const void* src,size_t& writeCount);
+    std::size_t writeSectors(std::size_t start,std::size_t count,const void* src,std::size_t& writeCount);
 
 };
 

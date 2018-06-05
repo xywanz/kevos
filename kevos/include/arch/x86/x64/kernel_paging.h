@@ -15,6 +15,8 @@ limitations under the License.
 
 #include <arch/x86/x64/paging.h>
 
+#include <cstddef>
+
 namespace arch::x86::x64
 {
 
@@ -41,10 +43,10 @@ namespace arch::x86::x64
 class KernelPageFrame
 {
 public:
-    constexpr static size_t pml4Size = 512;
-    constexpr static size_t pdptSize = 512;
-    constexpr static size_t pdtSize = 512;
-    constexpr static size_t ptSize = 512*32;
+    constexpr static std::size_t pml4Size = 512;
+    constexpr static std::size_t pdptSize = 512;
+    constexpr static std::size_t pdtSize = 512;
+    constexpr static std::size_t ptSize = 512*32;
 
     static PML4E  pml4[];
     static PDPTE  pdpt[];

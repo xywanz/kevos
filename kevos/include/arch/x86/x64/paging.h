@@ -29,6 +29,8 @@ limitations under the License.
 
 #include <arch/common/types.h>
 
+#include <cstddef>
+
 #define __PML4_SIZE 		512
 #define __PDPT_SIZE			512
 #define __PDT_SIZE 			512
@@ -115,26 +117,26 @@ struct type_traits
 template<>
 struct type_traits<PML4E>
 {
-	static constexpr size_t size=512;
+	static constexpr std::size_t size=512;
 };
 
 template<>
 struct type_traits<PDPTE>
 {
-	static constexpr size_t size=512;
+	static constexpr std::size_t size=512;
 };
 
 template<>
 struct type_traits<PDTE>
 {
-	static constexpr size_t size=512;
+	static constexpr std::size_t size=512;
 };
 
 template<>
 struct type_traits<PTE>
 {
-	static constexpr size_t size=512;
-	static constexpr size_t pageSize=4096;
+	static constexpr std::size_t size=512;
+	static constexpr std::size_t pageSize=4096;
 };
 
 using PML4=PML4E[type_traits<PML4E>::size];

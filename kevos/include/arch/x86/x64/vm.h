@@ -141,7 +141,7 @@ private:
 	}
 
 	template<class T>
-	static void setPagingEntry(T* entries,size_t index,size_t ppn,
+	static void setPagingEntry(T* entries,std::size_t index,std::size_t ppn,
 			uint64_t isToClear,uint64_t userAccessable,uint64_t writable);
 
 	template<class T,class traits=type_traits<T>>

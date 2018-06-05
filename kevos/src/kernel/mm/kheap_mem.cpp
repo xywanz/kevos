@@ -23,8 +23,8 @@ HeapMemory KernelHeap::khm;
 
 void KernelHeap::initialize()
 {
-	khm.setup(reinterpret_cast<size_t>(&kheap_start_address),
-		reinterpret_cast<size_t>(&kheap_end_address));
+	khm.setup(reinterpret_cast<std::size_t>(&kheap_start_address),
+		reinterpret_cast<std::size_t>(&kheap_end_address));
 }
 
 }   // end of namespace kernel::mm

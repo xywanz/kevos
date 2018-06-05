@@ -35,6 +35,8 @@ __asm__(".align 4");
 #include <arch/x86/x64/kernel_paging.h>
 #include <kernel/mm/mem_layout.h>
 
+#include <cstddef>
+
 #ifdef __KEVOS_MULTIBOOT__
 #include <arch/x86/common/multiboot.h>
 #endif
@@ -47,7 +49,7 @@ static_assert(sizeof(uint32_t)==4,"In x86-64 achitecture, uint32_t must be 4 byt
 static_assert(sizeof(int32_t)==4,"In x86-64 achitecture, int32_t must be 4 bytes!");
 static_assert(sizeof(uint64_t)==8,"In x86-64 achitecture, uint64_t must be 8 bytes!");
 static_assert(sizeof(int64_t)==8,"In x86-64 achitecture, int64_t must be 8 bytes!");
-static_assert(sizeof(size_t)==8,"In x86-64 achitecture, size_t must be 8 bytes!");
+static_assert(sizeof(std::size_t)==8,"In x86-64 achitecture, std::size_t must be 8 bytes!");
 
 namespace arch::x86::x64::boot
 {

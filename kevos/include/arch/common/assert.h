@@ -29,6 +29,8 @@ limitations under the License.
 
 #include <arch/common/types.h>
 
+#include <cstddef>
+
 #ifndef __KEVOS_NODEBUG__
 	#define assert(cond) do {(cond)?void(0):__assert(#cond,__LINE__,__FILE__);}while(0)
 #else

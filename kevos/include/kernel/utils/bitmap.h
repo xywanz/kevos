@@ -40,7 +40,7 @@ namespace kernel::utils
 #define DynamicBitmap	0
 
 
-template<size_t byteCount,class ByteType=unsigned char>
+template<std::size_t byteCount,class ByteType=unsigned char>
 class Bitmap
 {
 public:
@@ -49,7 +49,7 @@ public:
 		std::fill(m_bitmap.begin(),m_bitmap.end(),0);
 	}
 
-	bool set(size_t index)
+	bool set(std::size_t index)
 	{
 		ByteType mask=1<<bitIndexOf(index);
 		bool retVal=m_bitmap[byteIndexOf(index)]&mask;
@@ -57,7 +57,7 @@ public:
 		return retVal;
 	}
 
-	bool unset(size_t index)
+	bool unset(std::size_t index)
 	{
 		ByteType mask=1<<bitIndexOf(index);
 		bool retVal=m_bitmap[byteIndexOf(index)]&mask;
@@ -65,28 +65,28 @@ public:
 		return retVal;
 	}
 
-	bool get(size_t index)const
+	bool get(std::size_t index)const
 	{
 		return m_bitmap[byteIndexOf(index)]&(1<<bitIndexOf(index));
 	}
 
-	static size_t size()
+	static std::size_t size()
 	{
 		return s_size;	
 	}
 
 private:
-	static constexpr size_t s_bitsPerByte=sizeof(ByteType)*8;
-	static constexpr size_t s_size=byteCount*s_bitsPerByte;
+	static constexpr std::size_t s_bitsPerByte=sizeof(ByteType)*8;
+	static constexpr std::size_t s_size=byteCount*s_bitsPerByte;
 	std::array<ByteType,byteCount> m_bitmap;
 	
 
-	static constexpr size_t bitIndexOf(size_t bit)
+	static constexpr std::size_t bitIndexOf(std::size_t bit)
 	{
 		return bit%s_bitsPerByte;
 	}
 
-	static constexpr size_t byteIndexOf(size_t bit)
+	static constexpr std::size_t byteIndexOf(std::size_t bit)
 	{
 		return bit/s_bitsPerByte;
 	}
@@ -97,42 +97,42 @@ template<class ByteType>
 class Bitmap<DynamicBitmap,ByteType>
 {
 public:
-	Bitmap(ByteType* bitmap,size_t size);
+	Bitmap(ByteType* bitmap,std::size_t size);
 
-	bool set(size_t index);
+	bool set(std::size_t index);
 
-	bool unset(size_t index);
+	bool unset(std::size_t index);
 
-	bool get(size_t index)const;
+	bool get(std::size_t index)const;
 
 private:
-	static constexpr size_t s_bitsPerByte=sizeof(ByteType)*8;
+	static constexpr std::size_t s_bitsPerByte=sizeof(ByteType)*8;
 	ByteType* m_bitmap;
-	size_t m_size;
+	std::size_t m_size;
 
-	static size_t bitIndexOf(size_t bit)
+	static std::size_t bitIndexOf(std::size_t bit)
 	{
 		return bit%s_bitsPerByte;
 	}
 
-	static size_t byteIndexOf(size_t bit)
+	static std::size_t byteIndexOf(std::size_t bit)
 	{
 		return bit/s_bitsPerByte;
 	}
 };
 
 template<class ByteType>
-Bitmap<DynamicBitmap,ByteType>::Bitmap(ByteType* bitmap,size_t size)
+Bitmap<DynamicBitmap,ByteType>::Bitmap(ByteType* bitmap,std::size_t size)
 	:m_bitmap(bitmap),m_size(size)
 {
 	std::fill(m_bitmap,m_bitmap+size,0);
 }
 
 template<class ByteType>
-bool Bitmap<DynamicBitmap,ByteType>::set(size_t index)
+bool Bitmap<DynamicBitmap,ByteType>::set(std::size_t index)
 {
-	size_t bitOffset=bitIndexOf(index);
-	size_t byteOffset=byteIndexOf(index);
+	std::size_t bitOffset=bitIndexOf(index);
+	std::size_t byteOffset=byteIndexOf(index);
 	ByteType mask=1<<bitOffset;
 	bool retVal=m_bitmap[byteOffset]&mask;
 	m_bitmap[byteOffset]|=mask;
@@ -140,10 +140,10 @@ bool Bitmap<DynamicBitmap,ByteType>::set(size_t index)
 }
 
 template<class ByteType>
-bool Bitmap<DynamicBitmap,ByteType>::unset(size_t index)
+bool Bitmap<DynamicBitmap,ByteType>::unset(std::size_t index)
 {
-	size_t bitOffset=bitIndexOf(index);
-	size_t byteOffset=byteIndexOf(index);
+	std::size_t bitOffset=bitIndexOf(index);
+	std::size_t byteOffset=byteIndexOf(index);
 	ByteType mask=1<<bitOffset;
 	bool retVal=m_bitmap[byteOffset]&mask;
 	m_bitmap[byteOffset]&=(~mask);
@@ -151,7 +151,7 @@ bool Bitmap<DynamicBitmap,ByteType>::unset(size_t index)
 }
 
 template<class ByteType>
-bool Bitmap<DynamicBitmap,ByteType>::get(size_t index)const
+bool Bitmap<DynamicBitmap,ByteType>::get(std::size_t index)const
 {
 	return m_bitmap[byteIndexOf(index)]&(1<<bitIndexOf(index));
 }

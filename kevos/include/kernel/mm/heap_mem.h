@@ -18,6 +18,8 @@ limitations under the License.
 
 #include <sys/types.h>
 
+#include <cstddef>
+
 namespace kernel::mm
 {
 
@@ -26,22 +28,22 @@ class HeapMemory
 public:
 	HeapMemory(){}
 
-	HeapMemory(size_t vStartAddr,size_t vEndAddr);
+	HeapMemory(std::size_t vStartAddr,std::size_t vEndAddr);
 
-	void setup(size_t vStartAddr,size_t vEndAddr);
+	void setup(std::size_t vStartAddr,std::size_t vEndAddr);
 
-	void* allocate(size_t size);
+	void* allocate(std::size_t size);
 
 	void deallocate(void* ptr);
 
-	void* reallocate(void* ptr,size_t newSize);
+	void* reallocate(void* ptr,std::size_t newSize);
 
 private:
 	struct MemoryHeader
 	{
 		MemoryHeader* next;
 		MemoryHeader* prev;
-		size_t used;
+		std::size_t used;
 	};
 
 	MemoryHeader* m_memStart;

@@ -35,7 +35,7 @@ String::String(const String& other)
 	strcpy(m_cstr,other.m_cstr);
 }
 
-String::String(const String& parent,size_t start,size_t size)
+String::String(const String& parent,std::size_t start,std::size_t size)
 {
 	m_size=size;
 	m_cstr=new char[size+1];
@@ -67,12 +67,12 @@ bool String::operator==(const String& other)const
 	return strcmp(m_cstr,other.m_cstr);
 }
 
-const char& operator[](size_t index)const
+const char& operator[](std::size_t index)const
 {
 	return m_cstr[index];
 }
 
-char& operator[](size_t index)
+char& operator[](std::size_t index)
 {
 	return m_cstr[index];
 }

@@ -79,21 +79,6 @@ using float32_t	=	float;
 using float64_t	=	double;
 #endif
 
-#ifndef _SIZE_T
-#define _SIZE_T
-using size_t    =	uint64_t;
-#endif
-
-#ifndef _SSIZE_T
-#define _SSIZE_T
-using ssize_t  	=	int64_t;
-#endif
-
-#ifndef _PTRDIFF_T
-#define _PTRDIFF_T
-using ptrdiff_t	=	int64_t;
-#endif
-
 #ifndef _POINTER_T
 #define _POINTER_T
 using pointer_t = 	uint64_t;

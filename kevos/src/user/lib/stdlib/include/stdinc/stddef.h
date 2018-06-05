@@ -16,26 +16,31 @@ limitations under the License.
 #ifndef _STDDEF_H_
 #define _STDDEF_H_
 
+#include <sys/portable.h>
 
-#ifndef _SIZE_T
-#define _SIZE_T
-typedef unsigned long size_t;
+#ifndef _C_SIZE_T
+#define _C_SIZE_T
+typedef unsigned long size_t __mode__(__DI__);
 #endif
 
-#ifndef _PTRDIFF_T
-#define _PTRDIFF_T
-typedef long ptrdiff_t;
+#ifndef _C_PTRDIFF_T
+#define _C_PTRDIFF_T
+typedef long ptrdiff_t __mode__(__DI__);
 #endif
 
 #ifndef __cplusplus
-#ifndef _WCHAR_T
-#define _WCHAR_T
-typedef short wchar_t;
+#ifndef _C_WCHAR_T
+#define _C_WCHAR_T
+typedef short wchar_t __mode__(__HI__);
 #endif
 #endif
 
+#ifndef NULL
 #define NULL 0
+#endif
 
+#ifndef offsetof
 #define offsetof(type,member) ((size_t)&(((type*)0)->member))
+#endif
 
 #endif
