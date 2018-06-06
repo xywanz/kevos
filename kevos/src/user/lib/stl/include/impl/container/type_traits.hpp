@@ -16,7 +16,7 @@ limitations under the License.
 #ifndef _STL_TYPE_TRAITS_H_
 #define _STL_TYPE_TRAITS_H_
 
-#include <internal/stl_iterator.h>
+#include <iterator>
 
 namespace std
 {

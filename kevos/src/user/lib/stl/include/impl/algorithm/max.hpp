@@ -13,9 +13,41 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_DEQUE_
-#define _STL_DEQUE_
+#ifndef _STL_MAX_HPP_
+#define _STL_MAX_HPP_
 
-#include <impl/container/deque.hpp>
+#include <initializer_list>
+
+namespace std
+{
+
+/**
+ *@brief since c++14
+ */
+template <class T>
+constexpr const T& max(const T& a,const T& b)
+{
+    return a<b?b:a;
+}
+
+/**
+ *@brief since c++14
+ */
+template <class T,class Compare>
+constexpr const T& max(const T& a,const T& b,Compare comp)
+{
+    return comp(a,b)?b:a;
+}
+
+/**
+ *@brief since c++14
+ */
+template <class T>
+constexpr T max(initializer_list<T> ilist)
+{
+    return *max_element(ilist.begin(),ilist.end());
+}
+
+}
 
 #endif

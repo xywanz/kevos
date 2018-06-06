@@ -13,22 +13,40 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_STL_STACK_H_
-#define _STL_STL_STACK_H_
+#ifndef _STL_MIN_HPP_
+#define _STL_MIN_HPP_
 
-#include <internal/stl_alloc.h>
-
-#include <deque>
+#include <initializer_list>
 
 namespace std
 {
 
-template <class T,class Container=deque<T>>
-class stack
+/**
+ *@brief since c++14
+ */
+template <class T>
+constexpr const T& min(const T& a,const T& b)
 {
-public:
+    return a<b?a:b;
+}
 
-};
+/**
+ *@brief since c++14
+ */
+template <class T,class Compare>
+constexpr const T& min(const T& a,const T& b,Compare comp)
+{
+    return comp(a,b)?a:b;
+}
+
+/**
+ *@brief since c++14
+ */
+template <class T>
+constexpr T min(initializer_list<T> ilist)
+{
+    return *min_element(ilist.begin(),ilist.end());
+}
 
 }
 

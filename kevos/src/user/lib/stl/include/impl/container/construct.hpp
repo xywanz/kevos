@@ -13,10 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_STL_CONSTRUCT_
-#define _STL_STL_CONSTRUCT_
+#ifndef _STL_CONSTRUCT_HPP_
+#define _STL_CONSTRUCT_HPP_
 
-#include <internal/type_traits.h>
+#include <impl/container/type_traits.hpp>
 
 #include <new>
 

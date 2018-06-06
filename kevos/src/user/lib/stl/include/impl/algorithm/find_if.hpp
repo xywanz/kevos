@@ -13,9 +13,32 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_DEQUE_
-#define _STL_DEQUE_
+#ifndef _STL_FIND_IF_HPP_
+#define _STL_FIND_IF_HPP_
 
-#include <impl/container/deque.hpp>
+namespace std
+{
+
+/**
+ *@brief since c++17
+ */
+template <class ExecutionPolicy,class ForwardIterator,class UnaryPredicate>
+ForwardIterator find_if(ExecutionPolicy&& policy,ForwardIterator first,ForwardIterator last,UnaryPredicate p);
+
+/**
+ *@brief since c++20
+ */
+template <class InputIterator, class UnaryPredicate>
+constexpr InputIterator find_if(InputIterator first,InputIterator last,UnaryPredicate p)
+{
+    for(;first!=last;++first)
+    {
+        if(p(first))
+            return first;
+    }
+    return last;
+}
+
+}
 
 #endif

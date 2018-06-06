@@ -13,9 +13,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_DEQUE_
-#define _STL_DEQUE_
+#ifndef _STL_FILL_HPP_
+#define _STL_FILL_HPP_
 
-#include <impl/container/deque.hpp>
+namespace std
+{
+
+template<class ForwardIterator,class T>
+constexpr void fill(ForwardIterator first,ForwardIterator last,const T& value)
+{
+    for(;first!=last;++first)
+    {
+        *first=value;
+    }
+}
+
+}
 
 #endif
+

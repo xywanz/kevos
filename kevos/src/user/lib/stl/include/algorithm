@@ -16,6 +16,19 @@ limitations under the License.
 #ifndef _STL_ALGORITHM_
 #define _STL_ALGORITHM_
 
-#include <internal/stl_algorithm.h>
+#include <impl/algorithm/copy.hpp>
+#include <impl/algorithm/copy_backward.hpp>
+#include <impl/algorithm/copy_if.hpp>
+#include <impl/algorithm/fill.hpp>
+#include <impl/algorithm/fill_n.hpp>
+#include <impl/algorithm/find.hpp>
+#include <impl/algorithm/find_if.hpp>
+#include <impl/algorithm/find_if_not.hpp>
+#include <impl/algorithm/for_each.hpp>
+#include <impl/algorithm/for_each_n.hpp>
+#include <impl/algorithm/max.hpp>
+#include <impl/algorithm/max_element.hpp>
+#include <impl/algorithm/min.hpp>
+#include <impl/algorithm/min_element.hpp>
 
 #endif

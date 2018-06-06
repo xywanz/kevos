@@ -16,6 +16,6 @@ limitations under the License.
 #ifndef _STL_STACK_
 #define _STL_STACK_
 
-#include <internal/stl_stack.h>
+#include <impl/container/stack.hpp>
 
 #endif

@@ -13,11 +13,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_STL_LIST_H_
-#define _STL_STL_LIST_H_
+#ifndef _STL_LIST_HPP_
+#define _STL_LIST_HPP_
 
-#include <internal/stl_alloc.h>
-#include <internal/stl_iterator.h>
+#include <impl/container/alloc.hpp>
+#include <impl/container/iterator.hpp>
 
 #include <initializer_list>
 #include <utility>

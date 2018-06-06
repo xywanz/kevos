@@ -13,10 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_STL_ARRAY_H_
-#define _STL_STL_ARRAY_H_
+#ifndef _STL_ARRAY_HPP_
+#define _STL_ARRAY_HPP_
 
-#include <internal/stl_uninitialized.h>
+#include <impl/container/uninitialized.hpp>
 
 #include <initializer_list>
 

@@ -13,10 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_STL_ALLOC_
-#define _STL_STL_ALLOC_
+#ifndef _STL_CONTAINER_ALLOC_HPP_
+#define _STL_CONTAINER_ALLOC_HPP_
 
-#include <internal/stl_construct.h>
+#include <impl/container/construct.hpp>
 
 #include <malloc.h>
 

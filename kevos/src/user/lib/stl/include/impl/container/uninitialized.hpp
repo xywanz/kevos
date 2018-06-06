@@ -13,15 +13,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_STL_UNINITIALIZED_H_
-#define _STL_STL_UNINITIALIZED_H_
+#ifndef _STL_UNINITIALIZED_HPP_
+#define _STL_UNINITIALIZED_HPP_
 
-#include <internal/stl_construct.h>
-
-#include <iterator>
-#include <algorithm>
+#include <impl/container/construct.hpp>
 
 #include <cstring>
+#include <iterator>
+#include <algorithm>
 
 namespace std
 {

@@ -13,9 +13,24 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_DEQUE_
-#define _STL_DEQUE_
+#ifndef _STL_FOR_EACH_HPP_
+#define _STL_FOR_EACH_HPP_
 
-#include <impl/container/deque.hpp>
+namespace std
+{
+
+template<class ExecutionPolicy,class ForwardIterator,class UnaryFunction>
+constexpr void for_each(ExecutionPolicy&& policy,ForwardIterator first,ForwardIterator last,UnaryFunction f);
+
+template<class InputIterator,class UnaryFunction>
+constexpr UnaryFunction for_each(InputIterator first,InputIterator last,UnaryFunction f)
+{
+    for(;first!=last;++first)
+        f(*first);
+    return f;
+}
+
+}
 
 #endif
+

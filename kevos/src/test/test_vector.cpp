@@ -13,6 +13,16 @@ public:
     int a;
 };
 
+class B
+{
+public:
+    int a;
+    int b;
+    char c;
+
+    B(int _a,int _b,char _c):a(_a),b(_b),c(_c){}
+};
+
 void test_vector_main()
 {
     vector<int> v;
@@ -140,6 +150,13 @@ void test_vector_main()
     assert(v7.size()==5);
     assert(v7.capacity()==5);
 
-    
+    vector<B> v8;
+    v8.push_back(B(1,2,3));
+    for(auto [a_,b_,c_]:v8)
+    {
+        assert(a_==1);
+        assert(b_==2);
+        assert(c_==3);
+    }
 }
 

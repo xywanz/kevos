@@ -16,6 +16,6 @@ limitations under the License.
 #ifndef _STL_LIST_
 #define _STL_LIST_
 
-#include <internal/stl_list.h>
+#include <impl/container/list.hpp>
 
 #endif

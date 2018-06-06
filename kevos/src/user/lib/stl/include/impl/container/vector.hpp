@@ -13,12 +13,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_STL_VECTOR_H_
-#define _STL_STL_VECTOR_H_
+#ifndef _STL_VECTOR_HPP_
+#define _STL_VECTOR_HPP_
 
-#include <internal/stl_alloc.h>
-#include <internal/stl_uninitialized.h>
+#include <impl/container/alloc.hpp>
+#include <impl/container/uninitialized.hpp>
 
+#include <utility>
 #include <stdexcept>
 #include <initializer_list>
 

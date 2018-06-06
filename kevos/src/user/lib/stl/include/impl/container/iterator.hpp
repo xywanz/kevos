@@ -13,8 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STL_STL_ITERATOR_H_
-#define _STL_STL_ITERATOR_H_
+#ifndef _STL_ITERATOR_HPP_
+#define _STL_ITERATOR_HPP_
 
 #include <cstddef>
 
