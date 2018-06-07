@@ -65,6 +65,7 @@ extern "C"
 {
 
 void saveProcessRegisters(char* base);
+
 void switchToContext();
 
 

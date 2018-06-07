@@ -17,6 +17,7 @@ limitations under the License.
 #define _KEVOS_ARCH_X86_X64_PROCESS_H_
 
 #include <sys/types.h>
+#include <arch/x86/x64/vm.h>
 
 #include <list>
 
@@ -80,12 +81,18 @@ public:
 
     static ProcessRegisters* createUserRegInfo(void* entry,void* stack,void* kstack);
 
+    static void setInstructionPointer(Process* process,void* entry);
+
+    static void setVirtualMemory(Process* process,const VirtualMemory& mm);
+
+    static void contextSwitch();
+
     static Process* current()
     {
-        return s_cur;
+        return s_current;
     }
 private:
-    static Process* s_cur;
+    static Process* s_current;
 
     static std::list<Process> s_processes;
 };

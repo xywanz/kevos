@@ -187,6 +187,11 @@ public:
         return iterator(node);
     }
 
+    pointer data()noexcept
+    {
+        return &(node->next->data);
+    }
+
     reference front()noexcept
     {
         return *begin();

@@ -31,12 +31,14 @@ Process::Process(void* entry,void* stack,uint64_t userProcess)
         m_regs=ProcessManager::createKernelRegInfo(entry,stack);
 }
 
-
-Process* ProcessManager::s_cur=nullptr;
+std::list<Process> ProcessManager::s_processes;
+Process* ProcessManager::s_current=nullptr;
 
 void ProcessManager::initialize()
 {
-    s_cur=new Process(0,0,0);
+    // s_processes.push_back(Process(0,0,0));
+    // s_processes.push_back(Process(0,0,0));
+    s_current=new Process(0,0,0);
 }
 
 ProcessRegisters* ProcessManager::createKernelRegInfo(void* entry,void* stack)

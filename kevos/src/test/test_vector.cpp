@@ -23,6 +23,8 @@ public:
     B(int _a,int _b,char _c):a(_a),b(_b),c(_c){}
 };
 
+vector<int> gv;
+
 void test_vector_main()
 {
     vector<int> v;

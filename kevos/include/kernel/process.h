@@ -23,6 +23,10 @@ namespace kernel
 
 class Process
 {
+public:
+    enum TYPE{KERNEL,USER};
+private:
+
 };
 
 }   // end of namespace kernel

@@ -39,15 +39,13 @@ namespace arch::x86::x64
 
 typedef void (*InterruptHandler)();
 
-extern "C"{
-    extern InterruptHandler interruptHandlers[];
-}
-
 class IDT
 {
 public:
-	static void setItem(std::size_t index,void (*handler)(),uint8_t dpl);
+	static void setItem(std::size_t index,InterruptHandler handler,uint8_t dpl);
 	static void initialize();
+
+    static void registerCallback(std::size_t intNum,InterruptHandler handler);
 
 	static constexpr uint16_t idtSize=256;
 	static GateDescriptor items[idtSize];

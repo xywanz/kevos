@@ -23,8 +23,13 @@ namespace arch::x86::x64
 
 void irqCppHandler0()
 {
-    *((unsigned short*)(0xB8000+300))=std::rand();
+    *((uint16_t*)(0xB8000+310))=((std::rand()%128)<<8)+'k';
+    *((uint16_t*)(0xB8000+312))=((std::rand()%128)<<8)+'e';
+    *((uint16_t*)(0xB8000+314))=((std::rand()%128)<<8)+'v';
+    *((uint16_t*)(0xB8000+316))=((std::rand()%128)<<8)+'o';
+    *((uint16_t*)(0xB8000+318))=((std::rand()%128)<<8)+'s';
     arch::common::InterruptManager::sendEndSignal(0);
+
     switchToContext();
 }
 

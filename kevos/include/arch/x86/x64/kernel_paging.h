@@ -48,10 +48,10 @@ public:
     constexpr static std::size_t pdtSize = 512;
     constexpr static std::size_t ptSize = 512*32;
 
-    static PML4E  pml4[];
-    static PDPTE  pdpt[];
-    static PDTE   pdt [];
-    static PTE    pt  [];
+    static PML4E  pml4[] __aligned__(0x1000);
+    static PDPTE  pdpt[] __aligned__(0x1000);
+    static PDTE   pdt [] __aligned__(0x1000);
+    static PTE    pt  [] __aligned__(0x1000);
 };
 
 }
