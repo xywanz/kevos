@@ -38,6 +38,8 @@ limitations under the License.
 #include <list>
 #include <stack>
 
+void test_utility_main();
+void test_concept_main();
 void test_cxx_stdlib_template_main();
 void test_vector_main();
 void test_array_main();
@@ -74,6 +76,8 @@ extern "C" void entry64()
 	common::CPUInfo& cpuInfo=common::CPUInfo::instance();
 	ProcessManager::initialize();
 
+	test_utility_main();
+	test_concept_main();
 	test_cxx_stdlib_template_main();
 	test_vector_main();
 	test_array_main();

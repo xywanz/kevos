@@ -13,36 +13,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _STDLIB_UTILITY_
-#define _STDLIB_UTILITY_
+#ifndef _FUTURE_META_TLIB_HPP_
+#define _FUTURE_META_TLIB_HPP_
 
 #include <type_traits>
 
-namespace std
+namespace tlib
 {
 
-template<class T>
-constexpr typename remove_reference<T>::type&& move(T&& t) noexcept
-{
-    return static_cast<typename remove_reference<T>::type&&>(t);
-}
-
-
-template<class T>
-void swap(T& a,T&b)
-{
-    T tmp=move(a);
-    a=move(b);
-    b=move(tmp);
-}
-
-template<class T>
-typename add_rvalue_reference<T>::type declval()noexcept
-{
-    using type=typename add_rvalue_reference<T>::type;
-    using origin=typename remove_reference<type>::type;
-    return static_cast<type>(*static_cast<origin*>(0));
-}
+template<bool,class T>
 
 }
 

@@ -21,6 +21,35 @@ limitations under the License.
 namespace std
 {
 
+template<class... >
+using void_t=void;
+
+
+template<class T>
+struct add_lvalue_reference
+{
+    using type=T&;
+};
+
+template<class T>
+struct add_lvalue_reference<T&>
+{
+    using type=T&;
+};
+
+template<class T>
+struct add_rvalue_reference
+{
+    using type=T&&;
+};
+
+template<class T>
+struct add_rvalue_reference<T&&>
+{
+    using type=T&&;
+};
+
+
 template<class T>
 struct remove_const
 {
@@ -365,6 +394,7 @@ struct is_enum : public integral_constant<bool,
     !is_function<T>::value
 > {};
 #endif
+
 
 }
 
