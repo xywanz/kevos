@@ -25,9 +25,9 @@ extern "C"{
 #include <arch/x86/x64/tss.h>
 #include <arch/x86/x64/vm.h>
 #include <arch/x86/x64/process.h>
-#include <kernel/mm/mem_layout.h>
-#include <kernel/mm/heap_mem.h>
 #include <kernel/mm/kheap_mem.h>
+#include <kernel/mm/mem_layout.h>
+
 #include <kernel/mm/page_mgr.h>
 #include <kernel/mm/new.h>
 
@@ -100,7 +100,8 @@ extern "C" void entry64()
 	test_deque_main();
 
 	confirmImAlive();
-	while(1);
+	while(1)
+        *((uint16_t*)(0xB8000+2))=((std::rand()%128)<<8)+'s';
 }
 
 

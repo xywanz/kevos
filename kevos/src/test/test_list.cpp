@@ -19,6 +19,8 @@ public:
     }
 };
 
+list<Test> gl(0);
+
 void test_list_main()
 {
     list<int> t1;
@@ -31,4 +33,6 @@ void test_list_main()
     auto ti1=t1.begin();
     for(int i=0;i<6;++i)
         assert(*ti1++==i+1);
+    gl.empty_initialize();
+    gl.push_back(Test());
 }

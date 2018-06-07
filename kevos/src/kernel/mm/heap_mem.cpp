@@ -20,30 +20,6 @@ limitations under the License.
 namespace kernel::mm
 {
 
-HeapMemory::HeapMemory(std::size_t vStartAddr,std::size_t vEndAddr)
-	:m_memStart(reinterpret_cast<MemoryHeader*>(vStartAddr)),
-	 m_memEnd(reinterpret_cast<MemoryHeader*>(vEndAddr)-1)
-{
-	m_memEnd->next=nullptr;
-	m_memEnd->prev=m_memStart;
-	m_memEnd->used=1;
-	m_memStart->next=m_memEnd;
-	m_memStart->prev=nullptr;
-	m_memStart->used=0;
-}
-
-void HeapMemory::setup(std::size_t vStartAddr,std::size_t vEndAddr)
-{
-	m_memStart=reinterpret_cast<MemoryHeader*>(vStartAddr),
-	m_memEnd=reinterpret_cast<MemoryHeader*>(vEndAddr)-1;
-	m_memEnd->next=nullptr;
-	m_memEnd->prev=m_memStart;
-	m_memEnd->used=1;
-	m_memStart->next=m_memEnd;
-	m_memStart->prev=nullptr;
-	m_memStart->used=0;
-}
-
 void* HeapMemory::allocate(std::size_t size)
 {
 	std::size_t nsize=size+sizeof(MemoryHeader);

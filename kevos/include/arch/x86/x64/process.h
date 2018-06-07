@@ -81,20 +81,27 @@ public:
 
     static ProcessRegisters* createUserRegInfo(void* entry,void* stack,void* kstack);
 
-    static void setInstructionPointer(Process* process,void* entry);
+    static void setInstructionPointer(Process* process,void* entry)
+    {
+        process->registers()->rip=(uint64_t)entry;
+    }
 
     static void setVirtualMemory(Process* process,const VirtualMemory& mm);
+
+    static void switchToNext();
 
     static void contextSwitch();
 
     static Process* current()
     {
-        return s_current;
+        return &*s_current;
     }
 private:
-    static Process* s_current;
-
     static std::list<Process> s_processes;
+
+    using iterator=typename std::list<Process>::iterator;
+
+    static iterator s_current;
 };
 
 }   // end of namespace arch::x86::x64

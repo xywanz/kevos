@@ -18,6 +18,8 @@ limitations under the License.
 #include <arch/x86/x64/vm.h>
 #include <kernel/mm/new.h>
 
+#include <cstdlib>
+
 #include <cstring>
 
 namespace arch::x86::x64
@@ -31,14 +33,26 @@ Process::Process(void* entry,void* stack,uint64_t userProcess)
         m_regs=ProcessManager::createKernelRegInfo(entry,stack);
 }
 
-std::list<Process> ProcessManager::s_processes;
-Process* ProcessManager::s_current=nullptr;
+std::list<Process> ProcessManager::s_processes{0};
+typename ProcessManager::iterator ProcessManager::s_current{nullptr};
+
+
+char test_stack[0x1000];
+
+void test_func()
+{
+    int a=1;
+    while(1)
+        *((uint16_t*)(0xB8000))=((std::rand()%128)<<8)+'k';
+}
 
 void ProcessManager::initialize()
 {
-    // s_processes.push_back(Process(0,0,0));
-    // s_processes.push_back(Process(0,0,0));
-    s_current=new Process(0,0,0);
+    s_processes.empty_initialize();
+    s_processes.push_back(Process{0,0,0});
+    s_processes.push_back(Process{(void*)test_func,(void*)(test_stack+0x1000),0});
+    s_current=s_processes.begin();
+
 }
 
 ProcessRegisters* ProcessManager::createKernelRegInfo(void* entry,void* stack)
@@ -78,6 +92,13 @@ ProcessRegisters* ProcessManager::createUserRegInfo(void* entry,void* stack,void
     regs->rip=reinterpret_cast<uint64_t>(entry);
     regs->cr3=reinterpret_cast<uint64_t>(KernelPageFrame::pml4);
     return regs;
+}
+
+void ProcessManager::switchToNext()
+{
+    ++s_current;
+    if(s_current==s_processes.end())
+        s_current=s_processes.begin();
 }
 
 }   // end of namespace arch::x86::x64

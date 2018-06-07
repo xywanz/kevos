@@ -107,13 +107,6 @@ protected:
         dealloc_node(p);
     }
 
-    void empty_initialize()
-    {
-        node=alloc_node();
-        node->next=node;
-        node->prev=node;
-    }
-
 public:
 
     list_node_allocator get_allocator()const
@@ -122,15 +115,21 @@ public:
     }
 
 public:
+
+    void empty_initialize()noexcept
+    {
+        node=alloc_node();
+        node->next=node;
+        node->prev=node;
+    }
+
     list()noexcept
     {
         empty_initialize();
     }
 
-    list(size_type n)noexcept
+    list(std::nullptr_t np)noexcept
     {
-        empty_initialize();
-        insert(end(),n,T());
     }
 
     list(size_type n,const T& x)noexcept

@@ -17,6 +17,7 @@ limitations under the License.
 #define _KEVOS_KERNEL_MM_KHEAPMEM_H_
 
 #include <kernel/mm/heap_mem.h>
+#include <kernel/mm/mem_layout.h>
 
 namespace kernel::mm
 {
@@ -24,7 +25,11 @@ namespace kernel::mm
 class KernelHeap
 {
 public:
-	static void initialize();
+	static void initialize()
+	{
+		khm.setup(reinterpret_cast<std::size_t>(&kheap_start_address),
+		reinterpret_cast<std::size_t>(&kheap_end_address));
+	}
 
 	static void* allocate(std::size_t size)
 	{
@@ -43,6 +48,14 @@ public:
 
 private:
 	static HeapMemory khm;
+};
+
+struct __KernelHeapInitializer
+{
+	__KernelHeapInitializer()
+	{
+		KernelHeap::initialize();
+	}
 };
 
 }	//end of namespace kernel::mm

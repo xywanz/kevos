@@ -15,6 +15,7 @@ limitations under the License.
 
 #include <arch/common/interrupt.h>
 #include <arch/x86/x64/interrupt.h>
+#include <arch/x86/x64/process.h>
 
 #include <cstdlib>
 
@@ -30,6 +31,7 @@ void irqCppHandler0()
     *((uint16_t*)(0xB8000+318))=((std::rand()%128)<<8)+'s';
     arch::common::InterruptManager::sendEndSignal(0);
 
+    ProcessManager::switchToNext();
     switchToContext();
 }
 
