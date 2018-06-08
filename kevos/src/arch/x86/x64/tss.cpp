@@ -21,11 +21,11 @@ limitations under the License.
 namespace arch::x86::x64
 {
 
-TaskStructureSegment TSS::tss;
+TaskStateSegment TSS::tss;
 
 void TSS::initialize()
 {
-    std::memset(&tss,0,sizeof(TaskStructureSegment));
+    std::memset(&tss,0,sizeof(TaskStateSegment));
     tss.ist0=reinterpret_cast<uint64_t>(&kstack_start_address);
     tss.rsp0=(uint64_t)(&kstack_start_address);
 }

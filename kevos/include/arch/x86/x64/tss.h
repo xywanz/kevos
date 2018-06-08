@@ -38,7 +38,7 @@ public:
 
     static void initialize();
 
-    static TaskStructureSegment tss;
+    static TaskStateSegment tss;
 };
 
 }   //end of namespace arch::x86::x64

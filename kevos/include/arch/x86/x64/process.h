@@ -92,14 +92,19 @@ public:
 
     static void contextSwitch();
 
+    static void createKernelProcess(void* entry,void* stack)
+    {
+        s_processes.push_back(new Process(entry,stack,0));
+    }
+
     static Process* current()
     {
-        return &*s_current;
+        return *s_current;
     }
 private:
-    static std::list<Process> s_processes;
+    static std::list<Process*> s_processes;
 
-    using iterator=typename std::list<Process>::iterator;
+    using iterator=typename std::list<Process*>::iterator;
 
     static iterator s_current;
 };

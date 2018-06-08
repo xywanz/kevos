@@ -13,46 +13,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_KERNEL_MM_KHEAPMEM_H_
-#define _KEVOS_KERNEL_MM_KHEAPMEM_H_
-
-#include <kernel/mm/heap_mem.h>
+#include <kernel/mm/kheap_mem.h>
+#include <kernel/mm/mem_layout.h>
 
 namespace kernel::mm
 {
 
-class KernelHeap
+HeapMemory KernelHeap::khm;
+
+void KernelHeap::initialize()
 {
-public:
-	static void initialize();
+    khm.setup(reinterpret_cast<std::size_t>(&kheap_start_address),
+    reinterpret_cast<std::size_t>(&kheap_end_address));
+}
 
-	static void* allocate(std::size_t size)
-	{
-		return khm.allocate(size);
-	}
-
-	static void deallocate(void* ptr)
-	{
-		khm.deallocate(ptr);
-	}
-
-	static void* reallocate(void* ptr,std::size_t newSize)
-	{
-		khm.reallocate(ptr,newSize);
-	}
-
-private:
-	static HeapMemory khm;
-};
-
-struct __KernelHeapInitializer
-{
-	__KernelHeapInitializer()
-	{
-		KernelHeap::initialize();
-	}
-};
-
-}	//end of namespace kernel::mm
-
-#endif
+}

@@ -33,26 +33,15 @@ Process::Process(void* entry,void* stack,uint64_t userProcess)
         m_regs=ProcessManager::createKernelRegInfo(entry,stack);
 }
 
-std::list<Process> ProcessManager::s_processes{0};
-typename ProcessManager::iterator ProcessManager::s_current{nullptr};
+std::list<Process*> ProcessManager::s_processes(nullptr);
+typename ProcessManager::iterator ProcessManager::s_current(nullptr);
 
-
-char test_stack[0x1000];
-
-void test_func()
-{
-    int a=1;
-    while(1)
-        *((uint16_t*)(0xB8000))=((std::rand()%128)<<8)+'k';
-}
 
 void ProcessManager::initialize()
 {
     s_processes.empty_initialize();
-    s_processes.push_back(Process{0,0,0});
-    s_processes.push_back(Process{(void*)test_func,(void*)(test_stack+0x1000),0});
+    s_processes.push_back(new Process(0,0,0));
     s_current=s_processes.begin();
-
 }
 
 ProcessRegisters* ProcessManager::createKernelRegInfo(void* entry,void* stack)

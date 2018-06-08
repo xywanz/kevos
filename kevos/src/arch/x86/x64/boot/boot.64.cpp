@@ -43,6 +43,7 @@ extern "C"{
 #include <list>
 #include <stack>
 
+
 void test_utility_main();
 void test_concept_main();
 void test_cxx_stdlib_template_main();
@@ -50,6 +51,7 @@ void test_vector_main();
 void test_list_main();
 void test_array_main();
 void test_deque_main();
+void test_multiprocess_main();
 
 namespace arch::x86::x64::boot
 {
@@ -77,6 +79,7 @@ inline void confirmImAlive()
 	*((uint16_t*)(0xB8000+158))=0x7500+'s';
 }
 
+
 extern "C" void entry64()
 {
 	VirtualMemory::loadKernelPML4();
@@ -98,10 +101,11 @@ extern "C" void entry64()
 	test_list_main();
 	test_array_main();
 	test_deque_main();
+    test_multiprocess_main();
 
 	confirmImAlive();
 	while(1)
-        *((uint16_t*)(0xB8000+2))=((std::rand()%128)<<8)+'s';
+        *((uint16_t*)(0xB8000))=((std::rand()%128)<<8)+'k';
 }
 
 

@@ -18,7 +18,6 @@ limitations under the License.
 
 namespace arch::x86::x64
 {
-
 SystemDescriptor GDT::items[gdtSize];
 
 void GDT::setItem(std::size_t index,uint64_t base,

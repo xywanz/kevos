@@ -134,7 +134,7 @@ struct __packed__ GateDescriptor
     uint32_t reserved;
 };
 
-struct __packed__ TaskStructureSegment
+struct __packed__ TaskStateSegment
 {
     uint32_t reserved1;
     uint64_t rsp0;
