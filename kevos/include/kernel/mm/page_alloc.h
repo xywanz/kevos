@@ -32,7 +32,7 @@ limitations under the License.
 #include <kernel/utils/bitmap.h>
 #include <kernel/mm/mem_layout.h>
 
-namespace kernel::mm
+namespace mm::page
 {
 
 template<class ByteType>
@@ -57,6 +57,6 @@ private:
 	static std::size_t m_cache;
 };
 
-}   // end of namespace kernel::mm
+} 
 
 #endif

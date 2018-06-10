@@ -19,7 +19,7 @@ limitations under the License.
 
 #include <cstdlib>
 
-namespace arch::x86::x64
+namespace intr::irq
 {
 
 void irqCppHandler0()
@@ -29,85 +29,85 @@ void irqCppHandler0()
     *((uint16_t*)(0xB8000+314))=((std::rand()%128)<<8)+'v';
     *((uint16_t*)(0xB8000+316))=((std::rand()%128)<<8)+'o';
     *((uint16_t*)(0xB8000+318))=((std::rand()%128)<<8)+'s';
-    arch::common::InterruptManager::sendEndSignal(0);
+    InterruptManager::sendEndSignal(0);
 
-    ProcessManager::switchToNext();
+    multitask::ProcessManager::switchToNext();
     switchToContext();
 }
 
 void irqCppHandler1()
 {
-    arch::common::InterruptManager::sendEndSignal(1);
+    InterruptManager::sendEndSignal(1);
 }
 
 void irqCppHandler2()
 {
-    arch::common::InterruptManager::sendEndSignal(2);
+    InterruptManager::sendEndSignal(2);
 }
 
 void irqCppHandler3()
 {
-    arch::common::InterruptManager::sendEndSignal(3);
+    InterruptManager::sendEndSignal(3);
 }
 
 void irqCppHandler4()
 {
-    arch::common::InterruptManager::sendEndSignal(4);
+    InterruptManager::sendEndSignal(4);
 }
 
 void irqCppHandler5()
 {
-    arch::common::InterruptManager::sendEndSignal(5);
+    InterruptManager::sendEndSignal(5);
 }
 
 void irqCppHandler6()
 {
-    arch::common::InterruptManager::sendEndSignal(6);
+    InterruptManager::sendEndSignal(6);
 }
 
 void irqCppHandler7()
 {
-    arch::common::InterruptManager::sendEndSignal(7);
+    InterruptManager::sendEndSignal(7);
 }
 
 void irqCppHandler8()
 {
-    arch::common::InterruptManager::sendEndSignal(8);
+    InterruptManager::sendEndSignal(8);
 }
 
 void irqCppHandler9()
 {
-    arch::common::InterruptManager::sendEndSignal(9);
+    InterruptManager::sendEndSignal(9);
 }
 
 void irqCppHandler10()
 {
-    arch::common::InterruptManager::sendEndSignal(10);
+    InterruptManager::sendEndSignal(10);
 }
 
 void irqCppHandler11()
 {
-    arch::common::InterruptManager::sendEndSignal(11);
+    InterruptManager::sendEndSignal(11);
 }
 
 void irqCppHandler12()
 {
-    arch::common::InterruptManager::sendEndSignal(12);
+    InterruptManager::sendEndSignal(12);
 }
 
 void irqCppHandler13()
 {
-    arch::common::InterruptManager::sendEndSignal(13);
+    InterruptManager::sendEndSignal(13);
 }
 
 void irqCppHandler14()
 {
-    arch::common::InterruptManager::sendEndSignal(14);
+    InterruptManager::sendEndSignal(14);
 }
 
 void irqCppHandler15()
 {
-    arch::common::InterruptManager::sendEndSignal(15);
+    InterruptManager::sendEndSignal(15);
 }
 
-}   // end of namespace arch::x86::x64
+}

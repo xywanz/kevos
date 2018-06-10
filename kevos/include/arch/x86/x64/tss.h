@@ -29,18 +29,13 @@ limitations under the License.
 
 #include <arch/x86/x64/descriptor.h>
 
-namespace arch::x86::x64
+namespace desc::tss
 {
 
-class TSS
-{
-public:
+void initialize();
 
-    static void initialize();
+extern TaskStateSegment item;
 
-    static TaskStateSegment tss;
-};
-
-}   //end of namespace arch::x86::x64
+} 
 
 #endif

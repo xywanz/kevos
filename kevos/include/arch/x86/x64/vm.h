@@ -27,10 +27,10 @@ limitations under the License.
 #ifndef _KEVOS_ARCH_x86_X64_VM_H_
 #define _KEVOS_ARCH_x86_X64_VM_H_
 
-#include <arch/x86/x64/kernel_paging.h>
+#include <arch/x86/x64/kpaging.h>
 
 
-namespace arch::x86::x64
+namespace mm::vm
 {
 
 /**
@@ -38,10 +38,10 @@ namespace arch::x86::x64
  */
 struct __packed__ VMemMap
 {
-	PML4E*  pml4;
-	PDPTE*  pdpt;
-	PDTE*	pdt;
-	PTE*	pt;
+	page::PML4E*  pml4;
+	page::PDPTE*  pdpt;
+	page::PDTE*	pdt;
+	page::PTE*	pt;
 
 	uint64_t pml4PPN;
 	uint64_t pdptPPN;
@@ -130,7 +130,7 @@ public:
 
 	static void loadKernelPML4()
 	{
-		__asm__ __volatile__("mov %%rax, %%cr3" : : "a"(KernelPageFrame::pml4));
+		__asm__ __volatile__("mov %%rax, %%cr3" : : "a"(page::kernel::pml4));
 	}
 
 private:
@@ -144,7 +144,7 @@ private:
 	static void setPagingEntry(T* entries,std::size_t index,std::size_t ppn,
 			uint64_t isToClear,uint64_t userAccessable,uint64_t writable);
 
-	template<class T,class traits=type_traits<T>>
+	template<class T,class traits=page::type_traits<T>>
 	static bool isNullPagingEntry(T* entries);
 
 /**

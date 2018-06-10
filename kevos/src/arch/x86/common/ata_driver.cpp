@@ -15,9 +15,9 @@ limitations under the License.
 
 #include <arch/x86/common/ata_driver.h>
 
-namespace arch::x86::common
+namespace io
 {
 
 
 
-}   // end of namespace arch::x86::common
+}  

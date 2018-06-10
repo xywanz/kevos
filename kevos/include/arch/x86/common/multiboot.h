@@ -34,7 +34,7 @@ limitations under the License.
 #define MULTIBOOT_VESA_INFO       (1U<<2)
 #define MULTIBOOT_MAGIC           (0x1BADB002U)
 
-namespace arch::x86::common
+namespace multiboot
 {
 
 struct __packed__ ElfSymbolTable
@@ -209,6 +209,6 @@ static constexpr struct __packed__ {
 
 #endif
 
-}   // end of namespace arch::x86::common
+}
 
 #endif

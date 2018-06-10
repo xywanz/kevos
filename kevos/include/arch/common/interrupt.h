@@ -18,7 +18,7 @@ limitations under the License.
 
 #include <arch/common/types.h>
 
-namespace arch::common
+namespace intr
 {
 
 class InterruptManager
@@ -39,6 +39,6 @@ public:
 	static void disableKeyboard();
 };
 
-}	// end of namespace arch::common
+}
 
 #endif

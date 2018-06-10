@@ -17,7 +17,7 @@ limitations under the License.
 
 #include <cstdlib>
 
-namespace arch::x86::x64
+namespace intr::syscall
 {
 
 void syscallCppHandler0()
@@ -59,4 +59,4 @@ void syscallCppHandler7()
 
 }
 
-}   // end of namespace arch::x86::x64
+}

@@ -20,7 +20,7 @@ limitations under the License.
 
 #include <cstddef>
 
-namespace kernel::mm
+namespace mm
 {
 
 class HeapMemory
@@ -65,6 +65,6 @@ private:
 	MemoryHeader* m_memEnd;
 };
 
-}	// end of namespace kernel::mm
+}
 
 #endif

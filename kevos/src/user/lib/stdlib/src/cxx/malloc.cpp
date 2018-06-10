@@ -13,21 +13,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <kernel/mm/kheap_mem.h>
+#include <kernel/mm/kheap.h>
 
 #include <malloc.h>
 
 void* malloc(size_t n)
 {
-    return kernel::mm::KernelHeap::allocate(n);
+    return mm::KernelHeap::allocate(n);
 }
 
 void* realloc(void* p,size_t n)
 {
-    return kernel::mm::KernelHeap::reallocate(p,n);
+    return mm::KernelHeap::reallocate(p,n);
 }
 
 void free(void* p)
 {
-    kernel::mm::KernelHeap::deallocate(p);
+    mm::KernelHeap::deallocate(p);
 }

@@ -15,7 +15,7 @@ limitations under the License.
 
 #include <arch/x86/x64/interrupt.h>
 
-namespace arch::x86::x64
+namespace intr::fault
 {
 
 void faultCppHandler0()
@@ -178,4 +178,4 @@ void faultCppHandler31()
     __asm__ __volatile__("hlt");
 }
 
-}   // end of namespace arch::x86::x64
+} 

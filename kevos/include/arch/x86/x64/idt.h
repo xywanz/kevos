@@ -34,23 +34,20 @@ limitations under the License.
 #define IRQ0        0x20
 #define SYSCALL0    0x80
 
-namespace arch::x86::x64
+namespace desc::idt
 {
 
 typedef void (*InterruptHandler)();
 
-class IDT
-{
-public:
-	static void setItem(std::size_t index,InterruptHandler handler,uint8_t dpl);
-	static void initialize();
+void setItem(std::size_t index,InterruptHandler handler,uint8_t dpl);
+void initialize();
 
-    static void registerCallback(std::size_t intNum,InterruptHandler handler);
+void registerCallback(std::size_t intNum,InterruptHandler handler);
 
-	static constexpr uint16_t idtSize=256;
-	static GateDescriptor items[idtSize];
-};
+constexpr uint16_t idtSize=256;
+extern GateDescriptor items[idtSize];
 
-}   // end of namespace arch::x86::x64
+}
+
 
 #endif

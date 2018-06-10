@@ -29,7 +29,7 @@ limitations under the License.
 
 #include <arch/common/types.h>
 
-namespace arch::x86::common
+namespace io
 {
 
 static inline uint8_t inportb(uint16_t port)
@@ -135,6 +135,6 @@ static inline void outportld(uint16_t port,uint32_t value)
 	__asm__ __volatile__("nop\nnop");
 }
 
-}	// end of namespace arch::x86::common
+}
 
 #endif

@@ -21,7 +21,7 @@ limitations under the License.
 
 #include <list>
 
-namespace arch::x86::x64
+namespace multitask
 {
 
 struct ProcessRegisters
@@ -86,7 +86,7 @@ public:
         process->registers()->rip=(uint64_t)entry;
     }
 
-    static void setVirtualMemory(Process* process,const VirtualMemory& mm);
+    static void setVirtualMemory(Process* process,const mm::vm::VirtualMemory& mm);
 
     static void switchToNext();
 
@@ -109,6 +109,6 @@ private:
     static iterator s_current;
 };
 
-}   // end of namespace arch::x86::x64
+} 
 
 #endif

@@ -13,14 +13,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x86/x64/kernel_paging.h>
+#include <kernel/mm/kheap.h>
+#include <kernel/mm/mem_layout.h>
 
-namespace arch::x86::x64
+namespace mm
 {
 
-PML4E  KernelPageFrame::pml4[pml4Size] __aligned__(0x1000);
-PDPTE  KernelPageFrame::pdpt[pdptSize] __aligned__(0x1000);
-PDTE   KernelPageFrame::pdt[pdtSize]   __aligned__(0x1000);
-PTE    KernelPageFrame::pt[ptSize]     __aligned__(0x1000);
+HeapMemory KernelHeap::khm;
+
+void KernelHeap::initialize()
+{
+    khm.setup(reinterpret_cast<std::size_t>(&kheap_start_address),
+    reinterpret_cast<std::size_t>(&kheap_end_address));
+}
 
 }

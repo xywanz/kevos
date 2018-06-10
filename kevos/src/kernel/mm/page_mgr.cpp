@@ -13,9 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <kernel/mm/page_mgr.h>
+#include <kernel/mm/page_alloc.h>
 
-namespace kernel::mm
+namespace mm::page
 {
 
 std::size_t PageManager::m_size=0;
@@ -61,4 +61,4 @@ void PageManager::deallocate(std::size_t pPagePPN,std::size_t pageSize)
 	m_bitmap.unset(pPagePPN);
 }
 
-}	// end of namespace kernel::mm
+}

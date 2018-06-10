@@ -25,10 +25,10 @@ extern "C"{
 #include <arch/x86/x64/tss.h>
 #include <arch/x86/x64/vm.h>
 #include <arch/x86/x64/process.h>
-#include <kernel/mm/kheap_mem.h>
+#include <kernel/mm/kheap.h>
 #include <kernel/mm/mem_layout.h>
 
-#include <kernel/mm/page_mgr.h>
+#include <kernel/mm/page_alloc.h>
 #include <kernel/mm/new.h>
 
 #include <cstdlib>
@@ -53,10 +53,8 @@ void test_array_main();
 void test_deque_main();
 void test_multiprocess_main();
 
-namespace arch::x86::x64::boot
+namespace boot
 {
-
-using namespace kernel::mm;
 
 std::size_t print(std::size_t pos,const char* buf)
 {
@@ -82,17 +80,17 @@ inline void confirmImAlive()
 
 extern "C" void entry64()
 {
-	VirtualMemory::loadKernelPML4();
-	TSS::initialize();
-	GDT::initialize();
-	KernelHeap::initialize();
-	PageManager::initialize();
-	arch::common::InterruptManager::initialize();
-	arch::common::InterruptManager::enableInterrupts();
-	arch::common::InterruptManager::enableTimer();
-	arch::common::InterruptManager::setTimerFrequency(1);
-	common::CPUInfo& cpuInfo=common::CPUInfo::instance();
-	ProcessManager::initialize();
+	mm::vm::VirtualMemory::loadKernelPML4();
+	desc::tss::initialize();
+	desc::gdt::initialize();
+	mm::KernelHeap::initialize();
+	mm::page::PageManager::initialize();
+	intr::InterruptManager::initialize();
+	intr::InterruptManager::enableInterrupts();
+	intr::InterruptManager::enableTimer();
+	intr::InterruptManager::setTimerFrequency(1);
+	cpu::CPUInfo& cpuInfo=cpu::CPUInfo::instance();
+	multitask::ProcessManager::initialize();
 
 	test_utility_main();
 	test_concept_main();
@@ -109,4 +107,4 @@ extern "C" void entry64()
 }
 
 
-}	// end of namespace arch::x86::x64::boot
+}

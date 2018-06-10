@@ -20,13 +20,11 @@ limitations under the License.
 #include <arch/x86/x64/tss.h>
 #include <arch/x86/common/i8259a.h>
 
-namespace arch::x86::x64
-{
 
 void saveProcessRegisters(char* base)
 {
-    auto regs=ProcessManager::current()->registers();
-    auto ssregs=reinterpret_cast<SoftwareSavedRegisters*>(base);
+    auto regs=multitask::ProcessManager::current()->registers();
+    auto ssregs=reinterpret_cast<intr::SoftwareSavedRegisters*>(base);
     regs->rax=ssregs->rax;
     regs->rbx=ssregs->rbx;
     regs->rcx=ssregs->rcx;
@@ -44,7 +42,7 @@ void saveProcessRegisters(char* base)
     regs->r15=ssregs->r15;
     regs->ds=ssregs->ds;
     regs->es=ssregs->es;
-    auto hsregs=reinterpret_cast<HardwareSavedRegisters*>(base+sizeof(SoftwareSavedRegisters));
+    auto hsregs=reinterpret_cast<intr::HardwareSavedRegisters*>(base+sizeof(intr::SoftwareSavedRegisters));
     regs->rip=hsregs->rip;
     regs->cs=hsregs->cs;
     regs->rflags=hsregs->rflags;
@@ -54,7 +52,7 @@ void saveProcessRegisters(char* base)
 
 void switchToContext()
 {
-    auto regs=ProcessManager::current()->registers();
+    auto regs=multitask::ProcessManager::current()->registers();
     // TSS::tss.rsp0=regs->rsp;
     __asm__ ("movq %[cr3],%%cr3" : : [cr3]"r"(regs->cr3));
     __asm__ ("pushq %[ss]" : : [ss]"m"(regs->ss));
@@ -84,21 +82,16 @@ void switchToContext()
     __asm__ __volatile__("iretq");
 }
 
-}   // end of namespace arch::x86::x64
 
 
-
-
-
-
-namespace arch::common
+namespace intr
 {
 
 
 void InterruptManager::initialize()
 {
-    x86::common::I8259A::initialize();
-    x86::x64::IDT::initialize();
+    I8259A::initialize();
+    desc::idt::initialize();
 }
 
 void InterruptManager::enableInterrupts()
@@ -113,17 +106,17 @@ void InterruptManager::disableInterrupts()
 
 void InterruptManager::sendEndSignal(uint16_t num)
 {
-    x86::common::I8259A::sendEOI(num);
+    I8259A::sendEOI(num);
 }
 
 void InterruptManager::enableTimer()
 {
-    x86::common::I8259A::enableIRQ(0);
+    I8259A::enableIRQ(0);
 }
 
 void InterruptManager::disableTimer()
 {
-    x86::common::I8259A::disableIRQ(0);
+    I8259A::disableIRQ(0);
 }
 
 void InterruptManager::setTimerFrequency(uint32_t freq)
@@ -134,19 +127,19 @@ void InterruptManager::setTimerFrequency(uint32_t freq)
     } else {
       divisor = static_cast<uint32_t>(1193180 / freq);
     }
-    x86::common::outportb(0x43, 0x36);
-    x86::common::outportb(0x40, divisor & 0xFF);
-    x86::common::outportb(0x40, divisor >> 8);
+    io::outportb(0x43, 0x36);
+    io::outportb(0x40, divisor & 0xFF);
+    io::outportb(0x40, divisor >> 8);
 }
 
 void InterruptManager::enableKeyboard()
 {
-    x86::common::I8259A::enableIRQ(1);
+    I8259A::enableIRQ(1);
 }
 
 void InterruptManager::disableKeyboard()
 {
-    x86::common::I8259A::disableIRQ(1);
+    I8259A::disableIRQ(1);
 }
 
-}   // end of namespace arch::common
+}

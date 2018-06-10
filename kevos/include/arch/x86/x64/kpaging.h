@@ -17,7 +17,7 @@ limitations under the License.
 
 #include <cstddef>
 
-namespace arch::x86::x64
+namespace mm::page::kernel
 {
 
 /**
@@ -36,22 +36,18 @@ namespace arch::x86::x64
 #define __KERNEL_PDT_SIZE           (__KERNEL_PDT_NUM*__PDT_SIZE)
 #define __KERNEL_PT_SIZE            (__KERNEL_PT_NUM*__PT_SIZE)
 
+
+constexpr std::size_t pml4Size = 512;
+constexpr std::size_t pdptSize = 512;
+constexpr std::size_t pdtSize = 512;
+constexpr std::size_t ptSize = 512*32;
+
 /**
  * @brief 内核态的分页结构表
  */
-
-class KernelPageFrame
-{
-public:
-    constexpr static std::size_t pml4Size = 512;
-    constexpr static std::size_t pdptSize = 512;
-    constexpr static std::size_t pdtSize = 512;
-    constexpr static std::size_t ptSize = 512*32;
-
-    static PML4E  pml4[] __aligned__(0x1000);
-    static PDPTE  pdpt[] __aligned__(0x1000);
-    static PDTE   pdt [] __aligned__(0x1000);
-    static PTE    pt  [] __aligned__(0x1000);
-};
+extern PML4E  pml4[] __aligned__(0x1000);
+extern PDPTE  pdpt[] __aligned__(0x1000);
+extern PDTE   pdt [] __aligned__(0x1000);
+extern PTE    pt  [] __aligned__(0x1000);
 
 }

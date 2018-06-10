@@ -18,7 +18,7 @@ limitations under the License.
 
 #include <arch/common/types.h>
 
-namespace arch::x86::common
+namespace cpu
 {
 
 class CPUID
@@ -295,6 +295,6 @@ private:
 	uint32_t m_reserved						:	5;
 };
 
-}	// end of namespace arch::x86::common
+}
 
 #endif

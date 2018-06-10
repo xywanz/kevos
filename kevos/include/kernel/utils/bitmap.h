@@ -34,7 +34,7 @@ limitations under the License.
 
 
 
-namespace kernel::utils
+namespace utils
 {
 
 #define DynamicBitmap	0

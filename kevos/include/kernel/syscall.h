@@ -17,7 +17,7 @@ limitations under the License.
 #define _KEVOS_KERNEL_SYSCALL_H_
 
 
-namespace kernel
+namespace intr::syscall
 {
 
 

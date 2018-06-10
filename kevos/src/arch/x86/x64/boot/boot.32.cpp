@@ -32,7 +32,7 @@ __asm__(".align 4");
 #include <arch/common/config.h>
 #include <arch/x86/x64/paging.h>
 #include <arch/x86/x64/gdt.h>
-#include <arch/x86/x64/kernel_paging.h>
+#include <arch/x86/x64/kpaging.h>
 #include <kernel/mm/mem_layout.h>
 
 #include <cstddef>
@@ -51,8 +51,10 @@ static_assert(sizeof(uint64_t)==8,"In x86-64 achitecture, uint64_t must be 8 byt
 static_assert(sizeof(int64_t)==8,"In x86-64 achitecture, int64_t must be 8 bytes!");
 static_assert(sizeof(std::size_t)==8,"In x86-64 achitecture, std::size_t must be 8 bytes!");
 
-namespace arch::x86::x64::boot
+namespace boot
 {
+
+using namespace mm::page;
 
 static void setSystemDescriptor(uint32_t index,uint32_t baseHigh,uint32_t baseLow,
             uint32_t limit,uint8_t dpl,uint8_t code);
@@ -83,8 +85,8 @@ extern "C" void entry32()
         uint16_t limit;
         uint32_t address;
     } gdtPtr={
-        sizeof(GDT::items)-1,
-        reinterpret_cast<uint32_t>(GDT::items)
+        sizeof(desc::gdt::items)-1,
+        reinterpret_cast<uint32_t>(desc::gdt::items)
     };
     __asm__ __volatile__("lgdt %[gdtr]" : : [gdtr]"m"(gdtPtr));
     __asm__ __volatile__(
@@ -105,7 +107,7 @@ extern "C" void entry32()
 static void setSystemDescriptor(uint32_t index,uint32_t baseHigh,uint32_t baseLow,
             uint32_t limit,uint8_t dpl,uint8_t code)
 {
-    uint8_t* gdtHelper=(uint8_t*)(&GDT::items[index]);
+    uint8_t* gdtHelper=(uint8_t*)(&desc::gdt::items[index]);
     *((uint16_t*)(&gdtHelper[0]))=limit&0xFFFF;
     *((uint16_t*)(&gdtHelper[2]))=baseLow&0xFFFF;
     gdtHelper[4]=(baseLow>>16)&0xFF;
@@ -153,14 +155,14 @@ static void setPAE()
 
 static void setupKernelPage()
 {
-    bzero(reinterpret_cast<char*>(KernelPageFrame::pml4),sizeof(PML4E)*__KERNEL_PML4_SIZE);    //清空内核PML4表
-    bzero(reinterpret_cast<char*>(KernelPageFrame::pdpt),sizeof(PDPTE)*__KERNEL_PDPT_SIZE);    //清空内核PML4表
-    bzero(reinterpret_cast<char*>(KernelPageFrame::pdt),sizeof(PDT)*__KERNEL_PDT_SIZE);        //清空内核PML4表
-    bzero(reinterpret_cast<char*>(KernelPageFrame::pt),sizeof(PT)*__KERNEL_PT_SIZE);           //清空内核PML4表
-    uint32_t* pml4=reinterpret_cast<uint32_t*>(KernelPageFrame::pml4);
-    uint32_t* pdpt=reinterpret_cast<uint32_t*>(KernelPageFrame::pdpt);
-    uint32_t* pdt=reinterpret_cast<uint32_t*>(KernelPageFrame::pdt);
-    uint32_t* pt=reinterpret_cast<uint32_t*>(KernelPageFrame::pt);
+    bzero(reinterpret_cast<char*>(kernel::pml4),sizeof(PML4E)*__KERNEL_PML4_SIZE);    //清空内核PML4表
+    bzero(reinterpret_cast<char*>(kernel::pdpt),sizeof(PDPTE)*__KERNEL_PDPT_SIZE);    //清空内核PML4表
+    bzero(reinterpret_cast<char*>(kernel::pdt),sizeof(PDT)*__KERNEL_PDT_SIZE);        //清空内核PML4表
+    bzero(reinterpret_cast<char*>(kernel::pt),sizeof(PT)*__KERNEL_PT_SIZE);           //清空内核PML4表
+    uint32_t* pml4=reinterpret_cast<uint32_t*>(kernel::pml4);
+    uint32_t* pdpt=reinterpret_cast<uint32_t*>(kernel::pdpt);
+    uint32_t* pdt=reinterpret_cast<uint32_t*>(kernel::pdt);
+    uint32_t* pt=reinterpret_cast<uint32_t*>(kernel::pt);
     for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pdpt)+0x3;
         i<__KERNEL_PDPT_NUM;
         ++i,addr+=__PAGE_SIZE)
@@ -203,7 +205,7 @@ static void enableLongMode()
 
 static void setupCR3()
 {
-    __asm__ __volatile__("mov %[pd],%%cr3" : : [pd]"r"(KernelPageFrame::pml4));
+    __asm__ __volatile__("mov %[pd],%%cr3" : : [pd]"r"(kernel::pml4));
 }
 
 static void enablePaging()
@@ -216,7 +218,7 @@ static void enablePaging()
 }
 
 
-}   //end of namespace arch::x86::x64::boot
+}
 
 __asm__(".code64");
 __asm__(".align 8");

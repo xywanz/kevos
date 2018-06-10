@@ -20,7 +20,7 @@ limitations under the License.
 
 #include <cstddef>
 
-namespace arch::x86::common
+namespace io
 {
 
 class ATADriver
@@ -33,6 +33,6 @@ public:
 
 };
 
-}   // end of namespace arch::x86::common
+} 
 
 #endif

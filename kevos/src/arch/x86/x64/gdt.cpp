@@ -16,11 +16,12 @@ limitations under the License.
 #include <arch/x86/x64/gdt.h>
 #include <arch/x86/x64/tss.h>
 
-namespace arch::x86::x64
+namespace desc::gdt
 {
-SystemDescriptor GDT::items[gdtSize];
 
-void GDT::setItem(std::size_t index,uint64_t base,
+SystemDescriptor items[gdtSize];
+
+void setItem(std::size_t index,uint64_t base,
                 uint32_t limit,uint8_t dpl,uint8_t code,uint8_t tss)
 {
     if(index>=gdtSize)
@@ -39,11 +40,11 @@ void GDT::setItem(std::size_t index,uint64_t base,
     *reinterpret_cast<uint32_t*>(&gdtHelper[12])=0;
 }
 
-void GDT::initialize()
+void initialize()
 {
     setItem(3, 0, 0, 3, 1, 0);
     setItem(4, 0, 0, 3, 0, 0);
-    setItem(5, reinterpret_cast<uint64_t>(&TSS::tss), sizeof(TSS::tss)-1, 0, 0, 1);
+    setItem(5, reinterpret_cast<uint64_t>(&tss::item), sizeof(tss::item)-1, 0, 0, 1);
 
     struct __packed__ GDTPointer
     {
@@ -57,4 +58,4 @@ void GDT::initialize()
     __asm__ __volatile__("ltr %%ax": : "a"(__KERNEL_TSS));
 }
 
-}   // end of namespace arch::x86::x64
+} 

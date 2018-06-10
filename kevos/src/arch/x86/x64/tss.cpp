@@ -18,16 +18,16 @@ limitations under the License.
 
 #include <cstring>
 
-namespace arch::x86::x64
+namespace desc::tss
 {
 
-TaskStateSegment TSS::tss;
+TaskStateSegment item;
 
-void TSS::initialize()
+void initialize()
 {
-    std::memset(&tss,0,sizeof(TaskStateSegment));
-    tss.ist0=reinterpret_cast<uint64_t>(&kstack_start_address);
-    tss.rsp0=(uint64_t)(&kstack_start_address);
+    std::memset(&item,0,sizeof(TaskStateSegment));
+    item.ist0=reinterpret_cast<uint64_t>(&kstack_start_address);
+    item.rsp0=(uint64_t)(&kstack_start_address);
 }
 
-}   // end of namespace arch::x86::x64
+}

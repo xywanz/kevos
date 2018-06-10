@@ -13,46 +13,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_KERNEL_MM_KHEAPMEM_H_
-#define _KEVOS_KERNEL_MM_KHEAPMEM_H_
+#include <arch/x86/x64/kpaging.h>
 
-#include <kernel/mm/heap_mem.h>
-
-namespace kernel::mm
+namespace mm::page::kernel
 {
 
-class KernelHeap
-{
-public:
-	static void initialize();
+PML4E  pml4[pml4Size] __aligned__(0x1000);
+PDPTE  pdpt[pdptSize] __aligned__(0x1000);
+PDTE   pdt[pdtSize]   __aligned__(0x1000);
+PTE    pt[ptSize]     __aligned__(0x1000);
 
-	static void* allocate(std::size_t size)
-	{
-		return khm.allocate(size);
-	}
-
-	static void deallocate(void* ptr)
-	{
-		khm.deallocate(ptr);
-	}
-
-	static void* reallocate(void* ptr,std::size_t newSize)
-	{
-		khm.reallocate(ptr,newSize);
-	}
-
-private:
-	static HeapMemory khm;
-};
-
-struct __KernelHeapInitializer
-{
-	__KernelHeapInitializer()
-	{
-		KernelHeap::initialize();
-	}
-};
-
-}	//end of namespace kernel::mm
-
-#endif
+}

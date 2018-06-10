@@ -18,56 +18,12 @@ limitations under the License.
 
 #include <arch/common/types.h>
 
-namespace arch::x86::x64
-{
-
-#define IRQ_TIMER		0
-#define IRQ_KEYBOARD	1
-
-/**
- * @brief 中断服务的返回信息
- *
- *    中断会引起CPU的特权级变为0，能够使得CPU从用户态变为内核态，这时CPU需要保存返回用户态的信息，即堆栈的切换操
- * 作。CPU首先从TSS取得内核栈选择子ss0及偏移rsp0，将堆栈切换到内核态，然后CPU将按ss、rsp、rflags、cs、rip的顺序
- * 将用户态的上述寄存器压入内核栈内。
- */
-struct HardwareSavedRegisters
-{
-	uint64_t rip;
-	uint64_t cs;
-	uint64_t rflags;
-	uint64_t rsp;
-	uint64_t ss;
-};
-
-struct SoftwareSavedRegisters
-{
-    uint64_t es;
-    uint64_t ds;
-    uint64_t r15;
-    uint64_t r14;
-    uint64_t r13;
-    uint64_t r12;
-    uint64_t r11;
-    uint64_t r10;
-    uint64_t r9;
-    uint64_t r8;
-    uint64_t rbp;
-    uint64_t rdi;
-    uint64_t rsi;
-    uint64_t rdx;
-    uint64_t rcx;
-    uint64_t rbx;
-    uint64_t rax;
-};
-
 extern "C"
 {
 
 void saveProcessRegisters(char* base);
 
 void switchToContext();
-
 
 /**
  * @brief 除法错误，被0除
@@ -185,6 +141,82 @@ void faultAsmHandler29();
 void faultAsmHandler30();
 void faultAsmHandler31();
 
+void irqAsmHandler0();
+void irqAsmHandler1();
+void irqAsmHandler2();
+void irqAsmHandler3();
+void irqAsmHandler4();
+void irqAsmHandler5();
+void irqAsmHandler6();
+void irqAsmHandler7();
+void irqAsmHandler8();
+void irqAsmHandler9();
+void irqAsmHandler10();
+void irqAsmHandler11();
+void irqAsmHandler12();
+void irqAsmHandler13();
+void irqAsmHandler14();
+void irqAsmHandler15();
+
+void syscallAsmHandler0();
+void syscallAsmHandler1();
+void syscallAsmHandler2();
+void syscallAsmHandler3();
+void syscallAsmHandler4();
+void syscallAsmHandler5();
+void syscallAsmHandler6();
+void syscallAsmHandler7();
+
+}
+
+
+namespace intr
+{
+
+#define IRQ_TIMER		0
+#define IRQ_KEYBOARD	1
+
+/**
+ * @brief 中断服务的返回信息
+ *
+ *    中断会引起CPU的特权级变为0，能够使得CPU从用户态变为内核态，这时CPU需要保存返回用户态的信息，即堆栈的切换操
+ * 作。CPU首先从TSS取得内核栈选择子ss0及偏移rsp0，将堆栈切换到内核态，然后CPU将按ss、rsp、rflags、cs、rip的顺序
+ * 将用户态的上述寄存器压入内核栈内。
+ */
+struct HardwareSavedRegisters
+{
+	uint64_t rip;
+	uint64_t cs;
+	uint64_t rflags;
+	uint64_t rsp;
+	uint64_t ss;
+};
+
+struct SoftwareSavedRegisters
+{
+    uint64_t es;
+    uint64_t ds;
+    uint64_t r15;
+    uint64_t r14;
+    uint64_t r13;
+    uint64_t r12;
+    uint64_t r11;
+    uint64_t r10;
+    uint64_t r9;
+    uint64_t r8;
+    uint64_t rbp;
+    uint64_t rdi;
+    uint64_t rsi;
+    uint64_t rdx;
+    uint64_t rcx;
+    uint64_t rbx;
+    uint64_t rax;
+};
+
+
+namespace fault
+{
+
 void faultCppHandler0();
 void faultCppHandler1();
 void faultCppHandler2();
@@ -218,24 +250,11 @@ void faultCppHandler29();
 void faultCppHandler30();
 void faultCppHandler31();
 
+}
 
 
-void irqAsmHandler0();
-void irqAsmHandler1();
-void irqAsmHandler2();
-void irqAsmHandler3();
-void irqAsmHandler4();
-void irqAsmHandler5();
-void irqAsmHandler6();
-void irqAsmHandler7();
-void irqAsmHandler8();
-void irqAsmHandler9();
-void irqAsmHandler10();
-void irqAsmHandler11();
-void irqAsmHandler12();
-void irqAsmHandler13();
-void irqAsmHandler14();
-void irqAsmHandler15();
+namespace irq
+{
 
 void irqCppHandler0();
 void irqCppHandler1();
@@ -254,16 +273,11 @@ void irqCppHandler13();
 void irqCppHandler14();
 void irqCppHandler15();
 
+}
 
 
-void syscallAsmHandler0();
-void syscallAsmHandler1();
-void syscallAsmHandler2();
-void syscallAsmHandler3();
-void syscallAsmHandler4();
-void syscallAsmHandler5();
-void syscallAsmHandler6();
-void syscallAsmHandler7();
+namespace syscall
+{
 
 void syscallCppHandler0();
 void syscallCppHandler1();
@@ -276,6 +290,7 @@ void syscallCppHandler7();
 
 }
 
-}   // end of namespace arch::x86::x64
+}
+
 
 #endif

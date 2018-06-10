@@ -30,7 +30,7 @@ limitations under the License.
 #include <arch/common/types.h>
 #include <arch/x86/common/port.h>
 
-namespace arch::x86::common
+namespace intr
 {
 
 #define I8259A_PIC1_CONTROL_PORT	0x20
@@ -48,38 +48,38 @@ public:
 	{
 		mask &= (~(1<<num));
 		if(num&8)
-			outportb(I8259A_PIC2_DATA_PORT,mask>>8);
+			io::outportb(I8259A_PIC2_DATA_PORT,mask>>8);
 		else
-			outportb(I8259A_PIC1_DATA_PORT,mask&0xFF);
+			io::outportb(I8259A_PIC1_DATA_PORT,mask&0xFF);
 	}
 
 	static void enableAllIRQs()
 	{
 		mask = 0;
-		outportb(I8259A_PIC1_DATA_PORT,0);
-		outportb(I8259A_PIC2_DATA_PORT,0);
+		io::outportb(I8259A_PIC1_DATA_PORT,0);
+		io::outportb(I8259A_PIC2_DATA_PORT,0);
 	}
 
 	static void disableIRQ(uint16_t num)
 	{
 		mask |= (1<<num);
 		if(num&8)
-			outportb(I8259A_PIC2_DATA_PORT,mask>>8);
+			io::outportb(I8259A_PIC2_DATA_PORT,mask>>8);
 		else
-			outportb(I8259A_PIC1_DATA_PORT,mask&0xFF);	
+			io::outportb(I8259A_PIC1_DATA_PORT,mask&0xFF);	
 	}
 
 	static void disableAllIRQs()
 	{
 		mask = 0xFFFF;
-		outportb(I8259A_PIC1_DATA_PORT,0xFF);
-		outportb(I8259A_PIC2_DATA_PORT,0xFF);
+		io::outportb(I8259A_PIC1_DATA_PORT,0xFF);
+		io::outportb(I8259A_PIC2_DATA_PORT,0xFF);
 	}
 
 	static void sendEOI(uint16_t num)
 	{
 		uint16_t port=num>7?I8259A_PIC2_CONTROL_PORT:I8259A_PIC1_CONTROL_PORT;
-		outportb(port,0x20);
+		io::outportb(port,0x20);
 	}
 
 private:
@@ -87,6 +87,6 @@ private:
 
 };
 
-}	// end of namespace arch::x86::common
+}
 
 #endif

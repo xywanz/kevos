@@ -13,11 +13,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <kernel/mm/heap_mem.h>
+#include <kernel/mm/heap_alloc.h>
 
 #include <cstring>
 
-namespace kernel::mm
+namespace mm
 {
 
 void* HeapMemory::allocate(std::size_t size)
@@ -106,4 +106,4 @@ void* HeapMemory::reallocate(void* ptr,std::size_t newSize)
 	}
 }
 
-}	// end of namespace kernel::mm
+}

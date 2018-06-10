@@ -15,7 +15,7 @@ limitations under the License.
 
 #include <arch/x86/common/cpuid.h>
 
-namespace arch::x86::common
+namespace cpu
 {
 
 void CPUID::cpuid(uint32_t typeInfo)
@@ -92,4 +92,4 @@ CPUInfo::CPUInfo()
 	id.cpuid(2);
 }
 
-}	// end of namespace arch::x86::common
+}

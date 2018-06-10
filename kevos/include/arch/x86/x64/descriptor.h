@@ -39,7 +39,7 @@ limitations under the License.
 #define SEGMENT_CODE_XRC        0xE
 
 
-namespace arch::x86::x64
+namespace desc
 {
 
 /**
@@ -145,6 +145,7 @@ struct __packed__ TaskStateSegment
     uint32_t reserved3[15];
 };
 
-}   // end of namespace arch::x86::x64
+}
+
 
 #endif

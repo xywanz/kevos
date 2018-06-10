@@ -18,7 +18,7 @@ limitations under the License.
 
 #include <sys/types.h>
 
-namespace arch::x86::x64
+namespace atomic
 {
 
 class AtomicOps
@@ -35,6 +35,6 @@ public:
     
 };
 
-}   // end of namespace arch::x86::x64
+}
 
 #endif

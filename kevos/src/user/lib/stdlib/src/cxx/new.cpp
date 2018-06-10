@@ -13,34 +13,34 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <kernel/mm/kheap_mem.h>
+#include <kernel/mm/kheap.h>
 #include <new>
 
 
 void* operator new(std::size_t size)
 {
-    return kernel::mm::KernelHeap::allocate(size);
+    return mm::KernelHeap::allocate(size);
 }
 
 void operator delete(void* ptr)
 {
-    kernel::mm::KernelHeap::deallocate(ptr);
+    mm::KernelHeap::deallocate(ptr);
 }
 
 void operator delete(void* ptr, std::size_t)
 {
-    kernel::mm::KernelHeap::deallocate(ptr);
+    mm::KernelHeap::deallocate(ptr);
 }
 
 
 void* operator new[](std::size_t size)
 {
-    return kernel::mm::KernelHeap::allocate(size);
+    return mm::KernelHeap::allocate(size);
 }
 
 void operator delete[](void* ptr)
 {
-    kernel::mm::KernelHeap::deallocate(ptr);
+    mm::KernelHeap::deallocate(ptr);
 }
 
 void* operator new(std::size_t,void* p)

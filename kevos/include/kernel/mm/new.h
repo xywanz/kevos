@@ -16,32 +16,32 @@ limitations under the License.
 #ifndef _KEVOS_KERNEL_MM_NEW_H_
 #define _KEVOS_KERNEL_MM_NEW_H_
 
-#include <kernel/mm/kheap_mem.h>
+#include <kernel/mm/kheap.h>
 
 inline void* operator new(std::size_t size)
 {
-	return kernel::mm::KernelHeap::allocate(size);
+	return mm::KernelHeap::allocate(size);
 }
 
 inline void operator delete(void* ptr)
 {
-	kernel::mm::KernelHeap::deallocate(ptr);
+	mm::KernelHeap::deallocate(ptr);
 }
 
 inline void operator delete(void* ptr, std::size_t)
 {
-	kernel::mm::KernelHeap::deallocate(ptr);
+	mm::KernelHeap::deallocate(ptr);
 }
 
 
 inline void* operator new[](std::size_t size)
 {
-	return kernel::mm::KernelHeap::allocate(size);
+	return mm::KernelHeap::allocate(size);
 }
 
 inline void operator delete[](void* ptr)
 {
-	kernel::mm::KernelHeap::deallocate(ptr);
+	mm::KernelHeap::deallocate(ptr);
 }
 
 inline void* operator new(std::size_t,void* p)

@@ -31,7 +31,7 @@ limitations under the License.
 
 #include <cstddef>
 
-namespace arch::x86::x64
+namespace desc::gdt
 {
 
 #define __KERNEL_CS               0x10
@@ -40,17 +40,14 @@ namespace arch::x86::x64
 #define __USER_DS				  0x40
 #define __KERNEL_TSS              0x50
 
-class GDT
-{
-public:
-	static void setItem(std::size_t index,uint64_t base,uint32_t limit,
-						uint8_t dpl,uint8_t code,uint8_t tss);
-	static void initialize();
+void setItem(std::size_t index,uint64_t base,uint32_t limit,
+					uint8_t dpl,uint8_t code,uint8_t tss);
+void initialize();
 
-	static constexpr uint16_t gdtSize=6;
-	static SystemDescriptor items[gdtSize];
-};
+constexpr uint16_t gdtSize=6;
+extern SystemDescriptor items[gdtSize];
 
-}   // end of namespace arch::x86::x64
+}
+
 
 #endif

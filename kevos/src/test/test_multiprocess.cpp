@@ -5,7 +5,7 @@
 
 #include <cstdlib>
 
-using namespace arch::x86::x64;
+using namespace multitask;
 
 void test_process_1()
 {

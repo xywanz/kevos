@@ -22,7 +22,7 @@ limitations under the License.
 
 #include <cstring>
 
-namespace arch::x86::x64
+namespace multitask
 {
 
 Process::Process(void* entry,void* stack,uint64_t userProcess)
@@ -59,7 +59,7 @@ ProcessRegisters* ProcessManager::createKernelRegInfo(void* entry,void* stack)
     regs->rsp=reinterpret_cast<uint64_t>(stack);
     regs->rbp=reinterpret_cast<uint64_t>(stack);
     regs->rip=reinterpret_cast<uint64_t>(entry);
-    regs->cr3=reinterpret_cast<uint64_t>(KernelPageFrame::pml4);
+    regs->cr3=reinterpret_cast<uint64_t>(mm::page::kernel::pml4);
     return regs;
 }
 
@@ -79,7 +79,7 @@ ProcessRegisters* ProcessManager::createUserRegInfo(void* entry,void* stack,void
     regs->rbp=reinterpret_cast<uint64_t>(stack);
     regs->rsp0=reinterpret_cast<uint64_t>(kstack);
     regs->rip=reinterpret_cast<uint64_t>(entry);
-    regs->cr3=reinterpret_cast<uint64_t>(KernelPageFrame::pml4);
+    regs->cr3=reinterpret_cast<uint64_t>(mm::page::kernel::pml4);
     return regs;
 }
 
@@ -90,4 +90,4 @@ void ProcessManager::switchToNext()
         s_current=s_processes.begin();
 }
 
-}   // end of namespace arch::x86::x64
+}
