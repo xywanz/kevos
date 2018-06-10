@@ -13,32 +13,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_ARCH_COMMON_INTERRUPT_H_
-#define _KEVOS_ARCH_COMMON_INTERRUPT_H_
+#ifndef _KEVOS_KERNEL_MM_PAGEDEFS_H_
+#define _KEVOS_KERNEL_MM_PAGEDEFS_H_
 
-#include <arch/common/types.h>
+#include <arch/common/config.h>
 
-namespace intr
-{
+#ifdef __KEVOS_X64__
+#include <arch/x86/x64/page_defs.h>
+#endif
 
-class InterruptManager
-{
-public:
-	static void initialize();
-
-	static void enableInterrupts();
-	static void disableInterrupts();
-
-	static void sendEndSignal(uint16_t num);
-
-	static void enableTimer();
-	static void disableTimer();
-	static void setTimerFrequency(uint32_t freq);
-
-	static void enableKeyboard();
-	static void disableKeyboard();
-};
-
-}
 
 #endif

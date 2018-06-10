@@ -13,26 +13,32 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_ARCH_COMMON_ATADRIVER_H_
-#define _KEVOS_ARCH_COMMON_ATADRIVER_H_
+#ifndef _KEVOS_ARCH_COMMON_INTCTL_H_
+#define _KEVOS_ARCH_COMMON_INTCTL_H_
 
 #include <sys/types.h>
 
-#include <cstddef>
-
-namespace io
+namespace intr
 {
 
-class ATADriver
+class InterruptController
 {
 public:
+	static void initialize();
 
-    std::size_t readSectors(std::size_t start,std::size_t count,void* dst,std::size_t& readCount);
+	static void enableInterrupts();
+	static void disableInterrupts();
 
-    std::size_t writeSectors(std::size_t start,std::size_t count,const void* src,std::size_t& writeCount);
+	static void sendEndSignal(uint16_t num);
 
+	static void enableTimer();
+	static void disableTimer();
+	static void setTimerFrequency(uint32_t freq);
+
+	static void enableKeyboard();
+	static void disableKeyboard();
 };
 
-} 
+}
 
 #endif

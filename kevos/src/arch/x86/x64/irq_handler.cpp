@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/common/interrupt.h>
+#include <arch/common/intctl.h>
 #include <arch/x86/x64/interrupt.h>
 #include <arch/x86/x64/process.h>
 
@@ -29,7 +29,7 @@ void irqCppHandler0()
     *((uint16_t*)(0xB8000+314))=((std::rand()%128)<<8)+'v';
     *((uint16_t*)(0xB8000+316))=((std::rand()%128)<<8)+'o';
     *((uint16_t*)(0xB8000+318))=((std::rand()%128)<<8)+'s';
-    InterruptManager::sendEndSignal(0);
+    InterruptController::sendEndSignal(0);
 
     multitask::ProcessManager::switchToNext();
     switchToContext();
@@ -37,77 +37,77 @@ void irqCppHandler0()
 
 void irqCppHandler1()
 {
-    InterruptManager::sendEndSignal(1);
+    InterruptController::sendEndSignal(1);
 }
 
 void irqCppHandler2()
 {
-    InterruptManager::sendEndSignal(2);
+    InterruptController::sendEndSignal(2);
 }
 
 void irqCppHandler3()
 {
-    InterruptManager::sendEndSignal(3);
+    InterruptController::sendEndSignal(3);
 }
 
 void irqCppHandler4()
 {
-    InterruptManager::sendEndSignal(4);
+    InterruptController::sendEndSignal(4);
 }
 
 void irqCppHandler5()
 {
-    InterruptManager::sendEndSignal(5);
+    InterruptController::sendEndSignal(5);
 }
 
 void irqCppHandler6()
 {
-    InterruptManager::sendEndSignal(6);
+    InterruptController::sendEndSignal(6);
 }
 
 void irqCppHandler7()
 {
-    InterruptManager::sendEndSignal(7);
+    InterruptController::sendEndSignal(7);
 }
 
 void irqCppHandler8()
 {
-    InterruptManager::sendEndSignal(8);
+    InterruptController::sendEndSignal(8);
 }
 
 void irqCppHandler9()
 {
-    InterruptManager::sendEndSignal(9);
+    InterruptController::sendEndSignal(9);
 }
 
 void irqCppHandler10()
 {
-    InterruptManager::sendEndSignal(10);
+    InterruptController::sendEndSignal(10);
 }
 
 void irqCppHandler11()
 {
-    InterruptManager::sendEndSignal(11);
+    InterruptController::sendEndSignal(11);
 }
 
 void irqCppHandler12()
 {
-    InterruptManager::sendEndSignal(12);
+    InterruptController::sendEndSignal(12);
 }
 
 void irqCppHandler13()
 {
-    InterruptManager::sendEndSignal(13);
+    InterruptController::sendEndSignal(13);
 }
 
 void irqCppHandler14()
 {
-    InterruptManager::sendEndSignal(14);
+    InterruptController::sendEndSignal(14);
 }
 
 void irqCppHandler15()
 {
-    InterruptManager::sendEndSignal(15);
+    InterruptController::sendEndSignal(15);
 }
 
 }

@@ -13,7 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x86/x64/paging.h>
+#ifndef _ARCH_X86_X64_KPAGING_H_
+#define _ARCH_X86_X64_KPAGING_H_
+
+#include <arch/x86/x64/page_defs.h>
 
 #include <cstddef>
 
@@ -39,3 +42,5 @@ extern PDTE   pdt [] __aligned__(0x1000);
 extern PTE    pt  [] __aligned__(0x1000);
 
 }
+
+#endif

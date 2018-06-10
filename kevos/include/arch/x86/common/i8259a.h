@@ -27,8 +27,8 @@ limitations under the License.
 #ifndef _KEVOS_ARCH_x86_COMMON_I8259A_H_
 #define _KEVOS_ARCH_x86_COMMON_I8259A_H_
 
-#include <arch/common/types.h>
-#include <arch/x86/common/port.h>
+#include <sys/types.h>
+#include <arch/x86/common/ioport.h>
 
 namespace intr
 {

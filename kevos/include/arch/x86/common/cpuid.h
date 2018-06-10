@@ -16,7 +16,7 @@ limitations under the License.
 #ifndef _KEVOS_ARCH_X86_COMMON_CPUID_H_
 #define _KEVOS_ARCH_X86_COMMON_CPUID_H_
 
-#include <arch/common/types.h>
+#include <sys/types.h>
 
 namespace cpu
 {

@@ -30,7 +30,7 @@ __asm__(".code32");
 __asm__(".align 4");
 
 #include <arch/common/config.h>
-#include <arch/x86/x64/paging.h>
+#include <arch/x86/x64/page_defs.h>
 #include <arch/x86/x64/gdt.h>
 #include <arch/x86/x64/kpaging.h>
 #include <kernel/mm/mem_layout.h>

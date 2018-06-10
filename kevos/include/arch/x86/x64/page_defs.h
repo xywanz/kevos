@@ -24,10 +24,10 @@ limitations under the License.
 *  @date     2018/5/20
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_x86_X64_PAGING_H_
-#define _KEVOS_ARCH_x86_X64_PAGING_H_
+#ifndef _KEVOS_ARCH_x86_X64_PAGEDEFS_H_
+#define _KEVOS_ARCH_x86_X64_PAGEDEFS_H_
 
-#include <arch/common/types.h>
+#include <sys/types.h>
 
 #include <cstddef>
 

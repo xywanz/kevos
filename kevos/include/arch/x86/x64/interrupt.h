@@ -16,7 +16,7 @@ limitations under the License.
 #ifndef _KEVOS_ARCH_x86_X64_INTERRUPT_H_
 #define _KEVOS_ARCH_x86_X64_INTERRUPT_H_
 
-#include <arch/common/types.h>
+#include <sys/types.h>
 
 extern "C"
 {

@@ -24,10 +24,10 @@ limitations under the License.
 *  @date     2018/5/25
 *****************************************************************************/
 
-#ifndef _KEVOS_ARCH_x86_COMMON_PORT_H_
-#define _KEVOS_ARCH_x86_COMMON_PORT_H_
+#ifndef _KEVOS_ARCH_x86_COMMON_IOPORT_H_
+#define _KEVOS_ARCH_x86_COMMON_IOPORT_H_
 
-#include <arch/common/types.h>
+#include <sys/types.h>
 
 namespace io
 {

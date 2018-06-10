@@ -27,7 +27,7 @@ limitations under the License.
 #ifndef _KEVOS_ARCH_COMMON_ASSERT_H_
 #define _KEVOS_ARCH_COMMON_ASSERT_H_
 
-#include <arch/common/types.h>
+#include <sys/types.h>
 
 #include <cstddef>
 

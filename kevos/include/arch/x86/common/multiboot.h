@@ -27,7 +27,7 @@ limitations under the License.
 #ifndef _KEVOS_ARCH_x86_COMMON_MULTIBOOT_H_
 #define _KEVOS_ARCH_x86_COMMON_MULTIBOOT_H_
 
-#include <arch/common/types.h>
+#include <sys/types.h>
 
 #define MULTIBOOT_PAGE_ALIGNED    (1U<<0)
 #define MULTIBOOT_MEMORY_INFO     (1U<<1)

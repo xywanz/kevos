@@ -16,8 +16,11 @@ limitations under the License.
 #ifndef _KEVOS_SYS_TYPES_H_
 #define _KEVOS_SYS_TYPES_H_
 
+#include <sys/portable.h>
+#include <arch/common/config.h>
 
-#include <arch/common/types.h>
-
+#ifdef __KEVOS_X64__
+    #include <arch/x86/x64/types.h>
+#endif
 
 #endif

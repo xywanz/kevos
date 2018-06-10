@@ -27,7 +27,7 @@ limitations under the License.
 #ifndef _KEVOS_ARCH_x86_X64_DESCRIPTOR_H_
 #define _KEVOS_ARCH_x86_X64_DESCRIPTOR_H_
 
-#include <arch/common/types.h>
+#include <sys/types.h>
 
 #define SEGMENT_DATA_R          0x0
 #define SEGMENT_DATA_RW         0x2

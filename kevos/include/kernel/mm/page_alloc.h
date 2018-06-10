@@ -28,7 +28,7 @@ limitations under the License.
 #define _KEVOS_KERNEL_MM_PAGEMGR_H_
 
 #include <sys/types.h>
-#include <arch/common/paging.h>
+#include <kernel/mm/page_defs.h>
 #include <kernel/utils/bitmap.h>
 #include <kernel/mm/mem_layout.h>
 

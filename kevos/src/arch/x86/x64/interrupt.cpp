@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/common/interrupt.h>
+#include <arch/common/intctl.h>
 #include <arch/x86/x64/interrupt.h>
 #include <arch/x86/x64/process.h>
 #include <arch/x86/x64/idt.h>
@@ -88,38 +88,38 @@ namespace intr
 {
 
 
-void InterruptManager::initialize()
+void InterruptController::initialize()
 {
     I8259A::initialize();
     desc::idt::initialize();
 }
 
-void InterruptManager::enableInterrupts()
+void InterruptController::enableInterrupts()
 {
     __asm__ __volatile__("sti");
 }
 
-void InterruptManager::disableInterrupts()
+void InterruptController::disableInterrupts()
 {
     __asm__ __volatile__("cli");
 }
 
-void InterruptManager::sendEndSignal(uint16_t num)
+void InterruptController::sendEndSignal(uint16_t num)
 {
     I8259A::sendEOI(num);
 }
 
-void InterruptManager::enableTimer()
+void InterruptController::enableTimer()
 {
     I8259A::enableIRQ(0);
 }
 
-void InterruptManager::disableTimer()
+void InterruptController::disableTimer()
 {
     I8259A::disableIRQ(0);
 }
 
-void InterruptManager::setTimerFrequency(uint32_t freq)
+void InterruptController::setTimerFrequency(uint32_t freq)
 {
     uint16_t divisor;
     if(freq < static_cast<uint32_t>(1193180. / (1 << 16) + 1)) {
@@ -132,12 +132,12 @@ void InterruptManager::setTimerFrequency(uint32_t freq)
     io::outportb(0x40, divisor >> 8);
 }
 
-void InterruptManager::enableKeyboard()
+void InterruptController::enableKeyboard()
 {
     I8259A::enableIRQ(1);
 }
 
-void InterruptManager::disableKeyboard()
+void InterruptController::disableKeyboard()
 {
     I8259A::disableIRQ(1);
 }

@@ -18,7 +18,7 @@ extern "C"{
     void* __dso_handle = 0;
 }
 
-#include <arch/common/interrupt.h>
+#include <arch/common/intctl.h>
 #include <arch/common/assert.h>
 #include <arch/x86/common/cpuid.h>
 #include <arch/x86/x64/gdt.h>
@@ -85,10 +85,10 @@ extern "C" void entry64()
 	desc::gdt::initialize();
 	mm::KernelHeap::initialize();
 	mm::page::PageManager::initialize();
-	intr::InterruptManager::initialize();
-	intr::InterruptManager::enableInterrupts();
-	intr::InterruptManager::enableTimer();
-	intr::InterruptManager::setTimerFrequency(1);
+	intr::InterruptController::initialize();
+	intr::InterruptController::enableInterrupts();
+	intr::InterruptController::enableTimer();
+	intr::InterruptController::setTimerFrequency(1);
 	cpu::CPUInfo& cpuInfo=cpu::CPUInfo::instance();
 	multitask::ProcessManager::initialize();
 
