@@ -36,7 +36,7 @@ namespace mm::page
 {
 
 template<class ByteType>
-static constexpr std::size_t bitmapByteNeeded(std::size_t memorySize,std::size_t pageSize=__PAGE_SIZE)
+static constexpr std::size_t bitmapByteNeeded(std::size_t memorySize,std::size_t pageSize=pageSize)
 {
 	return memorySize/(pageSize*sizeof(ByteType));
 }
@@ -47,9 +47,9 @@ public:
 
 	static void initialize();
 
-	static std::size_t allocate(std::size_t pageSize=__PAGE_SIZE);
+	static std::size_t allocate(std::size_t pageSize=pageSize);
 
-	static void deallocate(std::size_t pPagePPN,std::size_t pageSize=__PAGE_SIZE);
+	static void deallocate(std::size_t pPagePPN,std::size_t pageSize=pageSize);
 
 private:
 	static std::size_t m_size;

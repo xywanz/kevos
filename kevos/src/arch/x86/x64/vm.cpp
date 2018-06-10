@@ -26,28 +26,28 @@ using namespace page;
 VirtualMemory::VirtualMemory()
 {
     m_pml4PPN=PageManager::allocate();
-    std::memset((void*)getAddressFromPPN(m_pml4PPN),0,__PAGE_SIZE);
+    std::memset((void*)getAddressFromPPN(m_pml4PPN),0,pageSize);
 }
 
 VirtualMemory::~VirtualMemory()
 {
     PML4E* pml4=reinterpret_cast<PML4E*>(getAddressFromPPN(m_pml4PPN));
-    for(std::size_t pml4i=0;pml4i<__PML4_SIZE;++pml4i)
+    for(std::size_t pml4i=0;pml4i<pml4EntryNum;++pml4i)
     {
         if(pml4[pml4i].present)
         {
             PDPTE* pdpt=reinterpret_cast<PDPTE*>(getAddressFromPPN(pml4[pml4i].physicalPageNum));
-            for(std::size_t pdpti=0;pdpti<__PDPT_SIZE;++pdpti)
+            for(std::size_t pdpti=0;pdpti<pdptEntryNum;++pdpti)
             {
                 if(pdpt[pdpti].present)
                 {
                     PDTE* pdt=reinterpret_cast<PDTE*>(getAddressFromPPN(pdpt[pdpti].physicalPageNum));
-                    for(std::size_t pdti=0;pdti<__PDT_SIZE;++pdti)
+                    for(std::size_t pdti=0;pdti<pdtEntryNum;++pdti)
                     {
                         if(pdt[pdti].present)
                         {
                             PTE* pt=reinterpret_cast<PTE*>(getAddressFromPPN(pdt[pdti].physicalPageNum));
-                            for(std::size_t pti=0;pti<__PT_SIZE;++pti)
+                            for(std::size_t pti=0;pti<ptEntryNum;++pti)
                             {
                                 if(pt[pti].present)
                                 {
@@ -122,14 +122,14 @@ VMemMap VirtualMemory::resolveMap(uint64_t pml4PPN,uint64_t vpn)
     VMemMap vmm;
 
     vmm.ptIndex=vpn;
-    vmm.pdtIndex=vmm.ptIndex/__PT_SIZE;
-    vmm.pdptIndex=vmm.pdtIndex/__PDT_SIZE;
-    vmm.pml4Index=vmm.pdptIndex/__PDPT_SIZE;
+    vmm.pdtIndex=vmm.ptIndex/ptEntryNum;
+    vmm.pdptIndex=vmm.pdtIndex/pdtEntryNum;
+    vmm.pml4Index=vmm.pdptIndex/pdptEntryNum;
 
-    vmm.ptIndex%=__PT_SIZE;
-    vmm.pdtIndex%=__PDT_SIZE;
-    vmm.pdptIndex%=__PDPT_SIZE;
-    vmm.pml4Index%=__PML4_SIZE;
+    vmm.ptIndex%=ptEntryNum;
+    vmm.pdtIndex%=pdtEntryNum;
+    vmm.pdptIndex%=pdptEntryNum;
+    vmm.pml4Index%=pml4EntryNum;
 
     vmm.pml4PPN=pml4PPN;
     vmm.pml4=reinterpret_cast<PML4E*>(getAddressFromPPN(pml4PPN));
@@ -139,7 +139,7 @@ VMemMap VirtualMemory::resolveMap(uint64_t pml4PPN,uint64_t vpn)
     vmm.pdt=nullptr;
     vmm.pt=nullptr;
     
-    vmm.pageSize=__PAGE_SIZE;
+    vmm.pageSize=pageSize;
 
     if(vmm.pml4[vmm.pml4Index].present)
     {
@@ -164,7 +164,7 @@ VMemMap VirtualMemory::resolveMap(uint64_t pml4PPN,uint64_t vpn)
 
 void VirtualMemory::mapKernelPage(uint64_t vpn,uint64_t ppn)
 {
-    VMemMap vmm=resolveMap(reinterpret_cast<uint64_t>(kernel::pml4)/__PAGE_SIZE,vpn);
+    VMemMap vmm=resolveMap(reinterpret_cast<uint64_t>(kernel::pml4)/pageSize,vpn);
     vmm.pt[vmm.ptIndex].physicalPageNum=ppn;
     vmm.pt[vmm.ptIndex].writable=1;
     vmm.pt[vmm.ptIndex].present=1;
@@ -173,7 +173,7 @@ void VirtualMemory::mapKernelPage(uint64_t vpn,uint64_t ppn)
 
 void VirtualMemory::unmapKernelPage(uint64_t vpn)
 {
-    VMemMap vmm=resolveMap(reinterpret_cast<uint64_t>(kernel::pml4)/__PAGE_SIZE,vpn);
+    VMemMap vmm=resolveMap(reinterpret_cast<uint64_t>(kernel::pml4)/pageSize,vpn);
     *reinterpret_cast<uint64_t*>(vmm.pt+vmm.ptIndex)=0;
     refreshPaging();
 }
@@ -183,7 +183,7 @@ void VirtualMemory::setPagingEntry(T* entries,std::size_t index,std::size_t ppn,
         uint64_t isToClear,uint64_t userAccessable,uint64_t writable)
 {
     if(isToClear)
-        std::memset((void*)getAddressFromPPN(ppn),0,__PAGE_SIZE);
+        std::memset((void*)getAddressFromPPN(ppn),0,pageSize);
     entries[index].physicalPageNum=ppn;
     entries[index].userAccessable=userAccessable;
     entries[index].writable=writable;

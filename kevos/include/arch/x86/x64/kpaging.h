@@ -20,27 +20,15 @@ limitations under the License.
 namespace mm::page::kernel
 {
 
-/**
- * @brief 内核中各分页结构表的大小
- */
-#define __KERNEL_PML4_NUM           1
-#define __KERNEL_PDPT_NUM           1
-#define __KERNEL_PDT_NUM            1
-#define __KERNEL_PT_NUM             32
+constexpr std::size_t pml4Num = 1;
+constexpr std::size_t pdptNum = 1;
+constexpr std::size_t pdtNum = 1;
+constexpr std::size_t ptNum = 32;
 
-/**
- * @brief 内核中各分页结构表项的数量
- */
-#define __KERNEL_PML4_SIZE          (__KERNEL_PML4_NUM*__PML4_SIZE)
-#define __KERNEL_PDPT_SIZE          (__KERNEL_PDPT_NUM*__PDPT_SIZE)
-#define __KERNEL_PDT_SIZE           (__KERNEL_PDT_NUM*__PDT_SIZE)
-#define __KERNEL_PT_SIZE            (__KERNEL_PT_NUM*__PT_SIZE)
-
-
-constexpr std::size_t pml4Size = 512;
-constexpr std::size_t pdptSize = 512;
-constexpr std::size_t pdtSize = 512;
-constexpr std::size_t ptSize = 512*32;
+constexpr std::size_t pml4Size = pml4EntryNum * pml4Num;
+constexpr std::size_t pdptSize = pdptEntryNum * pdptNum;
+constexpr std::size_t pdtSize = pdtEntryNum * pdtNum;
+constexpr std::size_t ptSize = ptEntryNum * ptNum;
 
 /**
  * @brief 内核态的分页结构表

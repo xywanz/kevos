@@ -155,38 +155,39 @@ static void setPAE()
 
 static void setupKernelPage()
 {
-    bzero(reinterpret_cast<char*>(kernel::pml4),sizeof(PML4E)*__KERNEL_PML4_SIZE);    //清空内核PML4表
-    bzero(reinterpret_cast<char*>(kernel::pdpt),sizeof(PDPTE)*__KERNEL_PDPT_SIZE);    //清空内核PML4表
-    bzero(reinterpret_cast<char*>(kernel::pdt),sizeof(PDT)*__KERNEL_PDT_SIZE);        //清空内核PML4表
-    bzero(reinterpret_cast<char*>(kernel::pt),sizeof(PT)*__KERNEL_PT_SIZE);           //清空内核PML4表
+    bzero(reinterpret_cast<char*>(kernel::pml4),sizeof(PML4E)*kernel::pml4Size);    //清空内核PML4表
+    bzero(reinterpret_cast<char*>(kernel::pdpt),sizeof(PDPTE)*kernel::pdptSize);    //清空内核PML4表
+    bzero(reinterpret_cast<char*>(kernel::pdt),sizeof(PDT)*kernel::pdtSize);        //清空内核PML4表
+    bzero(reinterpret_cast<char*>(kernel::pt),sizeof(PT)*kernel::ptSize);           //清空内核PML4表
     uint32_t* pml4=reinterpret_cast<uint32_t*>(kernel::pml4);
     uint32_t* pdpt=reinterpret_cast<uint32_t*>(kernel::pdpt);
     uint32_t* pdt=reinterpret_cast<uint32_t*>(kernel::pdt);
     uint32_t* pt=reinterpret_cast<uint32_t*>(kernel::pt);
     for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pdpt)+0x3;
-        i<__KERNEL_PDPT_NUM;
-        ++i,addr+=__PAGE_SIZE)
+        i<kernel::pdptNum;
+        ++i,addr+=pageSize)
     {
         *(pml4)=addr;
         pml4+=2;
     }
     for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pdt)+0x3;
-        i<__KERNEL_PDT_NUM;
-        ++i,addr+=__PAGE_SIZE)
+        i<kernel::pdtNum;
+        ++i,addr+=pageSize)
     {
         *(pdpt)=addr;
         pdpt+=2;
     }
     for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pt)+0x3;
-        i<__KERNEL_PT_NUM;
-        ++i,addr+=__PAGE_SIZE)
+        i<kernel::ptNum;
+        ++i,addr+=pageSize)
     {
         *(pdt)=addr;
         pdt+=2;
     }
+    
     for(uint32_t i=0,addr=0x3;
-        i<__KERNEL_PT_SIZE;
-        ++i,addr+=__PAGE_SIZE)
+        i<kernel::ptSize;
+        ++i,addr+=pageSize)
     {
         *(pt)=addr;
         pt+=2;

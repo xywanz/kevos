@@ -46,24 +46,28 @@ extern unsigned int kheap_end_address;
 extern unsigned int kstack_start_address;
 extern unsigned int kstack_end_address;
 
+extern unsigned int user_start_address;
 
-#define text_start_ppn		(reinterpret_cast<std::size_t>(&text_start_address)/__PAGE_SIZE)
-#define text_end_ppn		(reinterpret_cast<std::size_t>(&text_end_address)/__PAGE_SIZE)
 
-#define data_start_ppn		(reinterpret_cast<std::size_t>(&data_start_address)/__PAGE_SIZE)
-#define data_end_ppn		(reinterpret_cast<std::size_t>(&data_end_address)/__PAGE_SIZE)
+#define text_start_ppn		(reinterpret_cast<std::size_t>(&text_start_address)/mm::page::pageSize)
+#define text_end_ppn		(reinterpret_cast<std::size_t>(&text_end_address)/mm::page::pageSize)
 
-#define bss_start_ppn		(reinterpret_cast<std::size_t>(&bss_start_address)/__PAGE_SIZE)
-#define bss_end_ppn			(reinterpret_cast<std::size_t>(&bss_end_address)/__PAGE_SIZE)
+#define data_start_ppn		(reinterpret_cast<std::size_t>(&data_start_address)/mm::page::pageSize)
+#define data_end_ppn		(reinterpret_cast<std::size_t>(&data_end_address)/mm::page::pageSize)
 
-#define kstack_start_ppn	(reinterpret_cast<std::size_t>(&kstack_start_address)/__PAGE_SIZE)
-#define kstack_end_ppn		(reinterpret_cast<std::size_t>(&kstack_end_address)/__PAGE_SIZE)
+#define bss_start_ppn		(reinterpret_cast<std::size_t>(&bss_start_address)/mm::page::pageSize)
+#define bss_end_ppn			(reinterpret_cast<std::size_t>(&bss_end_address)/mm::page::pageSize)
 
-#define kheap_start_ppn		(reinterpret_cast<std::size_t>(&kheap_start_address)/__PAGE_SIZE)
-#define kheap_end_ppn		(reinterpret_cast<std::size_t>(&kheap_end_address)/__PAGE_SIZE)
+#define kstack_start_ppn	(reinterpret_cast<std::size_t>(&kstack_start_address)/mm::page::pageSize)
+#define kstack_end_ppn		(reinterpret_cast<std::size_t>(&kstack_end_address)/mm::page::pageSize)
 
-#define kernel_start_ppn	(reinterpret_cast<std::size_t>(&kernel_start_address)/__PAGE_SIZE)
-#define kernel_end_ppn		(reinterpret_cast<std::size_t>(&kernel_end_address)/__PAGE_SIZE)
+#define kheap_start_ppn		(reinterpret_cast<std::size_t>(&kheap_start_address)/mm::page::pageSize)
+#define kheap_end_ppn		(reinterpret_cast<std::size_t>(&kheap_end_address)/mm::page::pageSize)
+
+#define kernel_start_ppn	(reinterpret_cast<std::size_t>(&kernel_start_address)/mm::page::pageSize)
+#define kernel_end_ppn		(reinterpret_cast<std::size_t>(&kernel_end_address)/mm::page::pageSize)
+
+#define user_start_ppn      (reinterpret_cast<std::size_t>(&user_start_ppn)/mm::page::pageSize)
 
 
 #endif

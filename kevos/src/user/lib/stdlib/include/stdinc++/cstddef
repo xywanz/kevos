@@ -126,8 +126,6 @@ constexpr byte operator~(byte b) noexcept
 }
 
 
-
-
 }
 
 

@@ -75,9 +75,9 @@ public:
  * @param pageSize 		页面大小
  * @return				是否成功映射		
  */
-	void mapPage(uint64_t vpn,uint64_t ppn,uint64_t userAccessable,uint64_t pageSize=__PAGE_SIZE);
+	void mapPage(uint64_t vpn,uint64_t ppn,uint64_t userAccessable,uint64_t pageSize=page::pageSize);
 
-	void fillPageFrame(uint64_t vpn,uint64_t userAccessable,uint64_t pageSize=__PAGE_SIZE);
+	void fillPageFrame(uint64_t vpn,uint64_t userAccessable,uint64_t pageSize=page::pageSize);
 
 /**
  * @brief 将虚拟页面的映射取消
@@ -99,7 +99,7 @@ public:
  * @param pageSize 	页面大小，默认值为系统所使用的页面大小
  * @return			页面号为ppn的页面的物理地址
  */
-	static uint64_t getAddressFromPPN(uint64_t ppn,uint64_t pageSize=__PAGE_SIZE)
+	static uint64_t getAddressFromPPN(uint64_t ppn,uint64_t pageSize=page::pageSize)
 	{
 		return ppn*pageSize;
 	}

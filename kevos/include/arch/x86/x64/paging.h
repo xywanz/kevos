@@ -31,14 +31,16 @@ limitations under the License.
 
 #include <cstddef>
 
-#define __PML4_SIZE 		512
-#define __PDPT_SIZE			512
-#define __PDT_SIZE 			512
-#define __PT_SIZE 			512
-#define __PAGE_SIZE			4096
-
 namespace mm::page
 {
+
+constexpr std::size_t pml4EntryNum=512;
+constexpr std::size_t pdptEntryNum=512;
+constexpr std::size_t pdtEntryNum=512;
+constexpr std::size_t ptEntryNum=512;
+
+constexpr std::size_t pageSize=4096;
+
 
 struct __packed__ PML4E
 {
