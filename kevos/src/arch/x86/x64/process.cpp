@@ -25,12 +25,13 @@ limitations under the License.
 namespace multitask
 {
 
-Process::Process(void* entry,void* stack,uint64_t userProcess)
+Process::Process(void* entry,void* stack,bool userProcess)
 {
     if(userProcess)
-        m_regs=ProcessManager::createUserRegInfo(entry,stack,0);
+        regs=(void*)ProcessManager::createUserRegInfo(entry,stack,0);
     else
-        m_regs=ProcessManager::createKernelRegInfo(entry,stack);
+        regs=(void*)ProcessManager::createKernelRegInfo(entry,stack);
+    pid=generateNextPid();
 }
 
 std::list<Process*> ProcessManager::s_processes(nullptr);

@@ -13,18 +13,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_SYS_TYPES_H_
-#define _KEVOS_SYS_TYPES_H_
+#include <kernel/multitask/scheduler.h>
 
-#include <sys/portable.h>
-#include <arch/common/config.h>
 
-#ifdef __KEVOS_X64__
-    #include <arch/x86/x64/types.h>
-#endif
-
-#include <cstddef>
-
-using pid_t=std::size_t;
-
-#endif

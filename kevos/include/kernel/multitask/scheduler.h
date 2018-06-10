@@ -13,22 +13,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_KERNEL_PROCESS_H_
-#define _KEVOS_KERNEL_PROCESS_H_
+#ifndef _KEVOS_KERNEL_MULTITASK_SCHEDULER_H_
+#define _KEVOS_KERNEL_MULTITASK_SCHEDULER_H_
 
 #include <sys/types.h>
 
-namespace multitask
+namespace multitask::schedule
 {
 
-class Process
+class Scheduler
 {
 public:
-    enum TYPE{KERNEL,USER};
-private:
-
+    void schedule();
 };
 
-}   // end of namespace kernel
+}   //end of namespace kernel
 
 #endif

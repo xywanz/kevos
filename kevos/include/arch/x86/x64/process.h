@@ -17,6 +17,7 @@ limitations under the License.
 #define _KEVOS_ARCH_X86_X64_PROCESS_H_
 
 #include <sys/types.h>
+#include <kernel/multitask/process.h>
 #include <arch/x86/x64/vm.h>
 
 #include <list>
@@ -57,20 +58,6 @@ struct ProcessRegisters
     uint32_t fpu[28];
 };
 
-class Process
-{
-public:
-    Process(void* entry,void* stack,uint64_t userProcess);
-
-    ProcessRegisters* registers()
-    {
-        return m_regs;
-    }
-
-private:
-    ProcessRegisters* m_regs;
-};
-
 
 class ProcessManager
 {
@@ -83,7 +70,7 @@ public:
 
     static void setInstructionPointer(Process* process,void* entry)
     {
-        process->registers()->rip=(uint64_t)entry;
+        process->getRegisters<ProcessRegisters*>()->rip=(uint64_t)entry;
     }
 
     static void setVirtualMemory(Process* process,const mm::vm::VirtualMemory& mm);

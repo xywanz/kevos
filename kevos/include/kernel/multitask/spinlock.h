@@ -13,6 +13,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <kernel/scheduler.h>
+#ifndef _KEVOS_KERNEL_MULTITASK_SPINLOCK_H_
+#define _KEVOS_KERNEL_MULTITASK_SPINLOCK_H_
 
+namespace multitask::lock
+{
 
+class SpinLock
+{
+public:
+    
+};
+
+}
+
+#endif

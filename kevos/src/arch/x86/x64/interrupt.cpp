@@ -23,7 +23,7 @@ limitations under the License.
 
 void saveProcessRegisters(char* base)
 {
-    auto regs=multitask::ProcessManager::current()->registers();
+    auto regs=multitask::ProcessManager::current()->getRegisters<multitask::ProcessRegisters*>();
     auto ssregs=reinterpret_cast<intr::SoftwareSavedRegisters*>(base);
     regs->rax=ssregs->rax;
     regs->rbx=ssregs->rbx;
@@ -52,7 +52,7 @@ void saveProcessRegisters(char* base)
 
 void switchToContext()
 {
-    auto regs=multitask::ProcessManager::current()->registers();
+    auto regs=multitask::ProcessManager::current()->getRegisters<multitask::ProcessRegisters*>();
     // TSS::tss.rsp0=regs->rsp;
     __asm__ ("movq %[cr3],%%cr3" : : [cr3]"r"(regs->cr3));
     __asm__ ("pushq %[ss]" : : [ss]"m"(regs->ss));

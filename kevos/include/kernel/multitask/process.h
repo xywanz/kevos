@@ -13,20 +13,45 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#ifndef _KEVOS_KERNEL_SCHEDULER_H_
-#define _KEVOS_KERNEL_SCHEDULER_H_
+#ifndef _KEVOS_KERNEL_MULTITASK_PROCESS_H_
+#define _KEVOS_KERNEL_MULTITASK_PROCESS_H_
 
 #include <sys/types.h>
 
-namespace multitask::schedule
+namespace multitask
 {
 
-class Scheduler
+inline pid_t generateNextPid()
+{
+    static pid_t cache=0;
+    return cache++;
+}
+
+class Process
 {
 public:
-    void schedule();
+    enum TYPE{KERNEL,USER};
+    enum STATE{RUNNING,WAITING,DEAD,READY};
+
+    Process(void* entry,void* stack,bool userProcess);
+
+    template<class T>
+    T getRegisters()
+    {
+        return (T)regs;
+    }
+
+    void setState(STATE s){state=s;}
+
+private:
+    pid_t pid;
+    TYPE type;
+    STATE state;
+    void* regs;
+    void* entry;
+    void* stack;
 };
 
-}   //end of namespace kernel
+}   // end of namespace kernel
 
 #endif
