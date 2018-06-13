@@ -15,7 +15,7 @@ limitations under the License.
 
 #include <arch/common/intctl.h>
 #include <arch/x86/x64/interrupt.h>
-#include <arch/x86/x64/process.h>
+#include <arch/x86/x64/multitask_detail.h>
 
 #include <cstdlib>
 

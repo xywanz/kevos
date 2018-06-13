@@ -44,7 +44,7 @@ void initialize()
 {
     setItem(3, 0, 0, 3, 1, 0);
     setItem(4, 0, 0, 3, 0, 0);
-    setItem(5, reinterpret_cast<uint64_t>(&tss::item), sizeof(tss::item)-1, 0, 0, 1);
+    setItem(5, reinterpret_cast<uint64_t>(&tss::item), sizeof(tss::item)-1, 3, 0, 1);
 
     struct __packed__ GDTPointer
     {

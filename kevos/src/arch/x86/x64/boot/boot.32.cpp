@@ -41,6 +41,9 @@ __asm__(".align 4");
 #include <arch/x86/common/multiboot.h>
 #endif
 
+/**
+ * 此处是为了确保整形的size
+ */
 static_assert(sizeof(uint8_t)==1,"In x86-64 achitecture, uint8_t must be 1 byte!");
 static_assert(sizeof(int8_t)==1,"In x86-64 achitecture, int8_t must be 1 bytes!");
 static_assert(sizeof(uint16_t)==2,"In x86-64 achitecture, uint16_t must be 2 bytes!");
@@ -56,20 +59,63 @@ namespace boot
 
 using namespace mm::page;
 
+/**
+ * 设置内核段描述符
+ * 段描述符网上的资料应该比较多，如有不明白可邮箱联系
+ */
 static void setSystemDescriptor(uint32_t index,uint32_t baseHigh,uint32_t baseLow,
             uint32_t limit,uint8_t dpl,uint8_t code);
+
+/**
+ * 内存清零
+ */
 static void bzero(char* p,uint32_t size);
+
+/**
+ * 由于kevos还没有提供一个良好的显示界面，暂时使用grub2默认跳转进入的80x25的字符模式
+ * 在字符模式中，内存0xB8000处开始的80x25x2个字节的内容将与屏幕上的每个位置一一对应。
+ * 即在对应位置内存写入内容，屏幕上会自动显示。
+ * 每个字符占2个字节，高字节代表颜色，低字节代表要显示的ASCII。
+ * 该函数将显示缓冲区清空。
+ */
 static void clearFrameBuffer();
+
+/**
+ * 将内核bss段清零，实际上不清零也可
+ */ 
 static void clearBSS();
+
+/**
+ * 开启地址线扩展，启用之后才能进行64位寻址，PAE是CR4第5位
+ */
 static void setPAE();
+
+/**
+ * 设置内核分页
+ * 内核占用0-0xFFFFFFFF 4GB的空间，用户空间从0x100000000开始到0x0000FFFFFFFFFFFF
+ * 暂时只针对48位寻址的CPU进行开发
+ */
 static void setupKernelPage();
+
+/**
+ * 设置ERER.LME=1，进入长模式
+ */
 static void enableLongMode();
+
+/**
+ * 加载pml4到cr3
+ */
 static void setupCR3();
+
+/**
+ * 64位模式废弃了段寻址，且必须开启分页
+ * 开启分页后进入了长模式，然后设置长模式下的GDT,通过一个ljmp跳转入64位代码
+ */
 static void enablePaging();
 
 extern "C" void entry32()
 {
-    clearFrameBuffer();     // Done!
+    clearFrameBuffer();     // Done!    
     clearBSS();             // Done!
     setupKernelPage();      // Done!
     setPAE();               // Done!
@@ -163,21 +209,21 @@ static void setupKernelPage()
     uint32_t* pdpt=reinterpret_cast<uint32_t*>(kernel::pdpt);
     uint32_t* pdt=reinterpret_cast<uint32_t*>(kernel::pdt);
     uint32_t* pt=reinterpret_cast<uint32_t*>(kernel::pt);
-    for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pdpt)+0x3;
+    for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pdpt)+0x7;     // 7 表示在内存中、可读、用户可获取
         i<kernel::pdptNum;
         ++i,addr+=pageSize)
     {
         *(pml4)=addr;
         pml4+=2;
     }
-    for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pdt)+0x3;
+    for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pdt)+0x7;
         i<kernel::pdtNum;
         ++i,addr+=pageSize)
     {
         *(pdpt)=addr;
         pdpt+=2;
     }
-    for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pt)+0x3;
+    for(uint32_t i=0,addr=reinterpret_cast<uint32_t>(pt)+0x7;
         i<kernel::ptNum;
         ++i,addr+=pageSize)
     {
@@ -185,7 +231,7 @@ static void setupKernelPage()
         pdt+=2;
     }
     
-    for(uint32_t i=0,addr=0x3;
+    for(uint32_t i=0,addr=0x7;
         i<kernel::ptSize;
         ++i,addr+=pageSize)
     {

@@ -17,21 +17,36 @@ limitations under the License.
 #define _KEVOS_KERNEL_MULTITASK_PROCESS_H_
 
 #include <sys/types.h>
+#include <kernel/mm/page_defs.h>
+#include <kernel/mm/mem_layout.h>
 
 namespace multitask
 {
 
-inline pid_t generateNextPid()
-{
-    static pid_t cache=0;
-    return cache++;
-}
+constexpr std::size_t ustackSize=mm::page::pageSize*1024;
+constexpr std::size_t kstackSize=mm::page::pageSize*1024;
+constexpr std::size_t userRSP=(std::size_t)(&ustack_start_address)+ustackSize-8;
 
 class Process
 {
 public:
-    enum TYPE{KERNEL,USER};
-    enum STATE{RUNNING,WAITING,DEAD,READY};
+    enum TYPE
+    {
+        KERNEL,
+        USER
+    };
+
+    enum STATE
+    {
+        RUNNING,
+        WAITING,
+        KILLED,
+        READY,
+        NEW,
+        EMPTY,
+        BLOCKED,
+        SLEEPING
+    };
 
     Process(void* entry,void* stack,bool userProcess);
 
@@ -45,12 +60,20 @@ public:
 
 private:
     pid_t pid;
+    pid_t ppid;
     TYPE type;
     STATE state;
     void* regs;
-    void* entry;
-    void* stack;
+    void* vm;
+    std::size_t priority;
 };
+
+
+inline pid_t generateNextPid()
+{
+    static pid_t cache=0;
+    return cache++;
+}
 
 }   // end of namespace kernel
 

@@ -24,7 +24,7 @@ extern "C"{
 #include <arch/x86/x64/gdt.h>
 #include <arch/x86/x64/tss.h>
 #include <arch/x86/x64/vm.h>
-#include <arch/x86/x64/process.h>
+#include <arch/x86/x64/multitask_detail.h>
 #include <kernel/mm/kheap.h>
 #include <kernel/mm/mem_layout.h>
 

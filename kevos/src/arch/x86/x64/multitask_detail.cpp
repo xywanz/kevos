@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <arch/x86/x64/process.h>
+#include <arch/x86/x64/multitask_detail.h>
 #include <arch/x86/x64/gdt.h>
 #include <arch/x86/x64/vm.h>
 #include <kernel/mm/new.h>

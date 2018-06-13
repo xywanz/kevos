@@ -81,7 +81,12 @@ public:
 
     static void createKernelProcess(void* entry,void* stack)
     {
-        s_processes.push_back(new Process(entry,stack,0));
+        s_processes.push_back(new Process(entry,stack,false));
+    }
+
+    static void createUserProcess(void* entry,void* stack)
+    {
+        s_processes.push_back(new Process(entry,stack,true));
     }
 
     static Process* current()

@@ -1,7 +1,7 @@
 
 #include <arch/common/assert.h>
 
-#include <arch/x86/x64/process.h>
+#include <arch/x86/x64/multitask_detail.h>
 
 #include <cstdlib>
 
@@ -37,8 +37,14 @@ void test_multiprocess_main()
     char* stack2=new char[0x150];
     char* stack3=new char[0x150];
     char* stack4=new char[0x150];
+    char* stack5=new char[0x150];
+    char* stack6=new char[0x150];
+    char* stack7=new char[0x150];
     ProcessManager::createKernelProcess((void*)test_process_1,stack1+0x150);
-    ProcessManager::createKernelProcess((void*)test_process_2,stack2+0x150);
-    ProcessManager::createKernelProcess((void*)test_process_3,stack3+0x150);
-    ProcessManager::createKernelProcess((void*)test_process_4,stack4+0x150);
+    ProcessManager::createKernelProcess((void*)test_process_1,stack2+0x150);
+    ProcessManager::createKernelProcess((void*)test_process_2,stack3+0x150);
+    ProcessManager::createKernelProcess((void*)test_process_3,stack4+0x150);
+    ProcessManager::createKernelProcess((void*)test_process_4,stack5+0x150);
+    ProcessManager::createKernelProcess((void*)test_process_4,stack6+0x150);
+    ProcessManager::createUserProcess((void*)test_process_4,stack7+0x150);
 }

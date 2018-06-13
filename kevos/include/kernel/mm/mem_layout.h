@@ -48,6 +48,8 @@ extern unsigned int kstack_end_address;
 
 extern unsigned int user_start_address;
 
+extern unsigned int ustack_start_address;
+
 
 #define text_start_ppn		(reinterpret_cast<std::size_t>(&text_start_address)/mm::page::pageSize)
 #define text_end_ppn		(reinterpret_cast<std::size_t>(&text_end_address)/mm::page::pageSize)

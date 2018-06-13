@@ -36,8 +36,8 @@ namespace desc::gdt
 
 #define __KERNEL_CS               0x10
 #define __KERNEL_DS               0x20
-#define __USER_CS				  0x30
-#define __USER_DS				  0x40
+#define __USER_CS				  0x33
+#define __USER_DS				  0x43
 #define __KERNEL_TSS              0x50
 
 void setItem(std::size_t index,uint64_t base,uint32_t limit,
