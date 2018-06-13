@@ -22,7 +22,7 @@ namespace intr::syscall
 
 void syscallCppHandler0()
 {
-    *((unsigned short*)0xB8000+1000)=0x7575;
+    *((unsigned short*)0xB8000+240)=0x7575;
 }
 
 void syscallCppHandler1()

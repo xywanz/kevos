@@ -21,8 +21,8 @@ limitations under the License.
 .macro setupSegment
     movw $__KERNEL_DS,%ax
     movw %ax,%ds
-    movw %ax,%ss
     movw %ax,%es
+    movw %ax,%ss
     movw %ax,%fs
     movw %ax,%gs
 .endm
@@ -47,12 +47,7 @@ limitations under the License.
     pushq %ax
     movw %es,%ax
     pushq %ax
-    movw $__KERNEL_DS,%ax
-    movw %ax,%ds
-    movw %ax,%es
-    movw %ax,%ss
-    movw %ax,%fs
-    movw %ax,%gs
+    setupSegment
 .endm
 
 .macro load

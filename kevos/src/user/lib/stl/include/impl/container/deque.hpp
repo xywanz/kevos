@@ -272,21 +272,36 @@ public:
         return *this+=-n;
     }
 
-    self operator+(difference_type n)const
+    const self operator+(difference_type n)const
     {
         self ret=*this;
-        return ret+=n;
+        return static_cast<const self>(ret-=n);
     }
 
-    self operator-(difference_type n)const
+    self operator+(difference_type n)
+    {
+        return const_cast<self>(static_cast<const self&>(*this)+n);
+    }
+
+    const self operator-(difference_type n)const
     {
         self ret=*this;
-        return ret-=n;
+        return static_cast<const self>(ret-=n);
     }
 
-    reference operator[](difference_type n)const
+    self operator-(difference_type n)
     {
-        return *(*this+n);
+        return const_cast<self>(static_cast<const self&>(*this)-n);
+    }
+
+    const T& operator[](difference_type n)const
+    {
+        return static_cast<const T&>(*(*this+n));
+    }
+
+    reference operator[](difference_type n)
+    {
+        return const_cast<reference>(static_cast<const self&>(*this)[n]);
     }
 
     bool operator==(const self& x)const
@@ -404,21 +419,36 @@ public:
         return *this+=n;
     }
 
-    self operator+(difference_type n)const
+    const self operator+(difference_type n)const
     {
         self ret=*this;
-        return ret-=n;
+        return static_cast<const self>(ret-=n);
     }
 
-    self operator-(difference_type n)const
+    self operator+(difference_type n)
+    {
+        return const_cast<self>(static_cast<const self&>(*this)+n);
+    }
+
+    const self operator-(difference_type n)const
     {
         self ret=*this;
-        return ret+=n;
+        return static_cast<const self>(ret+=n);
     }
 
-    reference operator[](difference_type n)const
+    self operator-(difference_type n)
     {
-        return *(*this-n);
+        return const_cast<self>(static_cast<const self&>(*this)-n);
+    }
+
+    const T& operator[](difference_type n)const
+    {
+        return static_cast<const T&>(*(*this-n));
+    }
+
+    reference operator[](difference_type n)
+    {
+        return const_cast<reference>(static_cast<const self&>(*this)[n]);
     }
 
     bool operator==(const self& x)const

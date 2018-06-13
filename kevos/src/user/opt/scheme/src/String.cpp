@@ -69,10 +69,10 @@ bool String::operator==(const String& other)const
 
 const char& operator[](std::size_t index)const
 {
-	return m_cstr[index];
+	return static_cast<const char&>(m_cstr[index]);
 }
 
 char& operator[](std::size_t index)
 {
-	return m_cstr[index];
+	return const_cast<char&>(static_cast<const String&>(*this)[index]);
 }

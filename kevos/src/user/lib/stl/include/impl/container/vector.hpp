@@ -255,30 +255,29 @@ public:
         return begin()==end();
     }
 
+    const T& operator[](size_type n)const
+    {
+        return static_cast<const T&>(*(begin()+n));
+    }
+
 /**
  * @brief 第n个元素
  */
     reference operator[](size_type n)
     {
-        return *(begin()+n);
+        return const_cast<reference>(static_cast<const vector&>(*this)[n]);
     }
 
-    const reference operator[](size_type n)const
-    {
-        return *(begin()+n);
-    }
-
-    reference at(size_type n)
+    const T& at(size_type n)const
     {
         if(n<size())
             return operator[](n);
         // throw n;
     }
 
-    const reference at(size_type n)const
+    reference at(size_type n)
     {
-        if(n<size())
-            return operator[](n);
+        return const_cast<reference>(static_cast<const vector&>(*this).at(n));
         // throw n;
     }
 
