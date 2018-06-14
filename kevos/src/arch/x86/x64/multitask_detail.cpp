@@ -17,6 +17,7 @@ limitations under the License.
 #include <arch/x86/x64/gdt.h>
 #include <arch/x86/x64/vm.h>
 #include <kernel/mm/new.h>
+#include <kernel/mm/page_alloc.h>
 
 #include <cstdlib>
 
@@ -25,13 +26,47 @@ limitations under the License.
 namespace multitask
 {
 
-Process::Process(void* entry,void* stack,bool userProcess)
+Process::Process(void* entry,TYPE type):pages()
 {
-    if(userProcess)
-        regs=(void*)ProcessManager::createUserRegInfo(entry,stack,0);
+    using namespace mm::page;
+    using namespace mm::vm;
+    if(type==USER)
+    {
+        auto addr=reinterpret_cast<void*>(VirtualMemory::getAddressFromPPN(PageAllocator::allocate()));
+        pages.push_back(addr);
+        vm=new VirtualMemory;
+        auto mm=getVM<VirtualMemory>();
+        // for(std::size_t kppn=0;kppn<10000;++kppn)
+        // {
+        //     mm->mapPage(kppn,kppn,1);
+        // }
+        regs=(void*)ProcessManager::createUserRegInfo(
+            entry,reinterpret_cast<char*>(addr)+pageSize,new char[pageSize]+pageSize
+        );
+    }
     else
-        regs=(void*)ProcessManager::createKernelRegInfo(entry,stack);
+    {
+        regs=(void*)ProcessManager::createKernelRegInfo(entry,new char[pageSize]+pageSize);
+    }
     pid=generateNextPid();
+}
+
+Process::~Process()
+{
+    if(type==KERNEL)
+    {
+        if(auto kstack=getRegs<ProcessRegisters>()->rsp)
+            delete reinterpret_cast<char*>(kstack);
+    }
+    else
+    {
+        if(auto stack=getRegs<ProcessRegisters>()->rsp0)
+            delete reinterpret_cast<char*>(stack);
+        for(auto page:pages)
+        {
+            mm::page::PageAllocator::deallocate(reinterpret_cast<std::size_t>(page)/mm::page::pageSize);
+        }
+    }        
 }
 
 std::list<Process*> ProcessManager::s_processes(nullptr);
@@ -41,7 +76,7 @@ typename ProcessManager::iterator ProcessManager::s_current(nullptr);
 void ProcessManager::initialize()
 {
     s_processes.empty_initialize();
-    s_processes.push_back(new Process(0,0,0));
+    s_processes.push_back(new Process(0,Process::KERNEL));
     s_current=s_processes.begin();
 }
 

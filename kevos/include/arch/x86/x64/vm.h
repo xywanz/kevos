@@ -140,9 +140,11 @@ private:
 		__asm__ __volatile__("movq %%cr3, %%rax; movq %%rax, %%cr3;" ::: "%rax");
 	}
 
+	static void bzero(uint64_t ppn);
+
 	template<class T>
 	static void setPagingEntry(T* entries,std::size_t index,std::size_t ppn,
-			uint64_t isToClear,uint64_t userAccessable,uint64_t writable);
+			bool isToClear,uint64_t userAccessable,uint64_t writable);
 
 	template<class T,class traits=page::type_traits<T>>
 	static bool isNullPagingEntry(T* entries);

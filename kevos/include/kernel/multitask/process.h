@@ -20,6 +20,8 @@ limitations under the License.
 #include <kernel/mm/page_defs.h>
 #include <kernel/mm/mem_layout.h>
 
+#include <vector>
+
 namespace multitask
 {
 
@@ -48,13 +50,15 @@ public:
         SLEEPING
     };
 
-    Process(void* entry,void* stack,bool userProcess);
+    Process(void* entry,TYPE type);
+
+    ~Process();
 
     template<class T>
-    T getRegisters()
-    {
-        return (T)regs;
-    }
+    T* getRegs(){return reinterpret_cast<T*>(regs);}
+
+    template<class T>
+    T* getVM(){return reinterpret_cast<T*>(vm);}
 
     void setState(STATE s){state=s;}
 
@@ -66,6 +70,7 @@ private:
     void* regs;
     void* vm;
     std::size_t priority;
+    std::vector<void*> pages;
 };
 
 

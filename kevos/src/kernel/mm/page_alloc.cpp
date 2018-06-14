@@ -18,11 +18,11 @@ limitations under the License.
 namespace mm::page
 {
 
-std::size_t PageManager::m_size=0;
-utils::Bitmap<bitmapByteNeeded<unsigned int>(1024*1024*128),unsigned int> PageManager::m_bitmap;
-std::size_t PageManager::m_cache=0;
+std::size_t PageAllocator::m_size=0;
+utils::Bitmap<bitmapByteNeeded<unsigned int>(1024*1024*128),unsigned int> PageAllocator::m_bitmap;
+std::size_t PageAllocator::m_cache=0;
 
-void PageManager::initialize()
+void PageAllocator::initialize()
 {
 	m_size=m_bitmap.size();
 	std::size_t i;
@@ -33,7 +33,7 @@ void PageManager::initialize()
 	m_cache=i;
 }
 
-std::size_t PageManager::allocate(std::size_t pageSize)
+std::size_t PageAllocator::allocate(std::size_t pageSize)
 {
 	for(;m_cache<m_size;++m_cache)
 	{
@@ -56,7 +56,7 @@ std::size_t PageManager::allocate(std::size_t pageSize)
 	}
 }
 
-void PageManager::deallocate(std::size_t pPagePPN,std::size_t pageSize)
+void PageAllocator::deallocate(std::size_t pPagePPN,std::size_t pageSize)
 {
 	m_bitmap.unset(pPagePPN);
 }

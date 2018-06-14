@@ -70,7 +70,7 @@ public:
 
     static void setInstructionPointer(Process* process,void* entry)
     {
-        process->getRegisters<ProcessRegisters*>()->rip=(uint64_t)entry;
+        process->getRegs<ProcessRegisters>()->rip=(uint64_t)entry;
     }
 
     static void setVirtualMemory(Process* process,const mm::vm::VirtualMemory& mm);
@@ -79,14 +79,14 @@ public:
 
     static void contextSwitch();
 
-    static void createKernelProcess(void* entry,void* stack)
+    static void createKernelProcess(void* entry)
     {
-        s_processes.push_back(new Process(entry,stack,false));
+        s_processes.push_back(new Process(entry,Process::KERNEL));
     }
 
-    static void createUserProcess(void* entry,void* stack)
+    static void createUserProcess(void* entry)
     {
-        s_processes.push_back(new Process(entry,stack,true));
+        s_processes.push_back(new Process(entry,Process::USER));
     }
 
     static Process* current()

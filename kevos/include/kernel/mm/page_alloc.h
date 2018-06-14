@@ -41,7 +41,7 @@ static constexpr std::size_t bitmapByteNeeded(std::size_t memorySize,std::size_t
 	return memorySize/(pageSize*sizeof(ByteType));
 }
 
-class PageManager
+class PageAllocator
 {
 public:
 

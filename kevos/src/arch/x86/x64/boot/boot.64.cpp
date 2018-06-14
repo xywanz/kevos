@@ -52,6 +52,8 @@ void test_list_main();
 void test_array_main();
 void test_deque_main();
 void test_multiprocess_main();
+void test_resolve_map();
+void test_page_allocator();
 
 namespace boot
 {
@@ -84,12 +86,12 @@ extern "C" void entry64()
 	desc::tss::initialize();
 	desc::gdt::initialize();
 	mm::KernelHeap::initialize();
-	mm::page::PageManager::initialize();
+	mm::page::PageAllocator::initialize();
 	intr::InterruptController::initialize();
 	intr::InterruptController::enableInterrupts();
 	intr::InterruptController::enableTimer();
-	intr::InterruptController::setTimerFrequency(1);
-	cpu::CPUInfo& cpuInfo=cpu::CPUInfo::instance();
+	intr::InterruptController::setTimerFrequency(100);
+	auto cpuInfo=cpu::CPUInfo::instance();
 	multitask::ProcessManager::initialize();
 
 	test_utility_main();
@@ -100,6 +102,13 @@ extern "C" void entry64()
 	test_array_main();
 	test_deque_main();
     test_multiprocess_main();
+    test_resolve_map();
+    test_page_allocator();
+
+    std::size_t i=0;
+    mm::vm::VirtualMemory vm;
+    for(std::size_t i=0;i<1000;++i)
+        vm.mapPage(i,i,1);
 
 	confirmImAlive();
 	while(1)
