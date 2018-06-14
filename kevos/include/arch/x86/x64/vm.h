@@ -43,17 +43,17 @@ struct __packed__ VMemMap
 	page::PDTE*	pdt;
 	page::PTE*	pt;
 
-	uint64_t pml4PPN;
-	uint64_t pdptPPN;
-	uint64_t pdtPPN;
-	uint64_t ptPPN;
+	std::size_t pml4PPN;
+	std::size_t pdptPPN;
+	std::size_t pdtPPN;
+	std::size_t ptPPN;
 
-	uint64_t pageSize;
+	std::size_t pageSize;
 
-	uint64_t pml4Index;
-	uint64_t pdptIndex;
-	uint64_t pdtIndex;
-	uint64_t ptIndex;
+	std::size_t pml4Index;
+	std::size_t pdptIndex;
+	std::size_t pdtIndex;
+	std::size_t ptIndex;
 };
 
 /**
@@ -75,9 +75,11 @@ public:
  * @param pageSize 		页面大小
  * @return				是否成功映射		
  */
-	void mapPage(uint64_t vpn,uint64_t ppn,uint64_t userAccessable,uint64_t pageSize=page::pageSize);
+	void mapPage(std::size_t vpn,std::size_t ppn,std::size_t userAccessable,std::size_t pageSize=page::pageSize);
 
-	void fillPageFrame(uint64_t vpn,uint64_t userAccessable,uint64_t pageSize=page::pageSize);
+	void mapKernelSpace();
+
+	void fillPageFrame(std::size_t vpn,std::size_t userAccessable,std::size_t pageSize=page::pageSize);
 
 /**
  * @brief 将虚拟页面的映射取消
@@ -85,9 +87,9 @@ public:
  * @param vpn 			虚拟页面号
  * @return				是否成功取消映射		
  */
-	void unmapPage(uint64_t vpn);
+	void unmapPage(std::size_t vpn);
 
-	uint64_t getPML4PPN()const
+	std::size_t getPML4PPN()const
 	{
 		return m_pml4PPN;
 	}
@@ -99,7 +101,7 @@ public:
  * @param pageSize 	页面大小，默认值为系统所使用的页面大小
  * @return			页面号为ppn的页面的物理地址
  */
-	static uint64_t getAddressFromPPN(uint64_t ppn,uint64_t pageSize=page::pageSize)
+	static std::size_t getAddressFromPPN(std::size_t ppn,std::size_t pageSize=page::pageSize)
 	{
 		return ppn*pageSize;
 	}
@@ -111,7 +113,7 @@ public:
  * @param vpn		虚拟页面的页面号
  * @return 			VMemMap结构，包含虚拟地址所在的页面结构表项地址、页面号、索引以及页面大小
  */
-	static VMemMap resolveMap(uint64_t pml4PPN,uint64_t vpn);
+	static VMemMap resolveMap(std::size_t pml4PPN,std::size_t vpn);
 
 /**
  * @brief 该函数用于解析虚拟页面号在类实例中的PML4下的映射信息，暂时只支持计算4KB页面
@@ -119,14 +121,14 @@ public:
  * @param vpn		虚拟页面的页面号
  * @return 			VMemMap结构，包含虚拟地址所在的页面结构表项地址、页面号、索引以及页面大小
  */
-	VMemMap resolveMap(uint64_t vpn)
+	VMemMap resolveMap(std::size_t vpn)
 	{
 		return resolveMap(m_pml4PPN,vpn);
 	}
 
-	static void mapKernelPage(uint64_t vpn,uint64_t ppn);
+	static void mapKernelPage(std::size_t vpn,std::size_t ppn);
 
-	static void unmapKernelPage(uint64_t vpn);
+	static void unmapKernelPage(std::size_t vpn);
 
 	static void loadKernelPML4()
 	{
@@ -140,11 +142,11 @@ private:
 		__asm__ __volatile__("movq %%cr3, %%rax; movq %%rax, %%cr3;" ::: "%rax");
 	}
 
-	static void bzero(uint64_t ppn);
+	static void bzero(std::size_t ppn);
 
 	template<class T>
 	static void setPagingEntry(T* entries,std::size_t index,std::size_t ppn,
-			bool isToClear,uint64_t userAccessable,uint64_t writable);
+			bool isToClear,std::size_t userAccessable,std::size_t writable);
 
 	template<class T,class traits=page::type_traits<T>>
 	static bool isNullPagingEntry(T* entries);
@@ -152,7 +154,7 @@ private:
 /**
  * @brief 管理PML4的物理页面号，代表了整个虚拟内存
  */
-	uint64_t m_pml4PPN;
+	std::size_t m_pml4PPN;
 	
 };
 

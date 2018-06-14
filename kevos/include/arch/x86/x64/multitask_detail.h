@@ -66,7 +66,7 @@ public:
 
     static ProcessRegisters* createKernelRegInfo(void* entry,void* stack);
 
-    static ProcessRegisters* createUserRegInfo(void* entry,void* stack,void* kstack);
+    static ProcessRegisters* createUserRegInfo(void* entry,void* stack,void* kstack,std::size_t pml4);
 
     static void setInstructionPointer(Process* process,void* entry)
     {

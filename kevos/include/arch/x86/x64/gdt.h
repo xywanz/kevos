@@ -40,7 +40,7 @@ namespace desc::gdt
 #define __USER_DS				  0x43
 #define __KERNEL_TSS              0x50
 
-void setItem(std::size_t index,uint64_t base,uint32_t limit,
+void setItem(std::size_t index,std::size_t base,uint32_t limit,
 					uint8_t dpl,uint8_t code,uint8_t tss);
 void initialize();
 

@@ -31,7 +31,7 @@ GateDescriptor items[idtSize];
 void setItem(std::size_t index,InterruptHandler handler,uint8_t dpl)
 {
     GateDescriptor* item=items+index;
-    uint64_t h=reinterpret_cast<uint64_t>(handler);
+    std::size_t h=reinterpret_cast<std::size_t>(handler);
     item->offsetLow=h&0xFFFF;
     item->offsetMid=(h>>16)&0xFFFF;
     item->offsetHigh=(h>>32)&0xFFFFFFFF;
@@ -167,10 +167,10 @@ void initialize()
     struct __packed__
     {
         uint16_t limit;
-        uint64_t address;
+        std::size_t address;
     }idtr={
         sizeof(items)-1,
-        reinterpret_cast<uint64_t>(items)
+        reinterpret_cast<std::size_t>(items)
     };
     __asm__ __volatile__("lidt %[idtr]" : : [idtr]"m"(idtr));
 }

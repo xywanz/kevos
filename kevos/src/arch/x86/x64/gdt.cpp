@@ -21,7 +21,7 @@ namespace desc::gdt
 
 SystemDescriptor items[gdtSize];
 
-void setItem(std::size_t index,uint64_t base,
+void setItem(std::size_t index,std::size_t base,
                 uint32_t limit,uint8_t dpl,uint8_t code,uint8_t tss)
 {
     if(index>=gdtSize)
@@ -44,15 +44,15 @@ void initialize()
 {
     setItem(3, 0, 0, 3, 1, 0);
     setItem(4, 0, 0, 3, 0, 0);
-    setItem(5, reinterpret_cast<uint64_t>(&tss::item), sizeof(tss::item)-1, 3, 0, 1);
+    setItem(5, reinterpret_cast<std::size_t>(&tss::item), sizeof(tss::item)-1, 3, 0, 1);
 
     struct __packed__ GDTPointer
     {
         uint16_t limit;
-        uint64_t address;
+        std::size_t address;
     } gdtPtr={
         sizeof(items)-1,
-        reinterpret_cast<uint64_t>(items)
+        reinterpret_cast<std::size_t>(items)
     };
     __asm__ __volatile__("lgdt %[gdtr]" : : [gdtr]"m"(gdtPtr));
     __asm__ __volatile__("ltr %%ax": : "a"(__KERNEL_TSS));

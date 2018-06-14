@@ -23,8 +23,12 @@ limitations under the License.
 
 #include <cstring>
 
+
 namespace multitask
 {
+
+constexpr std::size_t userCodeStart=0x100000000;
+constexpr std::size_t userStackStart=0x0000FFFF00000000;
 
 Process::Process(void* entry,TYPE type):pages()
 {
@@ -32,16 +36,33 @@ Process::Process(void* entry,TYPE type):pages()
     using namespace mm::vm;
     if(type==USER)
     {
-        auto addr=reinterpret_cast<void*>(VirtualMemory::getAddressFromPPN(PageAllocator::allocate()));
-        pages.push_back(addr);
+        auto stackPPN=PageAllocator::allocate();
+        auto codePPN=PageAllocator::allocate();
+        auto stack=reinterpret_cast<void*>(VirtualMemory::getAddressFromPPN(stackPPN));
+        auto code=reinterpret_cast<void*>(VirtualMemory::getAddressFromPPN(codePPN));
+        pages.push_back(stack);
+        pages.push_back(code);
+
+        std::memcpy(code,entry,pageSize);
+
         vm=new VirtualMemory;
         auto mm=getVM<VirtualMemory>();
-        // for(std::size_t kppn=0;kppn<10000;++kppn)
-        // {
-        //     mm->mapPage(kppn,kppn,1);
-        // }
+        mm->mapKernelSpace();
+        mm->mapPage(userCodeStart/pageSize,codePPN,1);
+        mm->mapPage(userStackStart/pageSize,stackPPN,1);
+
+        // regs=(void*)ProcessManager::createUserRegInfo(
+        //     (void*)userCodeStart,
+        //     (void*)(userStackStart+pageSize),
+        //     new char[pageSize]+pageSize,
+        //     mm->getPML4PPN()*pageSize
+        // );
+
         regs=(void*)ProcessManager::createUserRegInfo(
-            entry,reinterpret_cast<char*>(addr)+pageSize,new char[pageSize]+pageSize
+            entry,
+            new char[pageSize]+pageSize,
+            new char[pageSize]+pageSize,
+            mm->getPML4PPN()*pageSize
         );
     }
     else
@@ -92,14 +113,14 @@ ProcessRegisters* ProcessManager::createKernelRegInfo(void* entry,void* stack)
     regs->gs=__KERNEL_DS;
     regs->rflags=0x200;
     regs->dpl=0;
-    regs->rsp=reinterpret_cast<uint64_t>(stack);
-    regs->rbp=reinterpret_cast<uint64_t>(stack);
-    regs->rip=reinterpret_cast<uint64_t>(entry);
-    regs->cr3=reinterpret_cast<uint64_t>(mm::page::kernel::pml4);
+    regs->rsp=reinterpret_cast<std::size_t>(stack);
+    regs->rbp=reinterpret_cast<std::size_t>(stack);
+    regs->rip=reinterpret_cast<std::size_t>(entry);
+    regs->cr3=reinterpret_cast<std::size_t>(mm::page::kernel::pml4);
     return regs;
 }
 
-ProcessRegisters* ProcessManager::createUserRegInfo(void* entry,void* stack,void* kstack)
+ProcessRegisters* ProcessManager::createUserRegInfo(void* entry,void* stack,void* kstack,std::size_t pml4)
 {
     ProcessRegisters* regs=new ProcessRegisters;
     std::memset(regs,0,sizeof(ProcessRegisters));
@@ -111,11 +132,11 @@ ProcessRegisters* ProcessManager::createUserRegInfo(void* entry,void* stack,void
     regs->gs=__USER_DS;
     regs->rflags=0x200;
     regs->dpl=3;
-    regs->rsp=reinterpret_cast<uint64_t>(stack);
-    regs->rbp=reinterpret_cast<uint64_t>(stack);
-    regs->rsp0=reinterpret_cast<uint64_t>(kstack);
-    regs->rip=reinterpret_cast<uint64_t>(entry);
-    regs->cr3=reinterpret_cast<uint64_t>(mm::page::kernel::pml4);
+    regs->rsp=reinterpret_cast<std::size_t>(stack);
+    regs->rbp=reinterpret_cast<std::size_t>(stack);
+    regs->rsp0=reinterpret_cast<std::size_t>(kstack);
+    regs->rip=reinterpret_cast<std::size_t>(entry);
+    regs->cr3=pml4;
     return regs;
 }
 

@@ -26,8 +26,8 @@ TaskStateSegment item;
 void initialize()
 {
     std::memset(&item,0,sizeof(TaskStateSegment));
-    item.ist0=reinterpret_cast<uint64_t>(&kstack_start_address);
-    item.rsp0=(uint64_t)(&kstack_start_address);
+    item.ist0=reinterpret_cast<std::size_t>(&kstack_start_address);
+    item.rsp0=(std::size_t)(&kstack_start_address);
 }
 
 }

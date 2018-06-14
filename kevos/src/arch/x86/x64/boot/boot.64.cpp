@@ -105,11 +105,6 @@ extern "C" void entry64()
     test_resolve_map();
     test_page_allocator();
 
-    std::size_t i=0;
-    mm::vm::VirtualMemory vm;
-    for(std::size_t i=0;i<1000;++i)
-        vm.mapPage(i,i,1);
-
 	confirmImAlive();
 	while(1)
         *((uint16_t*)(0xB8000))=((std::rand()%128)<<8)+'k';

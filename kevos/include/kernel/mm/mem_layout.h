@@ -69,7 +69,9 @@ extern unsigned int ustack_start_address;
 #define kernel_start_ppn	(reinterpret_cast<std::size_t>(&kernel_start_address)/mm::page::pageSize)
 #define kernel_end_ppn		(reinterpret_cast<std::size_t>(&kernel_end_address)/mm::page::pageSize)
 
-#define user_start_ppn      (reinterpret_cast<std::size_t>(&user_start_ppn)/mm::page::pageSize)
+#define user_start_ppn      (reinterpret_cast<std::size_t>(&user_start_address)/mm::page::pageSize)
+
+#define ustack_start_ppn    (reinterpret_cast<std::size_t>(&ustack_start_address)/mm::page::pageSize)
 
 
 #endif
