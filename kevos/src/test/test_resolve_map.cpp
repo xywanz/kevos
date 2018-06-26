@@ -7,7 +7,7 @@
 using namespace mm::vm;
 using namespace mm::page;
 
-void test_resolve_map()
+void test_resolve_map_main()
 {
     auto vmm=VirtualMemory::resolveMap(((uint64_t)kernel::pml4)/pageSize,0);
     assert(vmm.pdpt==kernel::pdpt);

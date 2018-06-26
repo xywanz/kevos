@@ -28,7 +28,7 @@ namespace multitask
 {
 
 constexpr std::size_t userCodeStart=0x100000000;
-constexpr std::size_t userStackStart=0x0000FFFF00000000;
+constexpr std::size_t userStackStart=0xFFF00000000;
 
 Process::Process(void* entry,TYPE type):pages()
 {
@@ -45,25 +45,25 @@ Process::Process(void* entry,TYPE type):pages()
 
         std::memcpy(code,entry,pageSize);
 
-        vm=new VirtualMemory;
-        auto mm=getVM<VirtualMemory>();
-        mm->mapKernelSpace();
-        mm->mapPage(userCodeStart/pageSize,codePPN,1);
-        mm->mapPage(userStackStart/pageSize,stackPPN,1);
-
-        // regs=(void*)ProcessManager::createUserRegInfo(
-        //     (void*)userCodeStart,
-        //     (void*)(userStackStart+pageSize),
-        //     new char[pageSize]+pageSize,
-        //     mm->getPML4PPN()*pageSize
-        // );
+        mmap=new VirtualMemory;
+        auto vm=getMMap<VirtualMemory>();
+        vm->mapKernelSpace();
+        vm->mapPage(userCodeStart/pageSize,codePPN,1);
+        vm->mapPage(userStackStart/pageSize,stackPPN,1);
 
         regs=(void*)ProcessManager::createUserRegInfo(
-            entry,
+            (void*)userCodeStart,
+            (void*)(userStackStart+pageSize-8),
             new char[pageSize]+pageSize,
-            new char[pageSize]+pageSize,
-            mm->getPML4PPN()*pageSize
+            vm->getPML4PPN()*pageSize
         );
+
+        // regs=(void*)ProcessManager::createUserRegInfo(
+        //     entry,
+        //     (void*)(VirtualMemory::getAddressFromPPN((PageAllocator::allocate()))+pageSize-8),
+        //     new char[pageSize]+pageSize,
+        //     vm->getPML4PPN()*pageSize
+        // );
     }
     else
     {

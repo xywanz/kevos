@@ -58,7 +58,7 @@ public:
     T* getRegs(){return reinterpret_cast<T*>(regs);}
 
     template<class T>
-    T* getVM(){return reinterpret_cast<T*>(vm);}
+    T* getMMap(){return reinterpret_cast<T*>(mmap);}
 
     void setState(STATE s){state=s;}
 
@@ -68,7 +68,7 @@ private:
     TYPE type;
     STATE state;
     void* regs;
-    void* vm;
+    void* mmap;
     std::size_t priority;
     std::vector<void*> pages;
 };

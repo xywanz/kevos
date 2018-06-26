@@ -51,16 +51,20 @@ VirtualMemory::~VirtualMemory()
                             {
                                 if(pt[pti].present)
                                 {
-                                    PageAllocator::deallocate(pt[pti].physicalPageNum);
+                                    if(pt[pti].physicalPageNum>=kernel_end_ppn)
+                                        PageAllocator::deallocate(pt[pti].physicalPageNum);
                                 }
                             }
-                            PageAllocator::deallocate(pdt[pdti].physicalPageNum);
+                            if(pdt[pdti].physicalPageNum>=kernel_end_ppn)
+                                PageAllocator::deallocate(pdt[pdti].physicalPageNum);
                         }
                     }
-                    PageAllocator::deallocate(pdpt[pdpti].physicalPageNum);
+                    if(pdpt[pdpti].physicalPageNum>=kernel_end_ppn)
+                        PageAllocator::deallocate(pdpt[pdpti].physicalPageNum);
                 }
             }
-            PageAllocator::deallocate(pml4[pml4i].physicalPageNum);
+            if(pml4[pml4i].physicalPageNum>=kernel_end_ppn)
+                PageAllocator::deallocate(pml4[pml4i].physicalPageNum);
         }
     }
     PageAllocator::deallocate(m_pml4PPN);

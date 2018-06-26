@@ -15,82 +15,99 @@ limitations under the License.
 
 #include <arch/x86/x64/interrupt.h>
 
+#include <arch/common/assert.h>
+
 namespace intr::fault
 {
 
 void faultCppHandler0()
 {
-    *((unsigned short*)0xB8000+1000)=0x7575;
+    assert("Error: divided by 0"=="");
+    while(1);
 }
 
 void faultCppHandler1()
 {
-    __asm__ __volatile__("hlt");
+    assert("Error: debug exception"=="");
+    while(1);
 }
 
 void faultCppHandler2()
 {
-    __asm__ __volatile__("hlt");
+    assert("NMI"=="");
+    while(1);
 }
 
 void faultCppHandler3()
 {
-    __asm__ __volatile__("hlt");
+    assert("For debug"=="");
+    while(1);
 }
 
 void faultCppHandler4()
 {
-    __asm__ __volatile__("hlt");
+    assert("Error: overflow"=="");
+    while(1);
 }
 
 void faultCppHandler5()
 {
-    __asm__ __volatile__("hlt");
+    assert("Bound checking"=="");
+    while(1);
 }
 
 void faultCppHandler6()
 {
-    __asm__ __volatile__("hlt");
+    assert("Error: invalid operation code"=="");
+    while(1);
 }
 
 void faultCppHandler7()
 {
-    __asm__ __volatile__("hlt");
+    assert("Error: device is not available"=="");
+    while(1);
 }
 
 void faultCppHandler8()
 {
-    __asm__ __volatile__("hlt");
+    assert("Error: double error"=="");
+    while(1);
 }
 
 void faultCppHandler9()
 {
-    __asm__ __volatile__("hlt");
+    assert("Error: segment out of range in coprocessor"=="");
+    while(1);
 }
 
 void faultCppHandler10()
 {
-    __asm__ __volatile__("hlt");
+    assert("Error: invalid tss"=="");
+    while(1);
 }
 
 void faultCppHandler11()
 {
-    *((unsigned short*)0xB8000+1000)=0x7575;
+    assert("Error: segment not in memory"=="");
+    while(1);
 }
 
 void faultCppHandler12()
 {
-    __asm__ __volatile__("hlt");
+    assert("Error: stack exception"=="");
+    while(1);
 }
 
 void faultCppHandler13()
 {
-    __asm__ __volatile__("hlt");
+    assert("Error: general protection"=="");
+    while(1);
 }
 
 void faultCppHandler14()
 {
-    *((unsigned short*)0xB8000+1000)=0x7575;
+    assert("Error: page not in memory"=="");
+    while(1);
 }
 
 void faultCppHandler15()

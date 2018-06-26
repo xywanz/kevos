@@ -52,8 +52,9 @@ void test_list_main();
 void test_array_main();
 void test_deque_main();
 void test_multiprocess_main();
-void test_resolve_map();
-void test_page_allocator();
+void test_resolve_map_main();
+void test_page_allocator_main();
+void test_paging_main();
 
 namespace boot
 {
@@ -102,12 +103,15 @@ extern "C" void entry64()
 	test_array_main();
 	test_deque_main();
     test_multiprocess_main();
-    test_resolve_map();
-    test_page_allocator();
+    test_resolve_map_main();
+    test_page_allocator_main();
+    test_paging_main();
 
 	confirmImAlive();
 	while(1)
         *((uint16_t*)(0xB8000))=((std::rand()%128)<<8)+'k';
+
+    __unreachable__();
 }
 
 

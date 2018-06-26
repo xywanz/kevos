@@ -130,9 +130,14 @@ public:
 
 	static void unmapKernelPage(std::size_t vpn);
 
+	void loadPML4()
+	{
+		__asm__ __volatile__("mov %%rax,%%cr3" : : "a"(getAddressFromPPN(m_pml4PPN)));
+	}
+
 	static void loadKernelPML4()
 	{
-		__asm__ __volatile__("mov %%rax, %%cr3" : : "a"(page::kernel::pml4));
+		__asm__ __volatile__("mov %%rax,%%cr3" : : "a"(page::kernel::pml4));
 	}
 
 private:

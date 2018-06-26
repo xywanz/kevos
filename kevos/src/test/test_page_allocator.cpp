@@ -6,7 +6,7 @@
 using namespace mm::page;
 
 
-void test_page_allocator()
+void test_page_allocator_main()
 {
     auto p1=PageAllocator::allocate();
     auto p2=PageAllocator::allocate();

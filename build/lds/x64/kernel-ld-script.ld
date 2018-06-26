@@ -79,7 +79,7 @@ SECTIONS
   }
 
   user_start_address = 0x100000000;
-  ustack_start_address = 0x0000FFFF00000000;
+  ustack_start_address = 0x00000FFF00000000;
 }
 
 
