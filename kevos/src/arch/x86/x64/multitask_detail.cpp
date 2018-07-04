@@ -132,9 +132,9 @@ ProcessRegisters* ProcessHelper::createUserRegInfo(void* entry,void* stack,void*
 
 void ProcessHelper::switchToNext()
 {
-    ++ProcessTable::s_current;
-    if(ProcessTable::s_current==ProcessTable::end())
-        ProcessTable::s_current=ProcessTable::begin();
+    ++ptable::current;
+    if(ptable::current==ptable::end())
+        ptable::current=ptable::begin();
 }
 
 }

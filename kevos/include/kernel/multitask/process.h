@@ -82,32 +82,31 @@ inline pid_t generateNextPid()
 }
 
 
-class ProcessTable
+namespace ptable
 {
-public:
-
     using iterator=typename std::list<Process*>::iterator;
 
-    static std::list<Process*> s_processes;
-    static iterator s_current;
+    extern std::list<Process*> plist;
+    extern iterator current;
 
-    static void initialize()
+    inline void initialize()
     {
-        s_processes.empty_initialize();
-        s_processes.push_back(new Process(0,Process::KERNEL));
-        s_current=s_processes.begin();
+        plist.empty_initialize();
+        plist.push_back(new Process(0,Process::KERNEL));
+        current=plist.begin();
     }    
 
-    static iterator begin()
+    inline iterator begin()
     {
-        return s_processes.begin();
+        return plist.begin();
     }
 
-    static iterator end()
+    inline iterator end()
     {
-        return s_processes.end();
+        return plist.end();
     }
 };
+
 
 
 

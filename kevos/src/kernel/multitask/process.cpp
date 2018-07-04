@@ -15,10 +15,10 @@ limitations under the License.
 
 #include <kernel/multitask/process.h>
 
-namespace multitask
+namespace multitask::ptable
 {
 
-std::list<Process*> ProcessTable::s_processes(nullptr);
-typename ProcessTable::iterator ProcessTable::s_current(nullptr);
+std::list<Process*> plist(nullptr);
+iterator current(nullptr);
 
 }

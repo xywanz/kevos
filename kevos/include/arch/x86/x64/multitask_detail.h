@@ -78,17 +78,17 @@ public:
 
     static void createKernelProcess(void* entry)
     {
-        ProcessTable::s_processes.push_back(new Process(entry,Process::KERNEL));
+        ptable::plist.push_back(new Process(entry,Process::KERNEL));
     }
 
     static void createUserProcess(void* entry)
     {
-        ProcessTable::s_processes.push_back(new Process(entry,Process::USER));
+        ptable::plist.push_back(new Process(entry,Process::USER));
     }
 
     static Process* current()
     {
-        return *ProcessTable::s_current;
+        return *ptable::current;
     }
 };
 
