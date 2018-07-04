@@ -51,14 +51,14 @@ Process::Process(void* entry,TYPE type):pages()
         vm->mapPage(userCodeStart/pageSize,codePPN,1);
         vm->mapPage(userStackStart/pageSize,stackPPN,1);
 
-        regs=(void*)ProcessManager::createUserRegInfo(
+        regs=(void*)ProcessHelper::createUserRegInfo(
             (void*)userCodeStart,
             (void*)(userStackStart+pageSize-8),
-            new char[pageSize]+pageSize,
+            new char[pageSize]+pageSize-8,
             vm->getPML4PPN()*pageSize
         );
 
-        // regs=(void*)ProcessManager::createUserRegInfo(
+        // regs=(void*)ProcessHelper::createUserRegInfo(
         //     entry,
         //     (void*)(VirtualMemory::getAddressFromPPN((PageAllocator::allocate()))+pageSize-8),
         //     new char[pageSize]+pageSize,
@@ -67,7 +67,7 @@ Process::Process(void* entry,TYPE type):pages()
     }
     else
     {
-        regs=(void*)ProcessManager::createKernelRegInfo(entry,new char[pageSize]+pageSize);
+        regs=(void*)ProcessHelper::createKernelRegInfo(entry,new char[pageSize]+pageSize-8);
     }
     pid=generateNextPid();
 }
@@ -90,18 +90,8 @@ Process::~Process()
     }        
 }
 
-std::list<Process*> ProcessManager::s_processes(nullptr);
-typename ProcessManager::iterator ProcessManager::s_current(nullptr);
 
-
-void ProcessManager::initialize()
-{
-    s_processes.empty_initialize();
-    s_processes.push_back(new Process(0,Process::KERNEL));
-    s_current=s_processes.begin();
-}
-
-ProcessRegisters* ProcessManager::createKernelRegInfo(void* entry,void* stack)
+ProcessRegisters* ProcessHelper::createKernelRegInfo(void* entry,void* stack)
 {
     ProcessRegisters* regs=new ProcessRegisters;
     std::memset(regs,0,sizeof(ProcessRegisters));
@@ -120,7 +110,7 @@ ProcessRegisters* ProcessManager::createKernelRegInfo(void* entry,void* stack)
     return regs;
 }
 
-ProcessRegisters* ProcessManager::createUserRegInfo(void* entry,void* stack,void* kstack,std::size_t pml4)
+ProcessRegisters* ProcessHelper::createUserRegInfo(void* entry,void* stack,void* kstack,std::size_t pml4)
 {
     ProcessRegisters* regs=new ProcessRegisters;
     std::memset(regs,0,sizeof(ProcessRegisters));
@@ -140,11 +130,11 @@ ProcessRegisters* ProcessManager::createUserRegInfo(void* entry,void* stack,void
     return regs;
 }
 
-void ProcessManager::switchToNext()
+void ProcessHelper::switchToNext()
 {
-    ++s_current;
-    if(s_current==s_processes.end())
-        s_current=s_processes.begin();
+    ++ProcessTable::s_current;
+    if(ProcessTable::s_current==ProcessTable::end())
+        ProcessTable::s_current=ProcessTable::begin();
 }
 
 }

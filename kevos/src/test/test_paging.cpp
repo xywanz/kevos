@@ -11,13 +11,15 @@ using namespace mm::page;
 void test_paging_main()
 {
     VirtualMemory* vm=new VirtualMemory;
-    for(std::size_t i=0;i<kernel_end_ppn;++i)
-    {
-        vm->mapPage(i,i,1);
-    }
-    vm->mapPage(0x100000000L/pageSize,PageAllocator::allocate(),1);
-    vm->mapPage(0xFFF00000000L/pageSize,PageAllocator::allocate(),1);
+    // for(std::size_t i=0;i<kernel_end_ppn;++i)
+    // {
+    //     vm->mapPage(i,i,1);
+    // }
+    vm->mapKernelSpace();
+    vm->mapPage(0x100000000/pageSize,PageAllocator::allocate(),1);
+    vm->mapPage(0xFFF00000000/pageSize,PageAllocator::allocate(),1);
     vm->loadPML4();
+    vm->resolveMap(0xFFF00000000);
     // VirtualMemory::loadKernelPML4();
     // auto vmm=vm->resolveMap(0xFFFFF000/pageSize);
     // assert(vmm.pml4!=0);

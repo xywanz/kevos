@@ -21,6 +21,7 @@ limitations under the License.
 #include <kernel/mm/mem_layout.h>
 
 #include <vector>
+#include <list>
 
 namespace multitask
 {
@@ -79,6 +80,36 @@ inline pid_t generateNextPid()
     static pid_t cache=0;
     return cache++;
 }
+
+
+class ProcessTable
+{
+public:
+
+    using iterator=typename std::list<Process*>::iterator;
+
+    static std::list<Process*> s_processes;
+    static iterator s_current;
+
+    static void initialize()
+    {
+        s_processes.empty_initialize();
+        s_processes.push_back(new Process(0,Process::KERNEL));
+        s_current=s_processes.begin();
+    }    
+
+    static iterator begin()
+    {
+        return s_processes.begin();
+    }
+
+    static iterator end()
+    {
+        return s_processes.end();
+    }
+};
+
+
 
 }   // end of namespace kernel
 

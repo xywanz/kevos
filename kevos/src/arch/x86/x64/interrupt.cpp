@@ -23,7 +23,7 @@ limitations under the License.
 
 void saveProcessRegisters(char* base)
 {
-    auto regs=multitask::ProcessManager::current()->getRegs<multitask::ProcessRegisters>();
+    auto regs=multitask::ProcessHelper::current()->getRegs<multitask::ProcessRegisters>();
     auto ssregs=reinterpret_cast<intr::SoftwareSavedRegisters*>(base);
     regs->rax=ssregs->rax;
     regs->rbx=ssregs->rbx;
@@ -52,7 +52,7 @@ void saveProcessRegisters(char* base)
 
 void switchToContext()
 {
-    auto regs=multitask::ProcessManager::current()->getRegs<multitask::ProcessRegisters>();
+    auto regs=multitask::ProcessHelper::current()->getRegs<multitask::ProcessRegisters>();
     // TSS::tss.rsp0=regs->rsp;
     __asm__ ("movq %[cr3],%%cr3" : : [cr3]"r"(regs->cr3));
     __asm__ ("pushq %[ss]" : : [ss]"m"(regs->ss));
@@ -86,7 +86,6 @@ void switchToContext()
 
 namespace intr
 {
-
 
 void InterruptController::initialize()
 {

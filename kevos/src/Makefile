@@ -32,6 +32,7 @@ all:
 
 	make -C kernel
 	make -C kernel/utils
+	make -C kernel/multitask
 	make -C kernel/drivers
 	make -C kernel/fs
 	make -C kernel/mm

@@ -59,10 +59,9 @@ struct ProcessRegisters
 };
 
 
-class ProcessManager
+class ProcessHelper
 {
 public:
-    static void initialize();
 
     static ProcessRegisters* createKernelRegInfo(void* entry,void* stack);
 
@@ -77,28 +76,20 @@ public:
 
     static void switchToNext();
 
-    static void contextSwitch();
-
     static void createKernelProcess(void* entry)
     {
-        s_processes.push_back(new Process(entry,Process::KERNEL));
+        ProcessTable::s_processes.push_back(new Process(entry,Process::KERNEL));
     }
 
     static void createUserProcess(void* entry)
     {
-        s_processes.push_back(new Process(entry,Process::USER));
+        ProcessTable::s_processes.push_back(new Process(entry,Process::USER));
     }
 
     static Process* current()
     {
-        return *s_current;
+        return *ProcessTable::s_current;
     }
-private:
-    static std::list<Process*> s_processes;
-
-    using iterator=typename std::list<Process*>::iterator;
-
-    static iterator s_current;
 };
 
 } 

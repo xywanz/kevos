@@ -31,7 +31,7 @@ void irqCppHandler0()
     *((uint16_t*)(0xB8000+318))=((std::rand()%128)<<8)+'s';
     InterruptController::sendEndSignal(0);
 
-    multitask::ProcessManager::switchToNext();
+    multitask::ProcessHelper::switchToNext();
     switchToContext();
 }
 

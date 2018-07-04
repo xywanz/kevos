@@ -93,7 +93,7 @@ extern "C" void entry64()
 	intr::InterruptController::enableTimer();
 	intr::InterruptController::setTimerFrequency(100);
 	auto cpuInfo=cpu::CPUInfo::instance();
-	multitask::ProcessManager::initialize();
+	multitask::ProcessTable::initialize();
 
 	test_utility_main();
 	test_concept_main();
