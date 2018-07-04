@@ -75,7 +75,6 @@ limitations under the License.
 
 .extern interruptHandlers
 .extern saveProcessRegisters
-.extern switchToContext
 
 .equ FAULT0,0
 .macro faultAsmHandler number

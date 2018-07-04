@@ -50,7 +50,7 @@ void saveProcessRegisters(char* base)
     regs->ss=hsregs->ss;
 }
 
-void switchToContext()
+void contextSwitch()
 {
     auto regs=multitask::ProcessHelper::current()->getRegs<multitask::ProcessRegisters>();
     // TSS::tss.rsp0=regs->rsp;

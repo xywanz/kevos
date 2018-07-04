@@ -17,6 +17,8 @@ limitations under the License.
 #include <arch/x86/x64/interrupt.h>
 #include <arch/x86/x64/multitask_detail.h>
 
+#include <kernel/multitask/scheduler.h>
+
 #include <cstdlib>
 
 namespace intr::irq
@@ -31,8 +33,8 @@ void irqCppHandler0()
     *((uint16_t*)(0xB8000+318))=((std::rand()%128)<<8)+'s';
     InterruptController::sendEndSignal(0);
 
-    multitask::ProcessHelper::switchToNext();
-    switchToContext();
+    multitask::schedule::Scheduler::schedule();
+    contextSwitch();
 }
 
 void irqCppHandler1()

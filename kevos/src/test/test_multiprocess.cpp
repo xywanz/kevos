@@ -39,13 +39,13 @@ void test_process_5()
 
 void test_multiprocess_main()
 {
-    ProcessHelper::createKernelProcess((void*)test_process_1);
-    ProcessHelper::createKernelProcess((void*)test_process_1);
-    ProcessHelper::createKernelProcess((void*)test_process_2);
-    ProcessHelper::createKernelProcess((void*)test_process_3);
-    ProcessHelper::createKernelProcess((void*)test_process_4);
-    ProcessHelper::createKernelProcess((void*)test_process_4);
-    ProcessHelper::createKernelProcess((void*)test_process_4);
+    kpcreate((void*)test_process_1);
+    kpcreate((void*)test_process_1);
+    kpcreate((void*)test_process_2);
+    kpcreate((void*)test_process_3);
+    kpcreate((void*)test_process_4);
+    kpcreate((void*)test_process_4);
+    kpcreate((void*)test_process_4);
     // ProcessHelper::createUserProcess((void*)test_process_5);
 
     // std::size_t codeStart=0x100000000;

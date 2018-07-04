@@ -74,18 +74,6 @@ public:
 
     static void setVirtualMemory(Process* process,const mm::vm::VirtualMemory& mm);
 
-    static void switchToNext();
-
-    static void createKernelProcess(void* entry)
-    {
-        ptable::plist.push_back(new Process(entry,Process::KERNEL));
-    }
-
-    static void createUserProcess(void* entry)
-    {
-        ptable::plist.push_back(new Process(entry,Process::USER));
-    }
-
     static Process* current()
     {
         return *ptable::current;

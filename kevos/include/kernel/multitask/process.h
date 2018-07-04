@@ -108,6 +108,9 @@ namespace ptable
 };
 
 
+Process* kpcreate(void* entry);
+
+Process* pcreate(void* entry);
 
 
 }   // end of namespace kernel

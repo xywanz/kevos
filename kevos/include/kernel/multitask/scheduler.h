@@ -24,7 +24,7 @@ namespace multitask::schedule
 class Scheduler
 {
 public:
-    void schedule();
+    static void schedule();
 };
 
 }   //end of namespace kernel

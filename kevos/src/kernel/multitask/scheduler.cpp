@@ -14,5 +14,16 @@ limitations under the License.
 ==============================================================================*/
 
 #include <kernel/multitask/scheduler.h>
+#include <kernel/multitask/process.h>
 
+namespace multitask::schedule
+{
 
+void Scheduler::schedule()
+{
+    ++ptable::current;
+    if(ptable::current==ptable::end())
+        ptable::current=ptable::begin();
+}
+
+}

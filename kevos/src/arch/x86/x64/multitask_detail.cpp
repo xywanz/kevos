@@ -130,11 +130,19 @@ ProcessRegisters* ProcessHelper::createUserRegInfo(void* entry,void* stack,void*
     return regs;
 }
 
-void ProcessHelper::switchToNext()
+
+Process* kpcreate(void* entry)
 {
-    ++ptable::current;
-    if(ptable::current==ptable::end())
-        ptable::current=ptable::begin();
+    Process* p=new Process(entry,Process::KERNEL);
+    ptable::plist.push_back(p);
+    return p;
+}
+
+Process* pcreate(void* entry)
+{
+    Process* p=new Process(entry,Process::USER);
+    ptable::plist.push_back(p);
+    return p;
 }
 
 }

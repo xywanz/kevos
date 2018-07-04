@@ -23,7 +23,7 @@ extern "C"
 
 void saveProcessRegisters(char* base);
 
-void switchToContext();
+void contextSwitch();
 
 /**
  * @brief 除法错误，被0除
