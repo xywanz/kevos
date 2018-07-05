@@ -164,6 +164,9 @@ void initialize()
     registerCallback(SYSCALL0+6,intr::syscall::syscallCppHandler6);
     registerCallback(SYSCALL0+7,intr::syscall::syscallCppHandler7);
 
+    setItem(0x79,intr::internal::forceScheduleAsmHandler,0);
+    registerCallback(0x79,intr::internal::forceSchedule);
+
     struct __packed__
     {
         uint16_t limit;

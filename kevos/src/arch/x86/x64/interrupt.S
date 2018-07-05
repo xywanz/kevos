@@ -103,7 +103,6 @@ irqAsmHandler\number:
     save
     movq %rsp,%rdi
     callq saveProcessRegisters
-    movq $\number,%rdi
     mov $interruptHandlers,%rax
     mov $\number+IRQ0,%rbx
     callq *(%rax,%rbx,8)
@@ -123,7 +122,6 @@ syscallAsmHandler\number:
     save
     movq %rsp,%rdi
     callq saveProcessRegisters
-    movq $\number,%rdi
     mov $interruptHandlers,%rax
     mov $\number+SYSCALL0,%rbx
     callq *(%rax,%rbx,8)
@@ -134,3 +132,15 @@ syscallAsmHandler\number:
 .irp number,0,1,2,3,4,5,6,7
 syscallAsmHandler \number
 .endr
+
+.global forceScheduleAsmHandler
+forceScheduleAsmHandler:
+    save
+    movq %rsp,%rdi
+    callq saveProcessRegisters
+    mov $interruptHandlers,%rax
+    mov $0x79,%rbx
+    callq *(%rax,%rbx,8)
+    load
+    iretq
+

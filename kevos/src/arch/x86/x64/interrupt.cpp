@@ -20,6 +20,8 @@ limitations under the License.
 #include <arch/x86/x64/tss.h>
 #include <arch/x86/common/i8259a.h>
 
+#include <kernel/multitask/scheduler.h>
+
 
 void saveProcessRegisters(char* base)
 {
@@ -139,6 +141,15 @@ void InterruptController::enableKeyboard()
 void InterruptController::disableKeyboard()
 {
     I8259A::disableIRQ(1);
+}
+
+namespace internal
+{
+    void forceSchedule()
+    {
+        multitask::schedule::Scheduler::schedule();
+        contextSwitch();
+    }
 }
 
 }

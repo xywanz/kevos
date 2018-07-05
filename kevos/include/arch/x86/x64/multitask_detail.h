@@ -62,7 +62,6 @@ struct ProcessRegisters
 class ProcessHelper
 {
 public:
-
     static ProcessRegisters* createKernelRegInfo(void* entry,void* stack);
 
     static ProcessRegisters* createUserRegInfo(void* entry,void* stack,void* kstack,std::size_t pml4);
@@ -77,6 +76,11 @@ public:
     static Process* current()
     {
         return *ptable::current;
+    }
+
+    static void yieldCurrent()
+    {
+        __asm__ __volatile__("int $0x79");
     }
 };
 

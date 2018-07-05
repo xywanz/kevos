@@ -216,78 +216,79 @@ struct SoftwareSavedRegisters
 
 namespace fault
 {
-
-void faultCppHandler0();
-void faultCppHandler1();
-void faultCppHandler2();
-void faultCppHandler3();
-void faultCppHandler4();
-void faultCppHandler5();
-void faultCppHandler6();
-void faultCppHandler7();
-void faultCppHandler8();
-void faultCppHandler9();
-void faultCppHandler10();
-void faultCppHandler11();
-void faultCppHandler12();
-void faultCppHandler13();
-void faultCppHandler14();
-void faultCppHandler15();
-void faultCppHandler16();
-void faultCppHandler17();
-void faultCppHandler18();
-void faultCppHandler19();
-void faultCppHandler20();
-void faultCppHandler21();
-void faultCppHandler22();
-void faultCppHandler23();
-void faultCppHandler24();
-void faultCppHandler25();
-void faultCppHandler26();
-void faultCppHandler27();
-void faultCppHandler28();
-void faultCppHandler29();
-void faultCppHandler30();
-void faultCppHandler31();
-
+    void faultCppHandler0();
+    void faultCppHandler1();
+    void faultCppHandler2();
+    void faultCppHandler3();
+    void faultCppHandler4();
+    void faultCppHandler5();
+    void faultCppHandler6();
+    void faultCppHandler7();
+    void faultCppHandler8();
+    void faultCppHandler9();
+    void faultCppHandler10();
+    void faultCppHandler11();
+    void faultCppHandler12();
+    void faultCppHandler13();
+    void faultCppHandler14();
+    void faultCppHandler15();
+    void faultCppHandler16();
+    void faultCppHandler17();
+    void faultCppHandler18();
+    void faultCppHandler19();
+    void faultCppHandler20();
+    void faultCppHandler21();
+    void faultCppHandler22();
+    void faultCppHandler23();
+    void faultCppHandler24();
+    void faultCppHandler25();
+    void faultCppHandler26();
+    void faultCppHandler27();
+    void faultCppHandler28();
+    void faultCppHandler29();
+    void faultCppHandler30();
+    void faultCppHandler31();
 }
 
 
 namespace irq
 {
-
-void irqCppHandler0();
-void irqCppHandler1();
-void irqCppHandler2();
-void irqCppHandler3();
-void irqCppHandler4();
-void irqCppHandler5();
-void irqCppHandler6();
-void irqCppHandler7();
-void irqCppHandler8();
-void irqCppHandler9();
-void irqCppHandler10();
-void irqCppHandler11();
-void irqCppHandler12();
-void irqCppHandler13();
-void irqCppHandler14();
-void irqCppHandler15();
-
+    void irqCppHandler0();
+    void irqCppHandler1();
+    void irqCppHandler2();
+    void irqCppHandler3();
+    void irqCppHandler4();
+    void irqCppHandler5();
+    void irqCppHandler6();
+    void irqCppHandler7();
+    void irqCppHandler8();
+    void irqCppHandler9();
+    void irqCppHandler10();
+    void irqCppHandler11();
+    void irqCppHandler12();
+    void irqCppHandler13();
+    void irqCppHandler14();
+    void irqCppHandler15();
 }
 
 
 namespace syscall
 {
+    void syscallCppHandler0();
+    void syscallCppHandler1();
+    void syscallCppHandler2();
+    void syscallCppHandler3();
+    void syscallCppHandler4();
+    void syscallCppHandler5();
+    void syscallCppHandler6();
+    void syscallCppHandler7();
+}
 
-void syscallCppHandler0();
-void syscallCppHandler1();
-void syscallCppHandler2();
-void syscallCppHandler3();
-void syscallCppHandler4();
-void syscallCppHandler5();
-void syscallCppHandler6();
-void syscallCppHandler7();
 
+namespace internal
+{
+    extern "C" void forceScheduleAsmHandler();
+    void forceSchedule();
 }
 
 }
